@@ -1,0 +1,12 @@
+.chart-series-line {
+    -fx-stroke-width: 2px;
+    -fx-effect: null;
+}
+
+.default-color0.chart-series-line { -fx-stroke: #556EB5; }
+
+.default-color0.chart-line-symbol { -fx-background-color: #556EB5, white; }
+
+.chart-plot-background {
+    -fx-background-color: #ffffff;
+}

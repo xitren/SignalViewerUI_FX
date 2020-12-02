@@ -1,0 +1,431 @@
+.selector:focused,
+.selector {
+    -fx-background-image: url("selector.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.selector:hover:focused,
+.selector:hover {
+    -fx-background-image: url("selector_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.selector:armed,
+.selector:focused:selected:armed,
+.selector:selected,
+.selector:selected:focused {
+    -fx-background-image: url("selector_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.uni_selector:focused,
+.uni_selector {
+    -fx-background-image: url("uni_selector.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.uni_selector:hover:focused,
+.uni_selector:hover {
+    -fx-background-image: url("uni_selector_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.uni_selector:armed,
+.uni_selector:focused:selected:armed,
+.uni_selector:selected,
+.uni_selector:selected:focused {
+    -fx-background-image: url("uni_selector_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.comment:focused,
+.comment {
+    -fx-background-image: url("comment.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.comment:hover:focused,
+.comment:hover {
+    -fx-background-image: url("comment_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.comment:armed,
+.comment:focused:selected:armed,
+.comment:selected,
+.comment:selected:focused {
+    -fx-background-image: url("comment_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.clear_comments:focused,
+.clear_comments {
+    -fx-background-image: url("clear_comments.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.clear_comments:hover:focused,
+.clear_comments:hover {
+    -fx-background-image: url("clear_comments_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.clear_comments:armed,
+.clear_comments:focused:selected:armed,
+.clear_comments:selected,
+.clear_comments:selected:focused {
+    -fx-background-image: url("clear_comments_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.cut:focused,
+.cut {
+    -fx-background-image: url("cut.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.cut:armed,
+.cut:focused:selected:armed,
+.cut:selected,
+.cut:hover {
+    -fx-background-image: url("cut_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.stop:focused,
+.stop {
+    -fx-background-image: url("stop.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.stop:armed,
+.stop:focused:selected:armed,
+.stop:selected,
+.stop:hover {
+    -fx-background-image: url("stop_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.save:focused,
+.save {
+    -fx-background-image: url("save.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.save:hover:focused,
+.save:hover {
+    -fx-background-image: url("save_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.save:armed,
+.save:focused:selected:armed,
+.save:selected,
+.save:selected:focused {
+    -fx-background-image: url("save_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.load:focused,
+.load {
+    -fx-background-image: url("load.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.load:hover:focused,
+.load:hover {
+    -fx-background-image: url("load_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.load:armed,
+.load:focused:selected:armed,
+.load:selected,
+.load:selected:focused {
+    -fx-background-image: url("load_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.pause:focused,
+.pause {
+    -fx-background-image: url("pause.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.pause:hover:focused,
+.pause:hover {
+    -fx-background-image: url("pause_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.pause:armed,
+.pause:focused:selected:armed,
+.pause:selected,
+.pause:selected:focused {
+    -fx-background-image: url("pause_on.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.parameters:focused,
+.parameters {
+    -fx-background-image: url("parameters.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.parameters:hover:focused,
+.parameters:hover {
+    -fx-background-image: url("parameters_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.parameters:armed,
+.parameters:focused:selected:armed,
+.parameters:selected,
+.parameters:selected:focused {
+    -fx-background-image: url("parameters_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.filter_parameters:focused,
+.filter_parameters {
+    -fx-background-image: url("filter_params.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.filter_parameters:hover:focused,
+.filter_parameters:hover {
+    -fx-background-image: url("filter_params_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.filter_parameters:armed,
+.filter_parameters:focused:selected:armed,
+.filter_parameters:selected,
+.filter_parameters:selected:focused {
+    -fx-background-image: url("filter_params_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.notes:focused,
+.notes {
+    -fx-background-image: url("notes.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.notes:hover:focused,
+.notes:hover {
+    -fx-background-image: url("notes_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.notes:armed,
+.notes:focused:selected:armed,
+.notes:selected,
+.notes:selected:focused {
+    -fx-background-image: url("notes_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.freq:focused,
+.freq {
+    -fx-background-image: url("frequency.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.freq:hover:focused,
+.freq:hover {
+    -fx-background-image: url("frequency_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.freq:armed,
+.freq:focused:selected:armed,
+.freq:selected,
+.freq:selected:focused {
+    -fx-background-image: url("frequency_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.filter:focused,
+.filter {
+    -fx-background-image: url("filter.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.filter:hover:focused,
+.filter:hover {
+    -fx-background-image: url("filter_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.filter:armed,
+.filter:focused:selected:armed,
+.filter:selected,
+.filter:selected:focused {
+    -fx-background-image: url("filter_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.amp:focused,
+.amp {
+    -fx-background-image: url("amplitude.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.amp:hover:focused,
+.amp:hover {
+    -fx-background-image: url("amplitude_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.amp:armed,
+.amp:focused:selected:armed,
+.amp:selected,
+.amp:selected:focused {
+    -fx-background-image: url("amplitude_hover.png");
+    -fx-background-size: 38px 38px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
