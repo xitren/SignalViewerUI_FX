@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.MarksController">
+   <children>
+      <Label text="%marks_control_header">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <TableView fx:id="marks" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="col_name" prefWidth="75.0" text="%marks_column_name" />
+          <TableColumn fx:id="col_label_color" prefWidth="75.0" text="%marks_column_name_color" />
+            <TableColumn fx:id="col_color" prefWidth="75.0" text="%marks_column_color" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label text="%marks_name" />
+      <TextField fx:id="Name" promptText="%marks_name_promt" />
+      <Label text="%marks_label_color" />
+      <ColorPicker fx:id="label_color" maxWidth="1.7976931348623157E308" />
+      <Label text="%marks_color" />
+      <ColorPicker fx:id="selection_color" maxWidth="1.7976931348623157E308" />
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#OnLoad" text="%marks_button" VBox.vgrow="ALWAYS" />
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#OnClear" text="%marks_clear_button" />
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+   </padding>
+</VBox>

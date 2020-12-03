@@ -60,6 +60,7 @@ public class SignalUIController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
         filterTool = loadFilterControl();
+        marksTool = loadMarksControl();
         new ToggleGroup().getToggles().addAll(pars, filt_pars, comm_pars);
         new ToggleGroup().getToggles().addAll(tool_sel, tool_uni_sel);
         tool_sel.setSelected(true);
@@ -121,21 +122,17 @@ public class SignalUIController implements Initializable {
         lcwm_small.clear();
         datafx.clearMarks();
         datafx.addGlobalMark(10000, 30000, "Test area",
-                Color.LIGHTGREEN.getRed(),
-                Color.LIGHTGREEN.getGreen(),
-                Color.LIGHTGREEN.getBlue());
+                String.format("#%08X", Color.LIGHTGREEN.hashCode()),
+                String.format("#%08X", Color.WHITE.hashCode()));
         datafx.addMark(1, 50000, 60000, "T1",
-                Color.LIGHTYELLOW.getRed(),
-                Color.LIGHTYELLOW.getGreen(),
-                Color.LIGHTYELLOW.getBlue());
+                String.format("#%08X", Color.LIGHTYELLOW.hashCode()),
+                String.format("#%08X", Color.WHITE.hashCode()));
         datafx.addMark(4, 50000, 60000, "T2",
-                Color.LIGHTSALMON.getRed(),
-                Color.LIGHTSALMON.getGreen(),
-                Color.LIGHTSALMON.getBlue());
+                String.format("#%08X", Color.LIGHTSALMON.hashCode()),
+                String.format("#%08X", Color.WHITE.hashCode()));
         datafx.addMark(6, 50000, 60000, "T3",
-                Color.LIGHTPINK.getRed(),
-                Color.LIGHTPINK.getGreen(),
-                Color.LIGHTPINK.getBlue());
+                String.format("#%08X", Color.LIGHTPINK.hashCode()),
+                String.format("#%08X", Color.WHITE.hashCode()));
         datafx.bindSeriesOverview(lcwm_small);
         datafx.bindSeriesView(lcwm);
     }
@@ -260,6 +257,22 @@ public class SignalUIController implements Initializable {
             final FilterController fc = fxmlLoader.<FilterController>getController();
             fc.setOnUpdate(()->{
                 datafx.setFilterGlobal(fc.getFilter());
+            });
+            return pane;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    private Parent loadMarksControl() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setResources(resources);
+            InputStream is = this.getClass().getResource("/fxml/control_marks.fxml").openStream();
+            Pane pane = fxmlLoader.load(is);
+            final MarksController fc = fxmlLoader.<MarksController>getController();
+            fc.setOnSelection(()->{
             });
             return pane;
         } catch (IOException ex) {
