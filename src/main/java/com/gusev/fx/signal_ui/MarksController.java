@@ -64,12 +64,6 @@ public class MarksController implements Initializable {
                 this.setBackground(new Background(background_fill));
             }
         });
-        ObservableList<Mark> mm = FXCollections.observableArrayList();
-        mm.add(new Mark(-1, 10000, 40000,
-                "First",
-                String.format("#%08X", Color.LIGHTSALMON.hashCode()),
-                String.format("#%08X", Color.BLACK.hashCode())));
-        marks.setItems(mm);
     }
 
     public void setData(List<Mark> data) {

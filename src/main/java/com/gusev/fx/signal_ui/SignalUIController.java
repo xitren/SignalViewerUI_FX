@@ -71,6 +71,8 @@ public class SignalUIController implements Initializable {
     }
 
     public void bind(int[] mini, int[] full, DataFXManager datafx) {
+        p1.getChildren().clear();
+        p2.getChildren().clear();
         lcwm = new GroupLineChart(full, true);
         lcwm_small = new GroupLineChart(mini, false);
         lcwm.setHeight(1000);
@@ -120,19 +122,6 @@ public class SignalUIController implements Initializable {
         this.datafx = datafx;
         lcwm.clear();
         lcwm_small.clear();
-        datafx.clearMarks();
-        datafx.addGlobalMark(10000, 30000, "Test area",
-                String.format("#%08X", Color.LIGHTGREEN.hashCode()),
-                String.format("#%08X", Color.WHITE.hashCode()));
-        datafx.addMark(1, 50000, 60000, "T1",
-                String.format("#%08X", Color.LIGHTYELLOW.hashCode()),
-                String.format("#%08X", Color.WHITE.hashCode()));
-        datafx.addMark(4, 50000, 60000, "T2",
-                String.format("#%08X", Color.LIGHTSALMON.hashCode()),
-                String.format("#%08X", Color.WHITE.hashCode()));
-        datafx.addMark(6, 50000, 60000, "T3",
-                String.format("#%08X", Color.LIGHTPINK.hashCode()),
-                String.format("#%08X", Color.WHITE.hashCode()));
         datafx.bindSeriesOverview(lcwm_small);
         datafx.bindSeriesView(lcwm);
     }
