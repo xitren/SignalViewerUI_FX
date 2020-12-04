@@ -77,7 +77,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             resetMarks(glcOverview);
     }
 
-    protected void resetMarks(GroupLineChart glc) {
+    public void resetMarks(GroupLineChart glc) {
         glc.clearMarks();
         for (Mark m : this.marks) {
             if ( (0 <= m.channel) && (m.channel < this.dataLines.size()) ) {
@@ -207,5 +207,9 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
 
     public void setMode(int i, ExtendedDataLine.Mode def) {
         dataLines.get(i).setMode(def);
+    }
+
+    public List<Mark> getMarks() {
+        return this.marks;
     }
 }

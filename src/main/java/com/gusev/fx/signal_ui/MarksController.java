@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class MarksController implements Initializable {
     @FXML private ColorPicker selection_color;
     @FXML private ColorPicker label_color;
-    @FXML private TextField Name;
+    @FXML private TextField name;
     @FXML private TableColumn<Mark, String> col_color;
     @FXML private TableColumn<Mark, String> col_label_color;
     @FXML private TableColumn<Mark, String> col_name;
@@ -31,10 +31,13 @@ public class MarksController implements Initializable {
     private Runnable onSelection;
     private ResourceBundle bundle;
     private Runnable onUpdate;
+    private Runnable onClear;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = resources;
+        label_color.setValue(Color.WHITE);
+        selection_color.setValue(Color.LIGHTGREEN);
         col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         col_label_color.setCellValueFactory(new PropertyValueFactory<>("webLabelColor"));
         col_label_color.setCellFactory(e -> new TableCell<Mark, String>() {
@@ -74,6 +77,12 @@ public class MarksController implements Initializable {
         return selected_mark;
     }
 
+    public Mark getNewMark() {
+        return new Mark(0, 0, 0, name.getText(),
+                String.format("#%08X", selection_color.getValue().hashCode()),
+                String.format("#%08X", label_color.getValue().hashCode()));
+    }
+
     public void setOnSelection(Runnable onSelection) {
         this.onSelection = onSelection;
     }
@@ -82,9 +91,17 @@ public class MarksController implements Initializable {
         this.onUpdate = onUpdate;
     }
 
+    public void setOnClear(Runnable onClear) {
+        this.onClear = onClear;
+    }
+
     public void OnLoad(ActionEvent actionEvent) {
+        if (this.onUpdate != null)
+            this.onUpdate.run();
     }
 
     public void OnClear(ActionEvent actionEvent) {
+        if (this.onClear != null)
+            this.onClear.run();
     }
 }

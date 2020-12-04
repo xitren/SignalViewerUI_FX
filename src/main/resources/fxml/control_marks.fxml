@@ -27,7 +27,7 @@
          </columnResizePolicy>
       </TableView>
       <Label text="%marks_name" />
-      <TextField fx:id="Name" promptText="%marks_name_promt" />
+      <TextField fx:id="name" promptText="%marks_name_promt" />
       <Label text="%marks_label_color" />
       <ColorPicker fx:id="label_color" maxWidth="1.7976931348623157E308" />
       <Label text="%marks_color" />

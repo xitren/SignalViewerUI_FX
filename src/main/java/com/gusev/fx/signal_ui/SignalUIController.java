@@ -1,6 +1,7 @@
 package com.gusev.fx.signal_ui;
 
 import com.gusev.data.ExtendedDataLine;
+import com.gusev.data.Mark;
 import com.gusev.fx.data.DataFXManager;
 import com.gusev.fx.data.DynamicDataFXManager;
 import javafx.event.ActionEvent;
@@ -50,6 +51,8 @@ public class SignalUIController implements Initializable {
     private Parent controlTool = null;
     private Parent filterTool = null;
     private Parent marksTool = null;
+    private FilterController filterCtrl = null;
+    private MarksController marksCtrl = null;
     private ResourceBundle resources;
 
     public void setStage(Stage stage) {
@@ -124,6 +127,7 @@ public class SignalUIController implements Initializable {
         lcwm_small.clear();
         datafx.bindSeriesOverview(lcwm_small);
         datafx.bindSeriesView(lcwm);
+        marksCtrl.setData(this.datafx.getMarks());
     }
 
     public void OnLoad(ActionEvent actionEvent) {
@@ -243,9 +247,9 @@ public class SignalUIController implements Initializable {
             fxmlLoader.setResources(resources);
             InputStream is = this.getClass().getResource("/fxml/control_filter.fxml").openStream();
             Pane pane = fxmlLoader.load(is);
-            final FilterController fc = fxmlLoader.<FilterController>getController();
-            fc.setOnUpdate(()->{
-                datafx.setFilterGlobal(fc.getFilter());
+            filterCtrl = fxmlLoader.<FilterController>getController();
+            filterCtrl.setOnUpdate(()->{
+                datafx.setFilterGlobal(filterCtrl.getFilter());
             });
             return pane;
         } catch (IOException ex) {
@@ -260,8 +264,37 @@ public class SignalUIController implements Initializable {
             fxmlLoader.setResources(resources);
             InputStream is = this.getClass().getResource("/fxml/control_marks.fxml").openStream();
             Pane pane = fxmlLoader.load(is);
-            final MarksController fc = fxmlLoader.<MarksController>getController();
-            fc.setOnSelection(()->{
+            marksCtrl = fxmlLoader.<MarksController>getController();
+            marksCtrl.setOnSelection(()->{
+                Mark mm = marksCtrl.getSelectedMark();
+                XYChart.Data<Number, Number> rangeMarker = new XYChart.Data<Number, Number>(mm.start, mm.finish);
+                onChangeSelection.run();
+                if (datafx != null) {
+                    datafx.setView(rangeMarker);
+                }
+            });
+            marksCtrl.setOnUpdate(()->{
+                XYChart.Data<Number, Number> rangeMarker = lcwm.getSelectedRange();
+                Object[] channelsSelected = lcwm.getSelectedChannels();
+                if (channelsSelected == null) {
+                    Mark mm = marksCtrl.getNewMark();
+                    datafx.addGlobalMark(rangeMarker.getXValue().intValue(), rangeMarker.getYValue().intValue(),
+                            mm.name, mm.color, mm.label_color);
+                } else {
+                    for (Object i : channelsSelected) {
+                        Mark mm = marksCtrl.getNewMark();
+                        datafx.addMark((Integer) i,
+                                rangeMarker.getXValue().intValue(), rangeMarker.getYValue().intValue(),
+                                mm.name, mm.color, mm.label_color);
+                    }
+                }
+                marksCtrl.setData(datafx.getMarks());
+                datafx.resetMarks(lcwm);
+                datafx.resetMarks(lcwm_small);
+            });
+            marksCtrl.setOnClear(()->{
+                datafx.clearMarks();
+                marksCtrl.setData(datafx.getMarks());
             });
             return pane;
         } catch (IOException ex) {

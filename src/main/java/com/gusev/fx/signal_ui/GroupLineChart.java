@@ -10,6 +10,11 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 public class GroupLineChart extends VBox {
     final static int X_LABELS_HEIGHT = 20;
 
@@ -21,6 +26,23 @@ public class GroupLineChart extends VBox {
     private int size;
     private int rows;
     private DoubleProperty height = new SimpleDoubleProperty();
+    private SelectableLineChart chartSelected;
+
+    public Object[] getSelectedChannels() {
+        if (chartSelected == null)
+            return null;
+        Set<Integer> ll = new HashSet<>();
+        for (Chart c : charts) {
+            if (chartSelected.equals(c.chart)) {
+                ll.add(c.n);
+            }
+        }
+        return ll.toArray();
+    }
+
+    public SelectableLineChart getSelectedChart() {
+        return chartSelected;
+    }
 
     public enum Tool {
         GROUP_SELECTOR, UNI_SELECTOR, DISABLED
@@ -117,6 +139,7 @@ public class GroupLineChart extends VBox {
 
     public GroupLineChart(int[] num, boolean controlled) {
         super();
+        chartSelected = null;
         this.setFillWidth(true);
         int i = 0;
         int j = 0;
@@ -132,6 +155,7 @@ public class GroupLineChart extends VBox {
                 slc = getChart(true);
             else
                 slc = getChart(false);
+
             HBox box = getControlButtons(slc);
             for (int n = 0; n < h; n++) {
                 charts[i] = new Chart(i, slc);
@@ -298,6 +322,14 @@ public class GroupLineChart extends VBox {
 
     public void synchronizeSelection(SelectableLineChart slc) {
         rangeMarker = slc.getSelectedRange();
+        switch (current) {
+            case UNI_SELECTOR:
+                chartSelected = slc;
+                break;
+            case GROUP_SELECTOR:
+                chartSelected = null;
+                break;
+        }
         synchronizeProcessSelection(slc);
     }
 
