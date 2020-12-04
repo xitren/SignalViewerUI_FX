@@ -300,8 +300,8 @@ public class GroupLineChart extends VBox {
         charts[i].chart.setRangeMax(min, max);
     }
 
-    public void setMark(int i, XYChart.Data<Number, Number> range, String text, Color color) {
-        charts[i].chart.addVerticalRangeLabel(range, color, text);
+    public void setMark(int i, XYChart.Data<Number, Number> range, String text, Color color, Color lable_color) {
+        charts[i].chart.addVerticalRangeLabel(range, color, lable_color, text);
     }
 
     public void clearMarks() {

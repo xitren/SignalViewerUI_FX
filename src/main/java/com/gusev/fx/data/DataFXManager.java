@@ -82,11 +82,11 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         for (Mark m : this.marks) {
             if ( (0 <= m.channel) && (m.channel < this.dataLines.size()) ) {
                 glc.setMark(m.channel, new XYChart.Data(m.start, m.finish), m.name,
-                        Color.valueOf(m.getWebColor()));
+                        Color.valueOf(m.getWebColor()), Color.valueOf(m.getWebLabelColor()));
             } else {
                 for (int i = 0;i < fullViewFX.length;i++) {
                     glc.setMark(i, new XYChart.Data(m.start, m.finish), m.name,
-                            Color.valueOf(m.getWebColor()));
+                            Color.valueOf(m.getWebColor()), Color.valueOf(m.getWebLabelColor()));
                 }
             }
         }

@@ -152,7 +152,6 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
             rectangle.setY(0d);
             rectangle.setHeight(getBoundsInLocal().getHeight());
             Text text = (Text) verticalRangeMarker.getExtraValue();
-            text.setFill(Color.WHITE);
             text.setX(rectangle.getX() + 20);
             text.setY(rectangle.getY() + 20);
             text.setTextAlignment(TextAlignment.CENTER);
@@ -177,7 +176,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         setMouseTransparentToEverythingButBackground();
     }
 
-    public void addVerticalRangeLabel(Data<X, X> marker, Color color, String str) {
+    public void addVerticalRangeLabel(Data<X, X> marker, Color color, Color text_color, String str) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (verticalRangeLabels.contains(marker)) return;
 
@@ -188,6 +187,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         marker.setNode(rectangle);
 
         Text ll = new Text(str);
+        ll.setFill(text_color);
         marker.setExtraValue(ll);
 
         getPlotChildren().add(rectangle);
