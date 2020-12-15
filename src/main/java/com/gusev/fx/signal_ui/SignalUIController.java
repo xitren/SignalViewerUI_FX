@@ -11,9 +11,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -26,6 +28,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SignalUIController implements Initializable {
+    @FXML private ToggleButton tool_hide1;
+    @FXML private SplitPane split;
+    @FXML private ToggleButton tool_hide;
     @FXML private BorderPane board;
     @FXML private ToggleButton tool_pause;
     @FXML private Button cut;
@@ -42,10 +47,16 @@ public class SignalUIController implements Initializable {
     @FXML private VBox p_mini;
     @FXML private VBox p_graph;
     @FXML private VBox p_tool;
+    @FXML private HBox p_top;
+    @FXML private VBox p_top0;
+    @FXML private VBox p_top1;
+    @FXML private VBox p_top2;
+    @FXML private VBox p_top3;
 
     private GroupLineChart lcwm;
     private GroupLineChart lcwm_small;
     private Runnable onChangeSelection;
+    private Runnable onStop;
     private DataFXManager datafx;
     private Stage stage = null;
     private Parent controlTool = null;
@@ -67,6 +78,8 @@ public class SignalUIController implements Initializable {
         new ToggleGroup().getToggles().addAll(pars, filt_pars, comm_pars);
         new ToggleGroup().getToggles().addAll(tool_sel, tool_uni_sel);
         tool_sel.setSelected(true);
+        p_top.getChildren().remove(p_top0);
+        tool_hide1.selectedProperty().bindBidirectional(tool_hide.selectedProperty());
     }
 
     public XYChart.Data<Number, Number> getOverviewRange() {
@@ -134,6 +147,10 @@ public class SignalUIController implements Initializable {
 
     public void setOnChangeSelection(Runnable on) {
         onChangeSelection = on;
+    }
+
+    public void setOnStop(Runnable on) {
+        onStop = on;
     }
 
     public void setControlTool(Parent tool) {
@@ -236,6 +253,9 @@ public class SignalUIController implements Initializable {
     }
 
     public void OnStopData(ActionEvent actionEvent) {
+        if (onStop != null) {
+            onStop.run();
+        }
     }
 
     public void OnCutData(ActionEvent actionEvent) {
@@ -304,5 +324,16 @@ public class SignalUIController implements Initializable {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public void OnHide(ActionEvent actionEvent) {
+        p_top.getChildren().clear();
+        if (((ToggleButton)actionEvent.getSource()).isSelected()) {
+            p_top.getChildren().add(p_top0);
+            split.setDividerPosition(0, 0.);
+        } else {
+            p_top.getChildren().addAll(p_top1, p_top2, p_mini, p_top3);
+            split.setDividerPosition(0, 0.25);
+        }
     }
 }

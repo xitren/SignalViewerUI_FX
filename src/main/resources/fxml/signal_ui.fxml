@@ -7,19 +7,25 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.SignalUIController">
+<SplitPane fx:id="split" dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.SignalUIController">
    <items>
-      <HBox>
+      <HBox fx:id="p_top">
          <children>
-            <VBox alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
+            <VBox fx:id="p_top0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
+               <children>
+                  <ToggleButton fx:id="tool_hide1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide" />
+               </children>
+            </VBox>
+            <VBox fx:id="p_top1" alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
                   <ToggleButton fx:id="tool_sel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnChangeToolMulti" prefHeight="38.0" prefWidth="38.0" styleClass="selector" />
                   <ToggleButton fx:id="tool_uni_sel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnChangeToolUni" prefHeight="38.0" prefWidth="38.0" styleClass="uni_selector" />
                   <ToggleButton fx:id="tool_pause" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPause" prefHeight="38.0" prefWidth="38.0" styleClass="pause" />
                   <Button fx:id="stop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnStopData" prefHeight="38.0" prefWidth="38.0" styleClass="stop" />
+                  <ToggleButton fx:id="tool_hide" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide" />
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
+            <VBox fx:id="p_top2" alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
                   <Button fx:id="comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarkArea" prefHeight="38.0" prefWidth="38.0" styleClass="comment" />
                   <Button fx:id="clr_comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnClearMarks" prefHeight="38.0" prefWidth="38.0" styleClass="clear_comments" />
@@ -29,7 +35,7 @@
                </children>
             </VBox>
             <VBox fx:id="p_mini" minHeight="190.0" HBox.hgrow="ALWAYS" />
-            <VBox alignment="BOTTOM_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
+            <VBox fx:id="p_top3" alignment="BOTTOM_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
                   <ToggleButton fx:id="pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPanelParams" prefHeight="38.0" prefWidth="38.0" styleClass="parameters" />
                   <ToggleButton fx:id="filt_pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnFilterParams" prefHeight="38.0" prefWidth="38.0" styleClass="filter_parameters" />
