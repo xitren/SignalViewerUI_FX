@@ -16,7 +16,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -27,6 +26,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SignalUIController implements Initializable {
+    @FXML private BorderPane board;
     @FXML private ToggleButton tool_pause;
     @FXML private Button cut;
     @FXML private Button stop;
@@ -39,9 +39,9 @@ public class SignalUIController implements Initializable {
     @FXML private ToggleButton pars;
     @FXML private ToggleButton filt_pars;
     @FXML private ToggleButton comm_pars;
-    @FXML private VBox p1;
-    @FXML private VBox p2;
-    @FXML private BorderPane border;
+    @FXML private VBox p_mini;
+    @FXML private VBox p_graph;
+    @FXML private VBox p_tool;
 
     private GroupLineChart lcwm;
     private GroupLineChart lcwm_small;
@@ -74,12 +74,11 @@ public class SignalUIController implements Initializable {
     }
 
     public void bind(int[] mini, int[] full, DataFXManager datafx) {
-        p1.getChildren().clear();
-        p2.getChildren().clear();
+        p_mini.getChildren().clear();
+        p_graph.getChildren().clear();
+        board.setRight(controlTool);
         lcwm = new GroupLineChart(full, true);
         lcwm_small = new GroupLineChart(mini, false);
-        lcwm.setHeight(1000);
-        lcwm_small.setHeight(240);
         lcwm_small.setOnChangeSelection(()->{
             XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
             onChangeSelection.run();
@@ -113,8 +112,8 @@ public class SignalUIController implements Initializable {
                 datafx.setView(rangeMarker);
             }
         });
-        p2.getChildren().add(lcwm);
-        p1.getChildren().add(lcwm_small);
+        p_graph.getChildren().add(lcwm);
+        p_mini.getChildren().add(lcwm_small);
         cut.setDisable(false);
         tool_pause.setDisable(true);
         stop.setDisable(true);
@@ -139,7 +138,11 @@ public class SignalUIController implements Initializable {
 
     public void setControlTool(Parent tool) {
         controlTool = tool;
-        border.setRight(controlTool);
+        board.setRight(controlTool);
+    }
+
+    public void setDynamicView(Parent view) {
+        board.setLeft(view);
     }
 
     public void OnChangeToolMulti(ActionEvent actionEvent) {
@@ -193,15 +196,15 @@ public class SignalUIController implements Initializable {
     }
 
     public void OnPanelParams(ActionEvent actionEvent) {
-        border.setRight(controlTool);
+        board.setRight(controlTool);
     }
 
     public void OnFilterParams(ActionEvent actionEvent) {
-        border.setRight(filterTool);
+        board.setRight(filterTool);
     }
 
     public void OnMarksParams(ActionEvent actionEvent) {
-        border.setRight(marksTool);
+        board.setRight(marksTool);
     }
 
     public void setMultiSelectMode() {

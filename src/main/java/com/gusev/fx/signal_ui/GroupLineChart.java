@@ -2,17 +2,16 @@ package com.gusev.fx.signal_ui;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableDoubleValue;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 public class GroupLineChart extends VBox {
@@ -134,6 +133,7 @@ public class GroupLineChart extends VBox {
         chart.setOnSelection(()->{
             synchronizeProcessSelection(chart);
         });
+        HBox.setHgrow(this, Priority.ALWAYS);
         return chart;
     }
 
@@ -141,6 +141,8 @@ public class GroupLineChart extends VBox {
         super();
         chartSelected = null;
         this.setFillWidth(true);
+        this.setMinHeight(0);
+        this.setMaxHeight(1000);
         int i = 0;
         int j = 0;
         size = 0;
@@ -170,6 +172,10 @@ public class GroupLineChart extends VBox {
             j++;
         }
         current = Tool.GROUP_SELECTOR;
+        VBox.setVgrow(this, Priority.ALWAYS);
+        this.heightProperty().addListener((observable, oldValue, newValue) -> {
+            this.setHeight(newValue.doubleValue());
+        });
     }
 
     private void switchMode(SelectableLineChart scl, Mode mode) {
@@ -232,18 +238,11 @@ public class GroupLineChart extends VBox {
         HBox.setHgrow(box, Priority.ALWAYS);
         HBox.setHgrow(scl, Priority.ALWAYS);
         box.setFillHeight(true);
-        box.minHeightProperty().bind(height);
-        box.prefHeightProperty().bind(height);
-        box.maxHeightProperty().bind(height);
         return box;
     }
 
     public void setHeight(double height){
-        setPrefHeight(height);
-        setMinHeight(0);
-        setMaxHeight(1000);
         height -= X_LABELS_HEIGHT;
-        this.height.setValue(height / rows);
         for (Chart ll : charts) {
             ll.chart.setPrefHeight(height / rows);
             ll.chart.setMinHeight(height / rows);
