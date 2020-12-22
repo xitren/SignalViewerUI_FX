@@ -26,7 +26,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
 
     public DynamicDataFXManager(int n) {
         super(n);
-        timer.schedule(task_data, 2000, 1000);
+        timer.schedule(task_data, 2000, 500);
     }
 
     public void addData(double[][] data) {

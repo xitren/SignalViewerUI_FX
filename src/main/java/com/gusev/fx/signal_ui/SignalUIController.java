@@ -326,6 +326,13 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
+    public void hideOverview() {
+        tool_hide.setSelected(true);
+        p_top.getChildren().clear();
+        p_top.getChildren().add(p_top0);
+        split.setDividerPosition(0, 0.);
+    }
+
     public void OnHide(ActionEvent actionEvent) {
         p_top.getChildren().clear();
         if (((ToggleButton)actionEvent.getSource()).isSelected()) {
