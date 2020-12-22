@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -50,7 +49,7 @@ public class GroupLineChart extends VBox {
     }
 
     public enum Mode {
-        USUAL, FOURIER, FILTER, POWER
+        USUAL, FOURIER, FILTER, FILTERED_FOURIER, POWER
     }
 
     class Chart {
@@ -73,6 +72,7 @@ public class GroupLineChart extends VBox {
         public void setMode(Mode mode) {
             this.mode = mode;
             switch (this.mode) {
+                case FILTERED_FOURIER:
                 case FOURIER:
                     chart.getXAxis().setLabel(rb.getString("frequency_axis"));
                     chart.getXAxis().setTickLabelsVisible(true);
@@ -252,17 +252,25 @@ public class GroupLineChart extends VBox {
         ToggleButton btn_freq = new ToggleButton();
         ToggleButton btn_filt = new ToggleButton();
         ToggleButton btn_amp = new ToggleButton();
-        ToggleGroup group = new ToggleGroup();
-        group.getToggles().addAll(btn_freq, btn_filt, btn_amp);
         btn_freq.setMinWidth(38);
         btn_freq.setPrefWidth(38);
         btn_freq.setMaxWidth(38);
         btn_freq.getStyleClass().add("freq");
         btn_freq.setOnAction((act)->{
-            if (btn_freq.isSelected())
-                switchMode(scl, Mode.FOURIER);
-            else
-                switchMode(scl, Mode.USUAL);
+            if (btn_freq.isSelected()) {
+                btn_amp.setSelected(false);
+                if (btn_filt.isSelected()) {
+                    switchMode(scl, Mode.FILTERED_FOURIER);
+                } else {
+                    switchMode(scl, Mode.FOURIER);
+                }
+            } else {
+                if (btn_filt.isSelected()) {
+                    switchMode(scl, Mode.FILTER);
+                } else {
+                    switchMode(scl, Mode.USUAL);
+                }
+            }
         });
         cbox.getChildren().add(btn_freq);
         btn_filt.setMinWidth(38);
@@ -270,10 +278,20 @@ public class GroupLineChart extends VBox {
         btn_filt.setMaxWidth(38);
         btn_filt.getStyleClass().add("filter");
         btn_filt.setOnAction((act)->{
-            if (btn_filt.isSelected())
-                switchMode(scl, Mode.FILTER);
-            else
-                switchMode(scl, Mode.USUAL);
+            if (btn_filt.isSelected()) {
+                btn_amp.setSelected(false);
+                if (btn_freq.isSelected()) {
+                    switchMode(scl, Mode.FILTERED_FOURIER);
+                } else {
+                    switchMode(scl, Mode.FILTER);
+                }
+            } else {
+                if (btn_freq.isSelected()) {
+                    switchMode(scl, Mode.FOURIER);
+                } else {
+                    switchMode(scl, Mode.USUAL);
+                }
+            }
         });
         cbox.getChildren().add(btn_filt);
         btn_amp.setMinWidth(38);
@@ -281,9 +299,11 @@ public class GroupLineChart extends VBox {
         btn_amp.setMaxWidth(38);
         btn_amp.getStyleClass().add("amp");
         btn_amp.setOnAction((act)->{
-            if (btn_amp.isSelected())
+            if (btn_amp.isSelected()) {
+                btn_freq.setSelected(false);
+                btn_filt.setSelected(false);
                 switchMode(scl, Mode.POWER);
-            else
+            } else
                 switchMode(scl, Mode.USUAL);
         });
         cbox.getChildren().add(btn_amp);

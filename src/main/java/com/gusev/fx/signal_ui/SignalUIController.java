@@ -104,6 +104,9 @@ public class SignalUIController implements Initializable {
                 GroupLineChart.Chart[] crt = lcwm.getCharts();
                 for (int i = 0; i < crt.length; i++) {
                     switch (crt[i].getMode()) {
+                        case FILTERED_FOURIER:
+                            datafx.setMode(i, ExtendedDataLine.Mode.FILTERED_FOURIER);
+                            break;
                         case FOURIER:
                             datafx.setMode(i, ExtendedDataLine.Mode.FOURIER);
                             break;
