@@ -86,12 +86,12 @@ public class SignalUIController implements Initializable {
         return lcwm_small.getSelectedRange();
     }
 
-    public void bind(int[] mini, int[] full, DataFXManager datafx) {
+    public void bind(int[] mini, int[] full, String[] labels, DataFXManager datafx) {
         p_mini.getChildren().clear();
         p_graph.getChildren().clear();
         board.setRight(controlTool);
-        lcwm = new GroupLineChart(full, true);
-        lcwm_small = new GroupLineChart(mini, false);
+        lcwm = new GroupLineChart(full, labels, true, resources);
+        lcwm_small = new GroupLineChart(mini, false, resources);
         lcwm_small.setOnChangeSelection(()->{
             XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
             onChangeSelection.run();
@@ -205,7 +205,9 @@ public class SignalUIController implements Initializable {
         if (file != null) {
             try {
                 datafx = new DataFXManager(file.getAbsolutePath());
-                bind(new int[]{1, 1, 1, 1, 1, 1, 1, 1}, new int[]{1, 1, 1, 1, 1, 1, 1, 1}, datafx);
+                bind(new int[]{1, 1, 1, 1, 1, 1, 1, 1}, new int[]{1, 1, 1, 1, 1, 1, 1, 1},
+                        new String[]{"", "", "", "", "", "", "", ""},
+                        datafx);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -253,6 +255,10 @@ public class SignalUIController implements Initializable {
     }
 
     public void OnStopData(ActionEvent actionEvent) {
+        datafx.pause();
+        this.tool_pause.setDisable(true);
+        this.stop.setDisable(true);
+        setMultiSelectMode();
         if (onStop != null) {
             onStop.run();
         }

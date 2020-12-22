@@ -12,10 +12,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 public class GroupLineChart extends VBox {
-    final static int X_LABELS_HEIGHT = 20;
+    final static int X_LABELS_HEIGHT = 40;
+    private final ResourceBundle rb;
 
     private Chart[] charts;
     private Runnable onScroll;
@@ -58,29 +60,33 @@ public class GroupLineChart extends VBox {
         private Mode mode;
         private int n;
         private int num;
+
         private Chart(int n, SelectableLineChart chart) {
             this.chart = chart;
             this.n = n;
             this.num = num;
             mode = Mode.USUAL;
-            series = new XYChart.Series();
-            chart.getData().add(series);
+            this.series = new XYChart.Series();
+            this.chart.getData().add(this.series);
         }
 
         public void setMode(Mode mode) {
             this.mode = mode;
             switch (this.mode) {
                 case FOURIER:
+                    chart.getXAxis().setLabel(rb.getString("frequency_axis"));
                     chart.getXAxis().setTickLabelsVisible(true);
                     ((NumberAxis)chart.getXAxis()).setMinorTickVisible(true);
                     chart.getXAxis().setTickMarkVisible(true);
                     break;
                 default:
                     if (this.n != (this.num - 1)) {
+                        chart.getXAxis().setLabel(null);
                         chart.getXAxis().setTickLabelsVisible(false);
                         ((NumberAxis)chart.getXAxis()).setMinorTickVisible(false);
                         chart.getXAxis().setTickMarkVisible(false);
                     } else {
+                        chart.getXAxis().setLabel(rb.getString("time_axis"));
                         chart.getXAxis().setTickLabelsVisible(true);
                         ((NumberAxis)chart.getXAxis()).setMinorTickVisible(true);
                         chart.getXAxis().setTickMarkVisible(true);
@@ -107,10 +113,12 @@ public class GroupLineChart extends VBox {
     public SelectableLineChart getChart(boolean last) {
         NumberAxis xAxis = new NumberAxis();
         xAxis.setAutoRanging(false);
+        xAxis.setLabel(rb.getString("time_axis"));
         if (!last) {
             xAxis.setTickLabelsVisible(false);
             xAxis.setMinorTickVisible(false);
             xAxis.setTickMarkVisible(false);
+            xAxis.setLabel(null);
         }
         xAxis.setPrefWidth(X_LABELS_HEIGHT);
         xAxis.setMinWidth(X_LABELS_HEIGHT);
@@ -137,9 +145,57 @@ public class GroupLineChart extends VBox {
         return chart;
     }
 
-    public GroupLineChart(int[] num, boolean controlled) {
+    public GroupLineChart(int[] num, String[] labels, boolean controlled, ResourceBundle rb) {
         super();
         chartSelected = null;
+        this.rb = rb;
+        this.setFillWidth(true);
+        this.setMinHeight(0);
+        this.setMaxHeight(1000);
+        int i = 0;
+        size = 0;
+        rows = num.length;
+        for (int h : num) {
+            size += h;
+        }
+        if (size != labels.length)
+            throw new IndexOutOfBoundsException("Found more/not enough labels than expected!");
+        charts = new Chart[size];
+        for (int j = 0;j < num.length;j++) {
+            int h = num[j];
+            SelectableLineChart slc;
+            if (j == (num.length - 1))
+                slc = getChart(true);
+            else
+                slc = getChart(false);
+            HBox box = getControlButtons(slc);
+            String str = labels[i];
+            for (int n = 0; n < h; n++) {
+                if (n != 0) {
+                    str = str.concat(" / " + labels[i]);
+                }
+                charts[i] = new Chart(i, slc);
+                charts[i].box = box;
+                i++;
+            }
+            slc.getYAxis().setLabel(str);
+            if (controlled) {
+                this.getChildren().add(box);
+            } else {
+                this.getChildren().add(slc);
+            }
+        }
+        current = Tool.GROUP_SELECTOR;
+        VBox.setVgrow(this, Priority.ALWAYS);
+        this.heightProperty().addListener((observable, oldValue, newValue) -> {
+            this.setHeight(newValue.doubleValue());
+        });
+    }
+
+    public GroupLineChart(int[] num, boolean controlled, ResourceBundle rb) {
+        super();
+        chartSelected = null;
+        this.rb = rb;
         this.setFillWidth(true);
         this.setMinHeight(0);
         this.setMaxHeight(1000);
@@ -157,7 +213,6 @@ public class GroupLineChart extends VBox {
                 slc = getChart(true);
             else
                 slc = getChart(false);
-
             HBox box = getControlButtons(slc);
             for (int n = 0; n < h; n++) {
                 charts[i] = new Chart(i, slc);
@@ -310,8 +365,14 @@ public class GroupLineChart extends VBox {
     }
 
     public void clear() {
-        for (int n = 0; n < charts.length; n++) {
-            charts[n].series.getData().clear();
+        try {
+            for (int n = 0; n < charts.length; n++) {
+                if (charts[n].series == null)
+                    continue;
+                charts[n].series.getData().clear();
+            }
+        } catch (NullPointerException ex) {
+            System.out.println();
         }
     }
 
