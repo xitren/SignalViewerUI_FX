@@ -305,6 +305,7 @@ public class SignalUIController implements Initializable {
                 p_graph.getChildren().add(lcwm);
                 lcwm.clear();
                 datafx.bindSeriesView(lcwm);
+                datafx.setSwapper(graphCtrl.getConfigurationChannels());
                 lcwm.setHeight(p_graph.getHeight());
             });
             return pane;

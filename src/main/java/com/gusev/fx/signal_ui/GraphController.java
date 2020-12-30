@@ -47,7 +47,9 @@ public class GraphController implements Initializable {
     private int[] channels = new int[8];
     private String[] str;
     private List<String> strP = new LinkedList<>();
+    private List<Integer> chP = new LinkedList<>();
     private String[][] mapStr = new String[8][8];
+    private int[][] mapCh = new int[8][8];
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,22 +75,29 @@ public class GraphController implements Initializable {
     }
 
     public int[] getConfiguration() {
+        chP.clear();
         strP.clear();
         for (int i = 0;i < channels.length;i++) {
             channels[i] = 0;
-            for (int j = 0;j < 8;j++)
+            for (int j = 0;j < 8;j++) {
                 mapStr[i][j] = null;
+                mapCh[i][j] = -1;
+            }
         }
         for (int i = 0;i < graph_pos.length;i++) {
             if (!graph_hide[i].isSelected()) {
                 mapStr[graph_pos[i].getValue() - 1][channels[graph_pos[i].getValue() - 1]] = str[i];
+                mapCh[graph_pos[i].getValue() - 1][channels[graph_pos[i].getValue() - 1]] = i;
                 channels[graph_pos[i].getValue() - 1]++;
             }
         }
         for (int i = 0;i < channels.length;i++) {
-            for (int j = 0;j < 8;j++)
+            for (int j = 0;j < 8;j++) {
                 if (mapStr[i][j] != null)
                     strP.add(mapStr[i][j]);
+                if (mapCh[i][j] != -1)
+                    chP.add(mapCh[i][j]);
+            }
         }
         return channels;
     }
@@ -96,6 +105,11 @@ public class GraphController implements Initializable {
     public String[] getConfigurationLabels() {
         String[] ret = new String[strP.size()];
         return strP.toArray(ret);
+    }
+
+    public Integer[] getConfigurationChannels() {
+        Integer[] ret = new Integer[chP.size()];
+        return chP.toArray(ret);
     }
 
     public void setConfiguration(int[] conf, String[] str) {

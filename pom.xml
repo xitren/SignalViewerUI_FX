@@ -111,6 +111,12 @@
 			<artifactId>californium-core</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.gusev.data</groupId>
+			<artifactId>browser-data-model</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
 
 	</dependencies>
 
