@@ -163,6 +163,8 @@ public class GroupLineChart extends VBox {
         charts = new Chart[size];
         for (int j = 0;j < num.length;j++) {
             int h = num[j];
+            if (h == 0)
+                continue;
             SelectableLineChart slc;
             if (j == (num.length - 1))
                 slc = getChart(true);
@@ -208,6 +210,8 @@ public class GroupLineChart extends VBox {
         }
         charts = new Chart[size];
         for (int h : num) {
+            if (h == 0)
+                continue;
             SelectableLineChart slc;
             if (j == (num.length - 1))
                 slc = getChart(true);
@@ -319,12 +323,12 @@ public class GroupLineChart extends VBox {
     public void setHeight(double height){
         height -= X_LABELS_HEIGHT;
         for (Chart ll : charts) {
-            ll.chart.setPrefHeight(height / rows);
-            ll.chart.setMinHeight(height / rows);
+            ll.chart.setPrefHeight(height / this.getChildren().size());
+            ll.chart.setMinHeight(height / this.getChildren().size());
             ll.chart.setMaxHeight(1000);
         }
-        charts[charts.length - 1].chart.setPrefHeight((height / rows) + X_LABELS_HEIGHT);
-        charts[charts.length - 1].chart.setMinHeight((height / rows) + X_LABELS_HEIGHT);
+        charts[charts.length - 1].chart.setPrefHeight((height / this.getChildren().size()) + X_LABELS_HEIGHT);
+        charts[charts.length - 1].chart.setMinHeight((height / this.getChildren().size()) + X_LABELS_HEIGHT);
         charts[charts.length - 1].chart.setMaxHeight(1000);
     }
 

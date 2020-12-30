@@ -44,11 +44,16 @@ public class SignalUIController implements Initializable {
     @FXML private ToggleButton pars;
     @FXML private ToggleButton filt_pars;
     @FXML private ToggleButton comm_pars;
+    @FXML private ToggleButton graph_pars;
+    @FXML private ToggleButton pars1;
+    @FXML private ToggleButton filt_pars1;
+    @FXML private ToggleButton comm_pars1;
+    @FXML private ToggleButton graph_pars1;
     @FXML private VBox p_mini;
     @FXML private VBox p_graph;
     @FXML private VBox p_tool;
     @FXML private HBox p_top;
-    @FXML private VBox p_top0;
+    @FXML private HBox p_top0;
     @FXML private VBox p_top1;
     @FXML private VBox p_top2;
     @FXML private VBox p_top3;
@@ -62,7 +67,9 @@ public class SignalUIController implements Initializable {
     private Parent controlTool = null;
     private Parent filterTool = null;
     private Parent marksTool = null;
+    private Parent graphTool = null;
     private FilterController filterCtrl = null;
+    private GraphController graphCtrl = null;
     private MarksController marksCtrl = null;
     private ResourceBundle resources;
 
@@ -75,10 +82,15 @@ public class SignalUIController implements Initializable {
         this.resources = resources;
         filterTool = loadFilterControl();
         marksTool = loadMarksControl();
-        new ToggleGroup().getToggles().addAll(pars, filt_pars, comm_pars);
+        graphTool = loadGraphControl();
+        new ToggleGroup().getToggles().addAll(pars, filt_pars, comm_pars, graph_pars);
         new ToggleGroup().getToggles().addAll(tool_sel, tool_uni_sel);
         tool_sel.setSelected(true);
         p_top.getChildren().remove(p_top0);
+        pars1.selectedProperty().bindBidirectional(pars.selectedProperty());
+        filt_pars1.selectedProperty().bindBidirectional(filt_pars.selectedProperty());
+        comm_pars1.selectedProperty().bindBidirectional(comm_pars.selectedProperty());
+        graph_pars1.selectedProperty().bindBidirectional(graph_pars.selectedProperty());
         tool_hide1.selectedProperty().bindBidirectional(tool_hide.selectedProperty());
     }
 
@@ -87,6 +99,7 @@ public class SignalUIController implements Initializable {
     }
 
     public void bind(int[] mini, int[] full, String[] labels, DataFXManager datafx) {
+        graphCtrl.setConfiguration(full, labels);
         p_mini.getChildren().clear();
         p_graph.getChildren().clear();
         board.setRight(controlTool);
@@ -217,18 +230,6 @@ public class SignalUIController implements Initializable {
         }
     }
 
-    public void OnPanelParams(ActionEvent actionEvent) {
-        board.setRight(controlTool);
-    }
-
-    public void OnFilterParams(ActionEvent actionEvent) {
-        board.setRight(filterTool);
-    }
-
-    public void OnMarksParams(ActionEvent actionEvent) {
-        board.setRight(marksTool);
-    }
-
     public void setMultiSelectMode() {
         lcwm_small.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
         lcwm.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
@@ -290,6 +291,29 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
+    private Parent loadGraphControl() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setResources(resources);
+            InputStream is = this.getClass().getResource("/fxml/control_graph.fxml").openStream();
+            Pane pane = fxmlLoader.load(is);
+            graphCtrl = fxmlLoader.<GraphController>getController();
+            graphCtrl.setOnUpdate(()->{
+                lcwm = new GroupLineChart(graphCtrl.getConfiguration(), graphCtrl.getConfigurationLabels(),
+                        true, resources);
+                p_graph.getChildren().clear();
+                p_graph.getChildren().add(lcwm);
+                lcwm.clear();
+                datafx.bindSeriesView(lcwm);
+                lcwm.setHeight(p_graph.getHeight());
+            });
+            return pane;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     private Parent loadMarksControl() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -338,18 +362,50 @@ public class SignalUIController implements Initializable {
     public void hideOverview() {
         tool_hide.setSelected(true);
         p_top.getChildren().clear();
-        p_top.getChildren().add(p_top0);
+        p_top.getChildren().addAll(p_top0);
         split.setDividerPosition(0, 0.);
     }
 
     public void OnHide(ActionEvent actionEvent) {
         p_top.getChildren().clear();
         if (((ToggleButton)actionEvent.getSource()).isSelected()) {
-            p_top.getChildren().add(p_top0);
+            p_top.getChildren().addAll(p_top0);
             split.setDividerPosition(0, 0.);
         } else {
             p_top.getChildren().addAll(p_top1, p_top2, p_mini, p_top3);
             split.setDividerPosition(0, 0.25);
+        }
+    }
+
+    public void OnGraphParams(ActionEvent actionEvent) {
+        if (((ToggleButton)actionEvent.getSource()).isSelected()) {
+            board.setRight(graphTool);
+        } else {
+            board.setRight(null);
+        }
+    }
+
+    public void OnPanelParams(ActionEvent actionEvent) {
+        if (((ToggleButton)actionEvent.getSource()).isSelected()) {
+            board.setRight(controlTool);
+        } else {
+            board.setRight(null);
+        }
+    }
+
+    public void OnFilterParams(ActionEvent actionEvent) {
+        if (((ToggleButton)actionEvent.getSource()).isSelected()) {
+            board.setRight(filterTool);
+        } else {
+            board.setRight(null);
+        }
+    }
+
+    public void OnMarksParams(ActionEvent actionEvent) {
+        if (((ToggleButton)actionEvent.getSource()).isSelected()) {
+            board.setRight(marksTool);
+        } else {
+            board.setRight(null);
         }
     }
 }
