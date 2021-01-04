@@ -335,14 +335,11 @@ public class SignalUIController implements Initializable {
                 Object[] channelsSelected = lcwm.getSelectedChannels();
                 if (channelsSelected == null) {
                     Mark mm = marksCtrl.getNewMark();
-                    datafx.addGlobalMark(rangeMarker.getXValue().intValue(), rangeMarker.getYValue().intValue(),
-                            mm.name, mm.color, mm.label_color);
+                    datafx.addGlobalMark(rangeMarker, mm.name, mm.color, mm.label_color);
                 } else {
                     for (Object i : channelsSelected) {
                         Mark mm = marksCtrl.getNewMark();
-                        datafx.addMark((Integer) i,
-                                rangeMarker.getXValue().intValue(), rangeMarker.getYValue().intValue(),
-                                mm.name, mm.color, mm.label_color);
+                        datafx.addMark((Integer) i, rangeMarker, mm.name, mm.color, mm.label_color);
                     }
                 }
                 marksCtrl.setData(datafx.getMarks());

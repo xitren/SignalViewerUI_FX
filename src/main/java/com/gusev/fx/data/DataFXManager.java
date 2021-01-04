@@ -2,6 +2,7 @@ package com.gusev.fx.data;
 
 import com.gusev.data.*;
 import com.gusev.fx.signal_ui.GroupLineChart;
+import com.sun.deploy.security.SelectableSecurityManager;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
@@ -19,6 +20,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     protected XYChart.Data<Number, Number>[][] fullViewFXUpdater;
     protected XYChart.Series<Number, Number>[] customViewFX;
     private XYChart.Data<Number, Number>[][] customViewFXUpdater;
+    protected double discretisation = 250;
+    protected double timePeriod = 0.004;
 
     public DataFXManager(int n) {
         super(n);
@@ -57,7 +60,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             double[] gto = getTimeOverview(i);
             double[] go = getOverview(i);
             for (int j=0;j < getOverview(i).length;j++) {
-                XYChart.Data xyd = new XYChart.Data(gto[j], go[j]);
+                XYChart.Data xyd = new XYChart.Data(gto[j] * timePeriod, go[j]);
                 fullViewFXUpdater[i][j] = xyd;
                 fullViewFX[i].getData().add(xyd);
             }
@@ -99,7 +102,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             double[] gtl = getTimeOverview(i);
             double[] gdl = getOverview(i);
             for (int j=0;j < gtl.length;j++) {
-                fullViewFXUpdater[i][j].setXValue(gtl[j]);
+                fullViewFXUpdater[i][j].setXValue(gtl[j] * timePeriod);
                 fullViewFXUpdater[i][j].setYValue(gdl[j]);
             }
             glc.setRangeMax(i, gtl[0], gtl[gtl.length - 1]);
@@ -115,7 +118,11 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             double[] gtl = getTimeLine(i);
             double[] gdl = getDataLine(i);
             for (int j=0;j < gtl.length;j++) {
-                XYChart.Data xyd = new XYChart.Data(gtl[j], gdl[j]);
+                XYChart.Data xyd;
+                if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER))
+                    xyd = new XYChart.Data(gtl[j], gdl[j]);
+                else
+                    xyd = new XYChart.Data(gtl[j] * timePeriod, gdl[j]);
                 customViewFXUpdater[i][j] = xyd;
                 customViewFX[i].getData().add(xyd);
             }
@@ -138,20 +145,31 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                     customViewFX[i].getData().add(customViewFXUpdater[i][j]);
                 }
             }
-            for (int j=0;j < av;j++) {
-                customViewFXUpdater[i][j].setXValue(gtl[j]);
-                customViewFXUpdater[i][j].setYValue(gdl[j]);
+            if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER)) {
+                for (int j = 0; j < av; j++) {
+                    customViewFXUpdater[i][j].setXValue(gtl[j]);
+                    customViewFXUpdater[i][j].setYValue(gdl[j]);
+                }
+            } else {
+                for (int j = 0; j < av; j++) {
+                    customViewFXUpdater[i][j].setXValue(gtl[j] * timePeriod);
+                    customViewFXUpdater[i][j].setYValue(gdl[j]);
+                }
             }
             for (int j=av;j < gdl.length;j++) {
                 customViewFX[i].getData().remove(customViewFXUpdater[i][j]);
             }
             if ((av) <= 0)
                 av = 1;
-            glc.setRangeMax(i, gtl[0], gtl[av - 1]);
+            if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER)) {
+                glc.setRangeMax(i, gtl[0], gtl[av - 1]);
+            } else {
+                glc.setRangeMax(i, gtl[0] * timePeriod, gtl[av - 1] * timePeriod);
+            }
         }
     }
 
-    public void setView(int start, int end) {
+    protected void setView(int start, int end) {
         for (int i=0;i < dataLines.size();i++) {
             dataLines.get(i).setView(start, end);
         }
@@ -168,7 +186,25 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     public void start() {
     }
 
+    public void addMark(int ch, XYChart.Data<Number, Number> xy, String name,
+                           String color, String label_color) {
+        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
+        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
+        super.addMark(ch, xy.getXValue().intValue(), xy.getYValue().intValue(),
+                name, color, label_color);
+    }
+
+    public void addGlobalMark(XYChart.Data<Number, Number> xy, String name,
+                                 String color, String label_color) {
+        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
+        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
+        super.addGlobalMark(xy.getXValue().intValue(), xy.getYValue().intValue(),
+                name, color, label_color);
+    }
+
     private void fixMarks(XYChart.Data<Number, Number> xy) {
+        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
+        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
         int move = xy.getXValue().intValue();
         List<Mark> ll = new LinkedList<>();
         for (Mark m : this.marks) {
@@ -182,8 +218,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     }
 
     public void cut(XYChart.Data<Number, Number> xy) {
-        super.cut(xy.getXValue().intValue(),
-                xy.getYValue().intValue() - xy.getXValue().intValue());
+        super.cut((int)(xy.getXValue().intValue() * discretisation),
+                (int)((xy.getYValue().intValue() - xy.getXValue().intValue()) * discretisation));
         fixMarks(xy);
         updateOverview();
         bindSeriesOverview(glcOverview);
@@ -194,6 +230,12 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     }
 
     public void setView(XYChart.Data<Number, Number> xy) {
+        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
+        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
+        setViewP(xy);
+    }
+
+    protected void setViewP(XYChart.Data<Number, Number> xy) {
         for (int i=0;i < dataLines.size();i++) {
             dataLines.get(i).setView(xy.getXValue().intValue(),
                     xy.getYValue().intValue());
