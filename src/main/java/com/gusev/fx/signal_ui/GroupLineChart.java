@@ -27,6 +27,7 @@ public class GroupLineChart extends VBox {
     private int rows;
     private DoubleProperty height = new SimpleDoubleProperty();
     private SelectableLineChart chartSelected;
+    private boolean notated;
 
     public Object[] getSelectedChannels() {
         if (chartSelected == null)
@@ -129,7 +130,7 @@ public class GroupLineChart extends VBox {
         yAxis.setMinWidth(50);
         yAxis.setMaxWidth(50);
         yAxis.setAutoRanging(true);
-        SelectableLineChart chart = new SelectableLineChart(xAxis, yAxis);
+        SelectableLineChart chart = new SelectableLineChart(xAxis, yAxis, notated);
         chart.setAnimated(false);
         chart.setLegendVisible(false);
         chart.setMinHeight(30);
@@ -145,9 +146,10 @@ public class GroupLineChart extends VBox {
         return chart;
     }
 
-    public GroupLineChart(int[] num, String[] labels, boolean controlled, ResourceBundle rb) {
+    public GroupLineChart(int[] num, String[] labels, boolean controlled, boolean notated, ResourceBundle rb) {
         super();
         chartSelected = null;
+        this.notated = notated;
         this.rb = rb;
         this.setFillWidth(true);
         this.setMinHeight(0);
@@ -194,9 +196,10 @@ public class GroupLineChart extends VBox {
         });
     }
 
-    public GroupLineChart(int[] num, boolean controlled, ResourceBundle rb) {
+    public GroupLineChart(int[] num, boolean controlled, boolean notated, ResourceBundle rb) {
         super();
         chartSelected = null;
+        this.notated = notated;
         this.rb = rb;
         this.setFillWidth(true);
         this.setMinHeight(0);

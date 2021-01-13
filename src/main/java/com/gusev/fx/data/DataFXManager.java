@@ -2,7 +2,6 @@ package com.gusev.fx.data;
 
 import com.gusev.data.*;
 import com.gusev.fx.signal_ui.GroupLineChart;
-import com.sun.deploy.security.SelectableSecurityManager;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;

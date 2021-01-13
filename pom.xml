@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gusev.fx</groupId>
 	<artifactId>signal-ui-fx</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>1.3.2-SNAPSHOT</version>
 	<name>Data viewer for FX</name>
 	<description></description>
 
@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>com.gusev.data</groupId>
 			<artifactId>browser-data-model</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>1.3.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -110,12 +110,6 @@
 			<groupId>org.eclipse.californium</groupId>
 			<artifactId>californium-core</artifactId>
 			<version>2.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.gusev.data</groupId>
-			<artifactId>browser-data-model</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-			<scope>compile</scope>
 		</dependency>
 
 	</dependencies>

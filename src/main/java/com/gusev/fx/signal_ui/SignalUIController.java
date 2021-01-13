@@ -103,8 +103,8 @@ public class SignalUIController implements Initializable {
         p_mini.getChildren().clear();
         p_graph.getChildren().clear();
         board.setRight(controlTool);
-        lcwm = new GroupLineChart(full, labels, true, resources);
-        lcwm_small = new GroupLineChart(mini, false, resources);
+        lcwm = new GroupLineChart(full, labels, true, true, resources);
+        lcwm_small = new GroupLineChart(mini, false, false, resources);
         lcwm_small.setOnChangeSelection(()->{
             XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
             onChangeSelection.run();
@@ -300,7 +300,7 @@ public class SignalUIController implements Initializable {
             graphCtrl = fxmlLoader.<GraphController>getController();
             graphCtrl.setOnUpdate(()->{
                 lcwm = new GroupLineChart(graphCtrl.getConfiguration(), graphCtrl.getConfigurationLabels(),
-                        true, resources);
+                        true, false, resources);
                 p_graph.getChildren().clear();
                 p_graph.getChildren().add(lcwm);
                 lcwm.clear();

@@ -4,16 +4,18 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
 
-public class SelectableLineChart extends LineChartWithMarkers<Number, Number> {
+public class SelectableLineChart extends LineChartWithMarkers {
     private boolean dynamic = false;
     private boolean selection = false;
     private XYChart.Data<Number, Number> rangeMarker;
     private XYChart.Data<Number, Number> rangeMax = new XYChart.Data<>(0, 0);
     private Runnable onScroll;
     private Runnable onProcessSelect;
+    private boolean notated;
 
-    public SelectableLineChart(Axis<Number> xAxis, Axis<Number> yAxis) {
+    public SelectableLineChart(Axis<Number> xAxis, Axis<Number> yAxis, boolean notated) {
         super(xAxis, yAxis);
+        this.notated = notated;
         setLegendVisible(false);
         setCreateSymbols(false);
         lookup(".chart-plot-background").setOnMouseMoved((me)->{
@@ -48,7 +50,7 @@ public class SelectableLineChart extends LineChartWithMarkers<Number, Number> {
                 XYChart.Data<Number, Number> endMarker = new XYChart.Data<Number, Number>(rangeMarker.getYValue(), 0);
                 this.addVerticalValueMarker(startMarker);
                 this.addVerticalValueMarker(endMarker);
-                this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE);
+                this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE, notated);
                 if (onScroll != null)
                     onScroll.run();
             }
@@ -68,7 +70,7 @@ public class SelectableLineChart extends LineChartWithMarkers<Number, Number> {
                 Number value = this.getYAxis().getValueForDisplay(me.getY());
                 this.clearVerticalMarkers();
                 rangeMarker = new XYChart.Data<Number, Number>(timeValueSelectionStart, timeValueSelectionStart);
-                this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE);
+                this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE, notated);
                 selection = true;
             }
         });
@@ -123,7 +125,7 @@ public class SelectableLineChart extends LineChartWithMarkers<Number, Number> {
         XYChart.Data<Number, Number> endMarker = new XYChart.Data<Number, Number>(rangeMarker.getYValue(), 0);
         this.addVerticalValueMarker(startMarker);
         this.addVerticalValueMarker(endMarker);
-        this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE);
+        this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE, notated);
     }
 
     public void setInSelection(XYChart.Data<Number, Number> sel) {
@@ -133,7 +135,7 @@ public class SelectableLineChart extends LineChartWithMarkers<Number, Number> {
         rangeMarker.setXValue(sel.getXValue());
         rangeMarker.setYValue(sel.getYValue());
         this.clearVerticalMarkers();
-        this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE);
+        this.addVerticalRangeMarker(rangeMarker, Color.STEELBLUE, false);
     }
 
     public void clearSelection() {

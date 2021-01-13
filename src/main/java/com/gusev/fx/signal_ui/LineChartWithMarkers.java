@@ -21,13 +21,13 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.Objects;
 
-public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
-    private ObservableList<Data<X, Y>> horizontalMarkers;
-    private ObservableList<Data<X, Y>> verticalMarkers;
-    private ObservableList<Data<X, X>> verticalRangeMarkers;
-    private ObservableList<Data<X, X>> verticalRangeLabels;
+public class LineChartWithMarkers extends LineChart<Number, Number> {
+    private ObservableList<Data<Number, Number>> horizontalMarkers;
+    private ObservableList<Data<Number, Number>> verticalMarkers;
+    private ObservableList<Data<Number, Number>> verticalRangeMarkers;
+    private ObservableList<Data<Number, Number>> verticalRangeLabels;
 
-    public LineChartWithMarkers(Axis<X> xAxis, Axis<Y> yAxis) {
+    public LineChartWithMarkers(Axis<Number> xAxis, Axis<Number> yAxis) {
         super(xAxis, yAxis);
         horizontalMarkers = FXCollections.observableArrayList(data -> new Observable[] {data.YValueProperty()});
         horizontalMarkers.addListener((InvalidationListener) observable -> layoutPlotChildren());
@@ -41,7 +41,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         verticalRangeLabels.addListener((InvalidationListener)observable -> layoutPlotChildren());
     }
 
-    public void addHorizontalValueMarker(Data<X, Y> marker) {
+    public void addHorizontalValueMarker(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (horizontalMarkers.contains(marker)) return;
         Line line = new Line();
@@ -50,7 +50,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         horizontalMarkers.add(marker);
     }
 
-    public void removeHorizontalValueMarker(Data<X, Y> marker) {
+    public void removeHorizontalValueMarker(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (marker.getNode() != null) {
             getPlotChildren().remove(marker.getNode());
@@ -59,7 +59,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         horizontalMarkers.remove(marker);
     }
 
-    public void addVerticalValueMarker(Data<X, Y> marker) {
+    public void addVerticalValueMarker(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (verticalMarkers.contains(marker)) return;
         Line line = new Line();
@@ -70,7 +70,8 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         verticalMarkers.add(marker);
         setMouseTransparentToEverythingButBackground();
     }
-    public void addVerticalValueMarker(Data<X, Y> marker, Color col) {
+
+    public void addVerticalValueMarker(Data<Number, Number> marker, Color col) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (verticalMarkers.contains(marker)) return;
         Line line = new Line();
@@ -83,7 +84,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         setMouseTransparentToEverythingButBackground();
     }
 
-    public void removeVerticalValueMarker(Data<X, Y> marker) {
+    public void removeVerticalValueMarker(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (marker.getNode() != null) {
             getPlotChildren().remove(marker.getNode());
@@ -93,35 +94,38 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
 
     }
     public void clearVerticalMarkers(){
-        for(Data<X,Y> d : verticalMarkers){
+        for(Data<Number, Number> d : verticalMarkers){
             getPlotChildren().remove(d.getNode());
         }
-        for(Data<X,X> d : verticalRangeMarkers){
+        for(Data<Number, Number> d : verticalRangeMarkers){
             getPlotChildren().remove(d.getNode());
+            if (d.getExtraValue() != null) {
+                getPlotChildren().remove(d.getExtraValue());
+            }
         }
-
         verticalMarkers.clear();
         verticalRangeMarkers.clear();
     }
+
     public void clearVerticalLabels(){
-        for(Data<X,X> d : verticalRangeLabels){
+        for(Data<Number, Number> d : verticalRangeLabels){
             getPlotChildren().remove(d.getNode());
             getPlotChildren().remove(d.getExtraValue());
         }
         verticalRangeLabels.clear();
     }
+
     public void clearHorizontalMarkers(){
-        for(Data<X,Y> d : horizontalMarkers){
+        for(Data<Number, Number> d : horizontalMarkers){
             getPlotChildren().remove(d.getNode());
         }
         verticalRangeMarkers.clear();
     }
 
-
     @Override
     protected void layoutPlotChildren() {
         super.layoutPlotChildren();
-        for (Data<X, Y> horizontalMarker : horizontalMarkers) {
+        for (Data<Number, Number> horizontalMarker : horizontalMarkers) {
             Line line = (Line) horizontalMarker.getNode();
             line.setStartX(0);
             line.setEndX(getBoundsInLocal().getWidth());
@@ -129,7 +133,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
             line.setEndY(line.getStartY());
             line.toFront();
         }
-        for (Data<X, Y> verticalMarker : verticalMarkers) {
+        for (Data<Number, Number> verticalMarker : verticalMarkers) {
             Line line = (Line) verticalMarker.getNode();
             line.setStartX(getXAxis().getDisplayPosition(verticalMarker.getXValue()) + 0.5);  // 0.5 for crispness
             line.setEndX(line.getStartX());
@@ -137,20 +141,32 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
             line.setEndY(getBoundsInLocal().getHeight());
             line.toFront();
         }
-        for (Data<X, X> verticalRangeMarker : verticalRangeMarkers) {
+        for (Data<Number, Number> verticalRangeMarker : verticalRangeMarkers) {
             Rectangle rectangle = (Rectangle) verticalRangeMarker.getNode();
             rectangle.setX( getXAxis().getDisplayPosition(verticalRangeMarker.getXValue()) + 0.5);  // 0.5 for crispness
             rectangle.setWidth( getXAxis().getDisplayPosition(verticalRangeMarker.getYValue()) - getXAxis().getDisplayPosition(verticalRangeMarker.getXValue()));
             rectangle.setY(0d);
             rectangle.setHeight(getBoundsInLocal().getHeight());
             rectangle.toBack();
+            if (verticalRangeMarker.getExtraValue() != null) {
+                Text text = (Text) verticalRangeMarker.getExtraValue();
+                text.setText(String.format("%1.2f : %1.2f",
+                        verticalRangeMarker.getXValue().doubleValue(),
+                        verticalRangeMarker.getYValue().doubleValue()));
+                text.setX(rectangle.getX() + 20);
+                text.setY(rectangle.getY() + 20);
+                text.setTextAlignment(TextAlignment.LEFT);
+                text.setFont(new Font("Arial", 20));
+                text.toFront();
+            }
         }
-        for (Data<X, X> verticalRangeMarker : verticalRangeLabels) {
+        for (Data<Number, Number> verticalRangeMarker : verticalRangeLabels) {
             Rectangle rectangle = (Rectangle) verticalRangeMarker.getNode();
             rectangle.setX( getXAxis().getDisplayPosition(verticalRangeMarker.getXValue()) + 0.5);  // 0.5 for crispness
             rectangle.setWidth( getXAxis().getDisplayPosition(verticalRangeMarker.getYValue()) - getXAxis().getDisplayPosition(verticalRangeMarker.getXValue()));
             rectangle.setY(0d);
             rectangle.setHeight(getBoundsInLocal().getHeight());
+            rectangle.toBack();
             Text text = (Text) verticalRangeMarker.getExtraValue();
             text.setX(rectangle.getX() + 20);
             text.setY(rectangle.getY() + 20);
@@ -161,7 +177,7 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         }
     }
 
-    public void addVerticalRangeMarker(Data<X, X> marker, Color color) {
+    public void addVerticalRangeMarker(Data<Number, Number> marker, Color color, boolean notated) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (verticalRangeMarkers.contains(marker)) return;
 
@@ -171,12 +187,18 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
 
         marker.setNode(rectangle);
 
+        if (notated) {
+            Text ll = new Text("<>");
+            ll.setFill(Color.BLACK);
+            marker.setExtraValue(ll);
+            getPlotChildren().add(ll);
+        }
         getPlotChildren().add(rectangle);
         verticalRangeMarkers.add(marker);
         setMouseTransparentToEverythingButBackground();
     }
 
-    public void addVerticalRangeLabel(Data<X, X> marker, Color color, Color text_color, String str) {
+    public void addVerticalRangeLabel(Data<Number, Number> marker, Color color, Color text_color, String str) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (verticalRangeLabels.contains(marker)) return;
 
@@ -205,16 +227,20 @@ public class LineChartWithMarkers<X,Y> extends LineChart<X,Y> {
         }
     }
 
-    public void removeVerticalRangeMarker(Data<X, X> marker) {
+    public void removeVerticalRangeMarker(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (marker.getNode() != null) {
             getPlotChildren().remove(marker.getNode());
+            if (marker.getExtraValue() != null) {
+                getPlotChildren().remove(marker.getExtraValue());
+            }
             marker.setNode(null);
+            marker.setExtraValue(null);
         }
         verticalRangeMarkers.remove(marker);
     }
 
-    public void removeVerticalRangeLabel(Data<X, X> marker) {
+    public void removeVerticalRangeLabel(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (marker.getNode() != null) {
             getPlotChildren().remove(marker.getNode());
