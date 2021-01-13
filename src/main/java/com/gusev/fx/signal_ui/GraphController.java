@@ -13,61 +13,90 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GraphController implements Initializable {
-    @FXML private CheckBox graph_hide_1;
-    @FXML private Label graph_label_1;
-    @FXML private ChoiceBox<Integer> graph_pos_1;
-    @FXML private CheckBox graph_hide_2;
-    @FXML private Label graph_label_2;
-    @FXML private ChoiceBox<Integer> graph_pos_2;
-    @FXML private CheckBox graph_hide_3;
-    @FXML private Label graph_label_3;
-    @FXML private ChoiceBox<Integer> graph_pos_3;
-    @FXML private CheckBox graph_hide_4;
-    @FXML private Label graph_label_4;
-    @FXML private ChoiceBox<Integer> graph_pos_4;
-    @FXML private CheckBox graph_hide_5;
-    @FXML private Label graph_label_5;
-    @FXML private ChoiceBox<Integer> graph_pos_5;
-    @FXML private CheckBox graph_hide_6;
-    @FXML private Label graph_label_6;
-    @FXML private ChoiceBox<Integer> graph_pos_6;
-    @FXML private CheckBox graph_hide_7;
-    @FXML private Label graph_label_7;
-    @FXML private ChoiceBox<Integer> graph_pos_7;
-    @FXML private CheckBox graph_hide_8;
-    @FXML private Label graph_label_8;
-    @FXML private ChoiceBox<Integer> graph_pos_8;
+    @FXML private ChoiceBox<Integer> graph_positions;
+    @FXML private ChoiceBox<String> graph_pos_1;
+    @FXML private ChoiceBox<String> graph_pos_2;
+    @FXML private ChoiceBox<String> graph_pos_3;
+    @FXML private ChoiceBox<String> graph_pos_4;
+    @FXML private ChoiceBox<String> graph_pos_5;
+    @FXML private ChoiceBox<String> graph_pos_6;
+    @FXML private ChoiceBox<String> graph_pos_7;
+    @FXML private ChoiceBox<String> graph_pos_8;
+    @FXML private ChoiceBox<Integer> graph_chart_1;
+    @FXML private ChoiceBox<Integer> graph_chart_2;
+    @FXML private ChoiceBox<Integer> graph_chart_3;
+    @FXML private ChoiceBox<Integer> graph_chart_4;
+    @FXML private ChoiceBox<Integer> graph_chart_5;
+    @FXML private ChoiceBox<Integer> graph_chart_6;
+    @FXML private ChoiceBox<Integer> graph_chart_7;
+    @FXML private ChoiceBox<Integer> graph_chart_8;
 
+    private final Integer[] graphs = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8};
+    private final Integer[][] charts = new Integer[][]{
+            {},
+            {1},
+            {1, 2},
+            {1, 2, 3},
+            {1, 2, 3, 4},
+            {1, 2, 3, 4, 5},
+            {1, 2, 3, 4, 5, 6},
+            {1, 2, 3, 4, 5, 6, 7},
+            {1, 2, 3, 4, 5, 6, 7, 8}};
     private ResourceBundle resources;
     private Runnable upd;
-    private CheckBox[] graph_hide;
-    private Label[] graph_label;
-    private ChoiceBox<Integer>[] graph_pos;
-    private Integer[] graphs;
-    private int[] channels = new int[8];
+    private ChoiceBox<String>[] graph_pos;
+    private ChoiceBox<Integer>[] graph_chart;
+    private int[] channels;
     private String[] str;
-    private List<String> strP = new LinkedList<>();
-    private List<Integer> chP = new LinkedList<>();
-    private String[][] mapStr = new String[8][8];
-    private int[][] mapCh = new int[8][8];
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
-        graphs = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8};
-        graph_hide = new CheckBox[]{graph_hide_1, graph_hide_2, graph_hide_3, graph_hide_4,
-                graph_hide_5, graph_hide_6, graph_hide_7, graph_hide_8};
+        str = new String[]{""};
+        graph_positions.getItems().addAll(graphs);
         graph_pos = new ChoiceBox[]{graph_pos_1, graph_pos_2, graph_pos_3, graph_pos_4,
                 graph_pos_5, graph_pos_6, graph_pos_7, graph_pos_8};
-        graph_label = new Label[]{graph_label_1, graph_label_2, graph_label_3, graph_label_4,
-                graph_label_5, graph_label_6, graph_label_7, graph_label_8};
-        for (int i = 0;i < graph_pos.length;i++) {
-            channels[i] = 0;
-            graph_pos[i].getItems().clear();
-            graph_pos[i].getItems().addAll(graphs);
-            graph_pos[i].setValue(graphs[i]);
-            graph_pos[i].disableProperty().bind(graph_hide[i].selectedProperty());
-        }
+        graph_chart = new ChoiceBox[]{graph_chart_1, graph_chart_2, graph_chart_3, graph_chart_4,
+                graph_chart_5, graph_chart_6, graph_chart_7, graph_chart_8};
+        graph_positions.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            for (int i = 0;i < graph_pos.length;i++) {
+                graph_pos[i].setDisable(true);
+                graph_chart[i].setDisable(true);
+                graph_chart[i].getItems().clear();
+                graph_chart[i].getItems().addAll(charts[newValue]);
+                graph_chart[i].getSelectionModel().select(i);
+            }
+            switch (newValue) {
+                case 8:
+                    graph_pos_8.setDisable(false);
+                    graph_chart_8.setDisable(false);
+                case 7:
+                    graph_pos_7.setDisable(false);
+                    graph_chart_7.setDisable(false);
+                case 6:
+                    graph_pos_6.setDisable(false);
+                    graph_chart_6.setDisable(false);
+                case 5:
+                    graph_pos_5.setDisable(false);
+                    graph_chart_5.setDisable(false);
+                case 4:
+                    graph_pos_4.setDisable(false);
+                    graph_chart_4.setDisable(false);
+                case 3:
+                    graph_pos_3.setDisable(false);
+                    graph_chart_3.setDisable(false);
+                case 2:
+                    graph_pos_2.setDisable(false);
+                    graph_chart_2.setDisable(false);
+                case 1:
+                    graph_pos_1.setDisable(false);
+                    graph_chart_1.setDisable(false);
+                    break;
+                default:
+                    break;
+            }
+        });
+        graph_positions.getSelectionModel().select(7);
     }
 
     public void setOnUpdate(Runnable upd) {
@@ -75,41 +104,30 @@ public class GraphController implements Initializable {
     }
 
     public int[] getConfiguration() {
-        chP.clear();
-        strP.clear();
+        channels = new int[graph_positions.getValue()];
         for (int i = 0;i < channels.length;i++) {
             channels[i] = 0;
-            for (int j = 0;j < 8;j++) {
-                mapStr[i][j] = null;
-                mapCh[i][j] = -1;
-            }
-        }
-        for (int i = 0;i < graph_pos.length;i++) {
-            if (!graph_hide[i].isSelected()) {
-                mapStr[graph_pos[i].getValue() - 1][channels[graph_pos[i].getValue() - 1]] = str[i];
-                mapCh[graph_pos[i].getValue() - 1][channels[graph_pos[i].getValue() - 1]] = i;
-                channels[graph_pos[i].getValue() - 1]++;
-            }
         }
         for (int i = 0;i < channels.length;i++) {
-            for (int j = 0;j < 8;j++) {
-                if (mapStr[i][j] != null)
-                    strP.add(mapStr[i][j]);
-                if (mapCh[i][j] != -1)
-                    chP.add(mapCh[i][j]);
-            }
+            channels[graph_chart[i].getSelectionModel().getSelectedIndex()]++;
         }
         return channels;
     }
 
-    public String[] getConfigurationLabels() {
-        String[] ret = new String[strP.size()];
-        return strP.toArray(ret);
+    public Integer[] getConfigurationChannels() {
+        Integer[] switcher = new Integer[graph_positions.getValue()];
+        for (int i = 0;i < switcher.length;i++) {
+            switcher[i] = graph_pos[i].getSelectionModel().getSelectedIndex();
+        }
+        return switcher;
     }
 
-    public Integer[] getConfigurationChannels() {
-        Integer[] ret = new Integer[chP.size()];
-        return chP.toArray(ret);
+    public String[] getConfigurationLabels() {
+        String[] ret = new String[graph_positions.getValue()];
+        for (int i = 0;i < ret.length;i++) {
+            ret[i] = str[graph_pos[i].getSelectionModel().getSelectedIndex()];
+        }
+        return ret;
     }
 
     public void setConfiguration(int[] conf, String[] str) {
@@ -117,21 +135,21 @@ public class GraphController implements Initializable {
         for (int h : conf) {
             size += h;
         }
-        if (size != str.length)
+        if (size != str.length && str.length > 0)
             throw new IndexOutOfBoundsException("Found more/not enough labels than expected!");
+        graph_positions.getSelectionModel().select(str.length - 1);
         this.str = str;
-        int k = 0;
-        for (int i = 0;i < conf.length && i < graph_hide.length;i++) {
-            for (int j = 0;j < conf[i];j++) {
-                graph_hide[k].setSelected(false);
-                graph_pos[k].setValue(i + 1);
-                graph_label[k].setText(str[k]);
-                k++;
-            }
+        for (int i = 0;i < graph_pos.length;i++) {
+            graph_pos[i].getItems().clear();
+            graph_pos[i].getItems().addAll(str);
         }
-        for (;k < graph_hide.length;k++) {
-            graph_hide[k].setSelected(true);
-            graph_pos[k].setValue(1);
+        for (int i = 0;i < graph_pos.length;i++) {
+            graph_chart[i].getSelectionModel().select(i);
+            if (i < str.length) {
+                graph_pos[i].setValue(str[i]);
+            } else {
+                graph_pos[i].setValue(str[0]);
+            }
         }
     }
 
