@@ -5,6 +5,7 @@ import com.gusev.fx.signal_ui.GroupLineChart;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.LinkedList;

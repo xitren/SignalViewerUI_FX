@@ -125,6 +125,7 @@ public class GroupLineChart extends VBox {
         xAxis.setMinWidth(X_LABELS_HEIGHT);
         xAxis.setMaxWidth(X_LABELS_HEIGHT);
         NumberAxis yAxis = new NumberAxis();
+        yAxis.setForceZeroInRange(false);
         yAxis.setAnimated(false);
         yAxis.setPrefWidth(50);
         yAxis.setMinWidth(50);

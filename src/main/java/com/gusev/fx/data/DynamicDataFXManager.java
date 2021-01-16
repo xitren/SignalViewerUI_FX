@@ -14,10 +14,15 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
     private Timer timer = new Timer();
     private boolean online = true;
     private boolean pause = false;
+    private int cnt = 0;
 
     private TimerTask task_data = new TimerTask() {
         public void run() {
             if (glcView != null) {
+                if (cnt++ >= 40) {
+                    updateOverview();
+                    cnt = 0;
+                }
                 Platform.runLater(()->{
                     bindSeriesOverviewUnder(glcOverview);
                 });
@@ -27,7 +32,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
 
     public DynamicDataFXManager(int n) {
         super(n);
-        timer.schedule(task_data, 2000, 1000);
+        timer.schedule(task_data, 2000, 250);
     }
 
     public void addParser(WindowDynamicParser wdp, int channel) {
