@@ -23,6 +23,10 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     protected double discretisation = 250;
     protected double timePeriod = 0.004;
 
+    public DataFXManager(int n, ExtendedDataLine[] edl) {
+        super(n, edl);
+    }
+
     public DataFXManager(int n) {
         super(n);
     }

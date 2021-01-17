@@ -1,6 +1,7 @@
 package com.gusev.fx.data;
 
 import com.gusev.data.DataContainer;
+import com.gusev.data.ExtendedDataLine;
 import com.gusev.data.window.op.WindowDynamicParser;
 import com.gusev.fx.signal_ui.GroupLineChart;
 import javafx.application.Platform;
@@ -29,6 +30,11 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
             }
         }
     };
+
+    public DynamicDataFXManager(int n, ExtendedDataLine[] edl) {
+        super(n, edl);
+        timer.schedule(task_data, 2000, 250);
+    }
 
     public DynamicDataFXManager(int n) {
         super(n);
