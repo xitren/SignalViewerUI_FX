@@ -225,18 +225,25 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         super.cut((int)(xy.getXValue().intValue() * discretisation),
                 (int)((xy.getYValue().intValue() - xy.getXValue().intValue()) * discretisation));
         fixMarks(xy);
+        unsetOverview();
         updateOverview();
         bindSeriesOverview(glcOverview);
         bindSeriesView(glcView);
-        xy.setYValue(xy.getYValue().intValue() - xy.getXValue().intValue());
-        xy.setXValue(0);
-        setView(xy);
+        setMaxView();
+    }
+
+    protected void setMaxView() {
+        for (int i=0;i < dataLines.size();i++) {
+            dataLines.get(i).setMaxView();
+        }
+        bindSeriesViewUnder(glcView);
     }
 
     public void setView(XYChart.Data<Number, Number> xy) {
-        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
-        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
-        setViewP(xy);
+        XYChart.Data<Number, Number> xy2 = new XYChart.Data<>(xy.getXValue(), xy.getYValue());
+        xy2.setXValue(xy2.getXValue().doubleValue() * discretisation);
+        xy2.setYValue(xy2.getYValue().doubleValue() * discretisation);
+        setViewP(xy2);
     }
 
     protected void setViewP(XYChart.Data<Number, Number> xy) {

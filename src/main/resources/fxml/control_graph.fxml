@@ -8,95 +8,49 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.GraphController">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.GraphController">
    <children>
       <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <content>
             <VBox alignment="CENTER" prefWidth="210.0" spacing="20.0">
                <children>
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#OnLoad" text="%graph_update" />
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_series" textAlignment="CENTER" />
                   <ChoiceBox fx:id="graph_positions" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                  <HBox prefHeight="20.0" prefWidth="271.0" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                   <HBox spacing="10.0">
                      <children>
                         <VBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
                               <ChoiceBox fx:id="graph_chart_1" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_pos_1" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
                               <ChoiceBox fx:id="graph_chart_2" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_pos_2" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <VBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
                               <ChoiceBox fx:id="graph_chart_3" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_pos_3" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
                               <ChoiceBox fx:id="graph_chart_4" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_pos_4" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <VBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
                               <ChoiceBox fx:id="graph_chart_5" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_pos_5" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
                               <ChoiceBox fx:id="graph_chart_6" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_pos_6" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <VBox alignment="CENTER" spacing="10.0">
-                           <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
                               <ChoiceBox fx:id="graph_chart_7" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_pos_7" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_8" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_chart" textAlignment="CENTER" />
-                              <ChoiceBox fx:id="graph_chart_8" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_source" textAlignment="CENTER" />
+                              <ChoiceBox fx:id="graph_pos_2" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_pos_1" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_pos_3" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_pos_4" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_pos_5" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_pos_6" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_pos_7" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                               <ChoiceBox fx:id="graph_pos_8" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#OnLoad" text="%graph_update" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
