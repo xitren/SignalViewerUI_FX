@@ -62,8 +62,8 @@ public class SignalUIController implements Initializable {
     private GroupLineChart lcwm_small;
     private Runnable onChangeSelection;
     private Runnable onStop;
-    private DataFXManager datafx;
-    private Stage stage = null;
+    protected DataFXManager datafx;
+    protected Stage stage = null;
     private Parent controlTool = null;
     private Parent filterTool = null;
     private Parent marksTool = null;

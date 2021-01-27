@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane fx:id="split" dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.SignalUIController">
+<SplitPane fx:id="split" dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <items>
       <HBox fx:id="p_top">
          <children>
