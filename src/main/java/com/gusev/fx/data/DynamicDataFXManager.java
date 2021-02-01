@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 import static com.gusev.data.DataLine.OVERVIEW_SIZE;
 
-public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager<T> {
+public class DynamicDataFXManager<T extends DataContainer> extends EGDataFXManager<T> {
     private Timer timer = new Timer();
     private boolean online = true;
     private boolean pause = false;
