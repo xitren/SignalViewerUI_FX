@@ -5,7 +5,6 @@ import com.gusev.fx.signal_ui.GroupLineChart;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -20,8 +19,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     protected XYChart.Data<Number, Number>[][] fullViewFXUpdater;
     protected XYChart.Series<Number, Number>[] customViewFX;
     private XYChart.Data<Number, Number>[][] customViewFXUpdater;
-    protected double discretisation = 250;
-    protected double timePeriod = 0.004;
+    private double discretisation = 250;
+    private double timePeriod = 0.004;
 
     public DataFXManager(int n, ExtendedDataLine[] edl) {
         super(n, edl);
@@ -64,7 +63,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             double[] gto = getTimeOverview(i);
             double[] go = getOverview(i);
             for (int j=0;j < getOverview(i).length;j++) {
-                XYChart.Data xyd = new XYChart.Data(gto[j] * timePeriod, go[j]);
+                XYChart.Data xyd = new XYChart.Data(gto[j] * getTimePeriod(), go[j]);
                 fullViewFXUpdater[i][j] = xyd;
                 fullViewFX[i].getData().add(xyd);
             }
@@ -88,12 +87,12 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         glc.clearMarks();
         for (Mark m : this.marks) {
             if ( (0 <= m.channel) && (m.channel < this.dataLines.size()) ) {
-                glc.setMark(m.channel, new XYChart.Data(m.start, m.finish), m.name,
-                        Color.valueOf(m.getWebColor()), Color.valueOf(m.getWebLabelColor()));
+                glc.setMark(m.channel, new XYChart.Data(m.start * getTimePeriod(), m.finish * getTimePeriod()),
+                        m.name, Color.valueOf(m.getWebColor()), Color.valueOf(m.getWebLabelColor()));
             } else {
                 for (int i = 0;i < fullViewFX.length;i++) {
-                    glc.setMark(i, new XYChart.Data(m.start, m.finish), m.name,
-                            Color.valueOf(m.getWebColor()), Color.valueOf(m.getWebLabelColor()));
+                    glc.setMark(i, new XYChart.Data(m.start * getTimePeriod(), m.finish * getTimePeriod()),
+                            m.name, Color.valueOf(m.getWebColor()), Color.valueOf(m.getWebLabelColor()));
                 }
             }
         }
@@ -106,7 +105,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             double[] gtl = getTimeOverview(i);
             double[] gdl = getOverview(i);
             for (int j=0;j < gtl.length;j++) {
-                fullViewFXUpdater[i][j].setXValue(gtl[j] * timePeriod);
+                fullViewFXUpdater[i][j].setXValue(gtl[j] * getTimePeriod());
                 fullViewFXUpdater[i][j].setYValue(gdl[j]);
             }
             glc.setRangeMax(i, gtl[0], gtl[gtl.length - 1]);
@@ -126,7 +125,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                 if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER))
                     xyd = new XYChart.Data(gtl[j], gdl[j]);
                 else
-                    xyd = new XYChart.Data(gtl[j] * timePeriod, gdl[j]);
+                    xyd = new XYChart.Data(gtl[j] * getTimePeriod(), gdl[j]);
                 customViewFXUpdater[i][j] = xyd;
                 customViewFX[i].getData().add(xyd);
             }
@@ -156,7 +155,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                 }
             } else {
                 for (int j = 0; j < av; j++) {
-                    customViewFXUpdater[i][j].setXValue(gtl[j] * timePeriod);
+                    customViewFXUpdater[i][j].setXValue(gtl[j] * getTimePeriod());
                     customViewFXUpdater[i][j].setYValue(gdl[j]);
                 }
             }
@@ -168,7 +167,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER)) {
                 glc.setRangeMax(i, gtl[0], gtl[av - 1]);
             } else {
-                glc.setRangeMax(i, gtl[0] * timePeriod, gtl[av - 1] * timePeriod);
+                glc.setRangeMax(i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
             }
         }
     }
@@ -192,23 +191,23 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
 
     public void addMark(int ch, XYChart.Data<Number, Number> xy, String name,
                            String color, String label_color) {
-        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
-        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
+        xy.setXValue(xy.getXValue().doubleValue() * getDiscretisation());
+        xy.setYValue(xy.getYValue().doubleValue() * getDiscretisation());
         super.addMark(ch, xy.getXValue().intValue(), xy.getYValue().intValue(),
                 name, color, label_color);
     }
 
     public void addGlobalMark(XYChart.Data<Number, Number> xy, String name,
                                  String color, String label_color) {
-        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
-        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
+        xy.setXValue(xy.getXValue().doubleValue() * getDiscretisation());
+        xy.setYValue(xy.getYValue().doubleValue() * getDiscretisation());
         super.addGlobalMark(xy.getXValue().intValue(), xy.getYValue().intValue(),
                 name, color, label_color);
     }
 
     private void fixMarks(XYChart.Data<Number, Number> xy) {
-        xy.setXValue(xy.getXValue().doubleValue() * discretisation);
-        xy.setYValue(xy.getYValue().doubleValue() * discretisation);
+        xy.setXValue(xy.getXValue().doubleValue() * getDiscretisation());
+        xy.setYValue(xy.getYValue().doubleValue() * getDiscretisation());
         int move = xy.getXValue().intValue();
         List<Mark> ll = new LinkedList<>();
         for (Mark m : this.marks) {
@@ -222,8 +221,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     }
 
     public void cut(XYChart.Data<Number, Number> xy) {
-        super.cut((int)(xy.getXValue().intValue() * discretisation),
-                (int)((xy.getYValue().intValue() - xy.getXValue().intValue()) * discretisation));
+        super.cut((int)(xy.getXValue().intValue() * getDiscretisation()),
+                (int)((xy.getYValue().intValue() - xy.getXValue().intValue()) * getDiscretisation()));
         fixMarks(xy);
         unsetOverview();
         updateOverview();
@@ -241,8 +240,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
 
     public void setView(XYChart.Data<Number, Number> xy) {
         XYChart.Data<Number, Number> xy2 = new XYChart.Data<>(xy.getXValue(), xy.getYValue());
-        xy2.setXValue(xy2.getXValue().doubleValue() * discretisation);
-        xy2.setYValue(xy2.getYValue().doubleValue() * discretisation);
+        xy2.setXValue(xy2.getXValue().doubleValue() * getDiscretisation());
+        xy2.setYValue(xy2.getYValue().doubleValue() * getDiscretisation());
         setViewP(xy2);
     }
 
@@ -264,5 +263,23 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
 
     public List<Mark> getMarks() {
         return this.marks;
+    }
+
+    public double getDiscretisation() {
+        return discretisation;
+    }
+
+    public void setDiscretisation(double discretisation) {
+        this.timePeriod = 1 / discretisation;
+        this.discretisation = discretisation;
+    }
+
+    public double getTimePeriod() {
+        return timePeriod;
+    }
+
+    public void setTimePeriod(double timePeriod) {
+        this.timePeriod = timePeriod;
+        this.discretisation = 1 / timePeriod;
     }
 }

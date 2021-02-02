@@ -89,10 +89,10 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
             double[] gtl = getTimeOverview(i);
             double[] gdl = getOverview(i);
             for (int j=0;j < gtl.length;j++) {
-                fullViewFXUpdater[i][j].setXValue(gtl[j] * timePeriod);
+                fullViewFXUpdater[i][j].setXValue(gtl[j] * getTimePeriod());
                 fullViewFXUpdater[i][j].setYValue(gdl[j]);
             }
-            glc.setRangeMax(i, gtl[0] * timePeriod, gtl[gtl.length - 1] * timePeriod);
+            glc.setRangeMax(i, gtl[0] * getTimePeriod(), gtl[gtl.length - 1] * getTimePeriod());
         }
         if (online && (fullViewFX.length > 0)) {
             int end = getDataContainerSize(0);

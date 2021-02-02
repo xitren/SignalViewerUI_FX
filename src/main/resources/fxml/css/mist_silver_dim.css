@@ -1526,12 +1526,15 @@
  *                                                                             *
  ******************************************************************************/
 .tooltip {
+    -fx-text-fill: black;
     -fx-background-color:rgb(76,81,86), rgb(209,214,219), rgb(228,233,238);
-    -fx-background-insets: 0,1,2;
-    -fx-background-radius: 0 0 0 0;
-    -fx-padding: 4 8 4 8;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 4, 0.0 , 4 , 5 );
 }
+
+.tooltip .label {
+    -fx-text-fill: black;
+    -fx-font-size:16, "Arial Black";
+}
+
 .page-corner {
     -fx-padding: 0;
     -fx-background-color: transparent;

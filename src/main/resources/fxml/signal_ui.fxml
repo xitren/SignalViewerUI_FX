@@ -3,48 +3,106 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane fx:id="split" dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane fx:id="split" dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <items>
       <HBox fx:id="p_top">
          <children>
             <HBox fx:id="p_top0" fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" prefWidth="190.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
-                  <ToggleButton fx:id="tool_hide1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide" />
-                  <ToggleButton fx:id="pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPanelParams" prefHeight="38.0" prefWidth="38.0" styleClass="parameters" />
-                  <ToggleButton fx:id="filt_pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnFilterParams" prefHeight="38.0" prefWidth="38.0" styleClass="filter_parameters" />
-                  <ToggleButton fx:id="comm_pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarksParams" prefHeight="38.0" prefWidth="38.0" styleClass="notes" />
-                  <ToggleButton fx:id="graph_pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnGraphParams" prefHeight="38.0" prefWidth="38.0" styleClass="graph_parameters" />
+                  <ToggleButton fx:id="tool_hide1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide">
+                     <tooltip>
+                        <Tooltip text="%tooltip_show_mini" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPanelParams" prefHeight="38.0" prefWidth="38.0" styleClass="parameters">
+                     <tooltip>
+                        <Tooltip text="%tooltip_parameters" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="filt_pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnFilterParams" prefHeight="38.0" prefWidth="38.0" styleClass="filter_parameters">
+                     <tooltip>
+                        <Tooltip text="%tooltip_filter" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="comm_pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarksParams" prefHeight="38.0" prefWidth="38.0" styleClass="notes">
+                     <tooltip>
+                        <Tooltip text="%tooltip_commentaries" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="graph_pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnGraphParams" prefHeight="38.0" prefWidth="38.0" styleClass="graph_parameters">
+                     <tooltip>
+                        <Tooltip text="%tooltip_graph_sources" />
+                     </tooltip></ToggleButton>
                </children>
             </HBox>
             <VBox fx:id="p_top1" alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
-                  <ToggleButton fx:id="tool_sel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnChangeToolMulti" prefHeight="38.0" prefWidth="38.0" styleClass="selector" />
-                  <ToggleButton fx:id="tool_uni_sel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnChangeToolUni" prefHeight="38.0" prefWidth="38.0" styleClass="uni_selector" />
-                  <ToggleButton fx:id="tool_pause" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPause" prefHeight="38.0" prefWidth="38.0" styleClass="pause" />
-                  <Button fx:id="stop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnStopData" prefHeight="38.0" prefWidth="38.0" styleClass="stop" />
-                  <ToggleButton fx:id="tool_hide" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide" />
+                  <ToggleButton fx:id="tool_sel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnChangeToolMulti" prefHeight="38.0" prefWidth="38.0" styleClass="selector">
+                     <tooltip>
+                        <Tooltip text="%tooltip_multi_selector" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="tool_uni_sel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnChangeToolUni" prefHeight="38.0" prefWidth="38.0" styleClass="uni_selector">
+                     <tooltip>
+                        <Tooltip text="%tooltip_uni_selector" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="tool_pause" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPause" prefHeight="38.0" prefWidth="38.0" styleClass="pause">
+                     <tooltip>
+                        <Tooltip text="%tooltip_pause" />
+                     </tooltip></ToggleButton>
+                  <Button fx:id="stop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnStopData" prefHeight="38.0" prefWidth="38.0" styleClass="stop">
+                     <tooltip>
+                        <Tooltip text="%tooltip_stop" />
+                     </tooltip></Button>
+                  <ToggleButton fx:id="tool_hide" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide">
+                     <tooltip>
+                        <Tooltip text="%tooltip_hide_mini" />
+                     </tooltip></ToggleButton>
                </children>
             </VBox>
             <VBox fx:id="p_top2" alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
-                  <Button fx:id="comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarkArea" prefHeight="38.0" prefWidth="38.0" styleClass="comment" />
-                  <Button fx:id="clr_comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnClearMarks" prefHeight="38.0" prefWidth="38.0" styleClass="clear_comments" />
-                  <Button fx:id="save" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnSaveFile" prefHeight="38.0" prefWidth="38.0" styleClass="save" />
-                  <Button fx:id="load" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnLoadFile" prefHeight="38.0" prefWidth="38.0" styleClass="load" />
-                  <Button fx:id="cut" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnCutData" prefHeight="38.0" prefWidth="38.0" styleClass="cut" />
+                  <Button fx:id="comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarkArea" prefHeight="38.0" prefWidth="38.0" styleClass="comment">
+                     <tooltip>
+                        <Tooltip text="%tooltip_mark" />
+                     </tooltip></Button>
+                  <Button fx:id="clr_comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnClearMarks" prefHeight="38.0" prefWidth="38.0" styleClass="clear_comments">
+                     <tooltip>
+                        <Tooltip text="%tooltip_clear_marks" />
+                     </tooltip></Button>
+                  <Button fx:id="save" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnSaveFile" prefHeight="38.0" prefWidth="38.0" styleClass="save">
+                     <tooltip>
+                        <Tooltip text="%tooltip_save" />
+                     </tooltip></Button>
+                  <Button fx:id="load" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnLoadFile" prefHeight="38.0" prefWidth="38.0" styleClass="load">
+                     <tooltip>
+                        <Tooltip text="%tooltip_load" />
+                     </tooltip></Button>
+                  <Button fx:id="cut" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnCutData" prefHeight="38.0" prefWidth="38.0" styleClass="cut">
+                     <tooltip>
+                        <Tooltip text="%tooltip_cut" />
+                     </tooltip></Button>
                </children>
             </VBox>
             <VBox fx:id="p_mini" minHeight="190.0" HBox.hgrow="ALWAYS" />
             <VBox fx:id="p_top3" alignment="BOTTOM_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
-                  <ToggleButton fx:id="pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPanelParams" prefHeight="38.0" prefWidth="38.0" styleClass="parameters" />
-                  <ToggleButton fx:id="filt_pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnFilterParams" prefHeight="38.0" prefWidth="38.0" styleClass="filter_parameters" />
-                  <ToggleButton fx:id="comm_pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarksParams" prefHeight="38.0" prefWidth="38.0" styleClass="notes" />
-                  <ToggleButton fx:id="graph_pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnGraphParams" prefHeight="38.0" prefWidth="38.0" styleClass="graph_parameters" />
+                  <ToggleButton fx:id="pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPanelParams" prefHeight="38.0" prefWidth="38.0" styleClass="parameters">
+                     <tooltip>
+                        <Tooltip text="%tooltip_parameters" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="filt_pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnFilterParams" prefHeight="38.0" prefWidth="38.0" styleClass="filter_parameters">
+                     <tooltip>
+                        <Tooltip text="%tooltip_filter" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="comm_pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarksParams" prefHeight="38.0" prefWidth="38.0" styleClass="notes">
+                     <tooltip>
+                        <Tooltip text="%tooltip_commentaries" />
+                     </tooltip></ToggleButton>
+                  <ToggleButton fx:id="graph_pars" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnGraphParams" prefHeight="38.0" prefWidth="38.0" styleClass="graph_parameters">
+                     <tooltip>
+                        <Tooltip text="%tooltip_graph_sources" />
+                     </tooltip></ToggleButton>
                </children>
             </VBox>
          </children>

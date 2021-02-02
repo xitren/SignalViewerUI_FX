@@ -1,3 +1,14 @@
+
+.tooltip {
+    -fx-text-fill: black;
+    -fx-background-color:rgb(76,81,86), rgb(209,214,219), rgb(228,233,238);
+    -fx-font-size:16, "Arial Black";
+}
+
+.tooltip .label {
+    -fx-text-fill: black;
+    -fx-font-size:16, "Arial Black";
+}
 .selector:focused,
 .selector {
     -fx-background-image: url("selector.png");
