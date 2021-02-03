@@ -112,7 +112,7 @@ public class GroupLineChart extends VBox {
         return current;
     }
 
-    public SelectableLineChart getChart(boolean last) {
+    public SelectableLineChart getChart(boolean last, boolean mini) {
         NumberAxis xAxis = new NumberAxis();
         xAxis.setAutoRanging(false);
         xAxis.setLabel(rb.getString("time_axis"));
@@ -132,6 +132,11 @@ public class GroupLineChart extends VBox {
         yAxis.setMinWidth(50);
         yAxis.setMaxWidth(50);
         yAxis.setAutoRanging(true);
+        if (mini) {
+            yAxis.setTickLabelsVisible(false);
+            yAxis.setMinorTickVisible(false);
+            yAxis.setTickMarkVisible(false);
+        }
         SelectableLineChart chart = new SelectableLineChart(xAxis, yAxis, notated);
         chart.setAnimated(false);
         chart.setLegendVisible(false);
@@ -171,9 +176,9 @@ public class GroupLineChart extends VBox {
                 continue;
             SelectableLineChart slc;
             if (j == (num.length - 1))
-                slc = getChart(true);
+                slc = getChart(true, !controlled);
             else
-                slc = getChart(false);
+                slc = getChart(false, !controlled);
             HBox box = getControlButtons(slc);
             String str = labels[i];
             for (int n = 0; n < h; n++) {
@@ -219,9 +224,9 @@ public class GroupLineChart extends VBox {
                 continue;
             SelectableLineChart slc;
             if (j == (num.length - 1))
-                slc = getChart(true);
+                slc = getChart(true, !controlled);
             else
-                slc = getChart(false);
+                slc = getChart(false, !controlled);
             HBox box = getControlButtons(slc);
             for (int n = 0; n < h; n++) {
                 charts[i] = new Chart(i, slc);
