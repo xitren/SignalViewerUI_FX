@@ -85,7 +85,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
     protected void bindSeriesOverviewUnder(GroupLineChart glc) {
         glcOverview = glc;
         fullViewFX = glc.getSeries();
-        for (int i = 0; i < fullViewFX.length; i++) {
+        for (int i = 0; i < getSwapper().length; i++) {
             double[] gtl = getTimeOverview(i);
             double[] gdl = getOverview(i);
             for (int j=0;j < gtl.length;j++) {

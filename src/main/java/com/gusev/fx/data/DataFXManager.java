@@ -58,7 +58,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         fullViewFX = glc.getSeries();
         boolean set_range = false;
         fullViewFXUpdater = new XYChart.Data[fullViewFX.length][DataLine.OVERVIEW_SIZE];
-        for (int i = 0; i < fullViewFX.length; i++) {
+        for (int i = 0; i < getSwapper().length; i++) {
             fullViewFX[i].getData().clear();
             double[] gto = getTimeOverview(i);
             double[] go = getOverview(i);
@@ -101,7 +101,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     protected void bindSeriesOverviewUnder(GroupLineChart glc) {
         glcOverview = glc;
         fullViewFX = glc.getSeries();
-        for (int i = 0; i < customViewFX.length; i++) {
+        for (int i = 0; i < getSwapper().length; i++) {
             double[] gtl = getTimeOverview(i);
             double[] gdl = getOverview(i);
             for (int j=0;j < gtl.length;j++) {
@@ -116,7 +116,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         glcView = glc;
         customViewFX = glc.getSeries();
         customViewFXUpdater = new XYChart.Data[customViewFX.length][DataLine.OVERVIEW_SIZE];
-        for (int i = 0; i < customViewFX.length; i++) {
+        for (int i = 0; i < getSwapper().length; i++) {
             customViewFX[i].getData().clear();
             double[] gtl = getTimeLine(i);
             double[] gdl = getDataLine(i);
@@ -139,7 +139,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     protected void bindSeriesViewUnder(GroupLineChart glc) {
         glcView = glc;
         customViewFX = glc.getSeries();
-        for (int i = 0; i < customViewFX.length; i++) {
+        for (int i = 0; i < getSwapper().length; i++) {
             double[] gtl = getTimeLine(i);
             double[] gdl = getDataLine(i);
             int av = getActiveView(i);
