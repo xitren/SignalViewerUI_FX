@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.StringConverter;
 
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -68,6 +69,9 @@ public class GroupLineChart extends VBox {
             mode = Mode.USUAL;
             this.series = new XYChart.Series();
             this.chart.getData().add(this.series);
+
+
+
         }
 
         public void setMode(Mode mode) {
@@ -131,6 +135,27 @@ public class GroupLineChart extends VBox {
         yAxis.setMinWidth(50);
         yAxis.setMaxWidth(50);
         yAxis.setAutoRanging(true);
+
+        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number object) {
+                int length = object.toString().length();
+                if(length > 8) { //MAKE SOMETHING BETTER HERE
+                    //System.out.println("Was string: " + object.toString() + " length: " + length + " num " + object);
+                    String nValue = object.toString().substring(0,2) +"...." +object.toString().substring(length-4, length);
+                    //System.out.println("Now: " + nValue);
+                    return nValue;
+                }
+                return object.toString();
+            }
+
+            @Override
+            public Number fromString(String string) {
+                return 0;
+            }
+        });
+
+
         SelectableLineChart chart = new SelectableLineChart(xAxis, yAxis, notated);
         chart.setAnimated(false);
         chart.setLegendVisible(false);
@@ -144,6 +169,18 @@ public class GroupLineChart extends VBox {
             synchronizeProcessSelection(chart);
         });
         HBox.setHgrow(this, Priority.ALWAYS);
+
+
+
+//            NumberAxis yAxis = new NumberAxis(20, 90, 10);
+//            yAxis.;
+
+
+
+
+
+
+
         return chart;
     }
 

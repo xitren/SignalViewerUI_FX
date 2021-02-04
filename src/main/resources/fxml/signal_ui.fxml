@@ -45,7 +45,7 @@
             </HBox>
             <VBox fx:id="p_mini" minHeight="190.0" style="-fx-background-color: rgba(100,200,200,0.2);" HBox.hgrow="ALWAYS">
                <padding>
-                  <Insets bottom="5.0" left="50.0" right="10.0" top="5.0" />
+                  <Insets bottom="5.0" left="3.0" right="10.0" top="5.0" />
                </padding></VBox>
             <VBox fx:id="p_top3" alignment="BOTTOM_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
