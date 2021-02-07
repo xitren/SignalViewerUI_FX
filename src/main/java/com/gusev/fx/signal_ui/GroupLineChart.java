@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.StringConverter;
 
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 public class GroupLineChart extends VBox {
     final static int X_LABELS_HEIGHT = 40;
+    final static int MAX_Y_LABELS_LENGTH = 8;
     private final ResourceBundle rb;
 
     private Chart[] charts;
@@ -121,6 +123,17 @@ public class GroupLineChart extends VBox {
             xAxis.setMinorTickVisible(false);
             xAxis.setTickMarkVisible(false);
             xAxis.setLabel(null);
+            xAxis.setTickLabelFormatter(new StringConverter<Number>() {
+                @Override
+                public String toString(Number object) {
+                    return String.format("%1.2f", object.doubleValue());
+                }
+
+                @Override
+                public Number fromString(String string) {
+                    return 0;
+                }
+            });
         }
         xAxis.setPrefWidth(X_LABELS_HEIGHT);
         xAxis.setMinWidth(X_LABELS_HEIGHT);
@@ -128,15 +141,30 @@ public class GroupLineChart extends VBox {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setForceZeroInRange(false);
         yAxis.setAnimated(false);
-        yAxis.setPrefWidth(50);
-        yAxis.setMinWidth(50);
-        yAxis.setMaxWidth(50);
+        yAxis.setPrefWidth(60);
+        yAxis.setMinWidth(60);
+        yAxis.setMaxWidth(60);
         yAxis.setAutoRanging(true);
         if (mini) {
-            yAxis.setTickLabelsVisible(false);
-            yAxis.setMinorTickVisible(false);
-            yAxis.setTickMarkVisible(false);
+//            yAxis.setTickLabelsVisible(false);
+//            yAxis.setMinorTickVisible(false);
+//            yAxis.setTickMarkVisible(false);
+        } else {
         }
+        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number object) {
+                String str = object.toString();
+                if (str.length() > MAX_Y_LABELS_LENGTH)
+                    str = str.substring(0, MAX_Y_LABELS_LENGTH) + "...";
+                return str;
+            }
+
+            @Override
+            public Number fromString(String string) {
+                return 0;
+            }
+        });
         SelectableLineChart chart = new SelectableLineChart(xAxis, yAxis, notated);
         chart.setAnimated(false);
         chart.setLegendVisible(false);
