@@ -123,17 +123,21 @@ public class GroupLineChart extends VBox {
             xAxis.setMinorTickVisible(false);
             xAxis.setTickMarkVisible(false);
             xAxis.setLabel(null);
-            xAxis.setTickLabelFormatter(new StringConverter<Number>() {
-                @Override
-                public String toString(Number object) {
-                    return String.format("%1.2f", object.doubleValue());
-                }
-
-                @Override
-                public Number fromString(String string) {
-                    return 0;
-                }
-            });
+        } else {
+            xAxis.setTickLabelsVisible(true);
+            xAxis.setMinorTickVisible(true);
+            xAxis.setTickMarkVisible(true);
+//            xAxis.setTickLabelFormatter(new StringConverter<Number>() {
+//                @Override
+//                public String toString(Number object) {
+//                    return String.format("%1.2f", object.doubleValue());
+//                }
+//
+//                @Override
+//                public Number fromString(String string) {
+//                    return 0;
+//                }
+//            });
         }
         xAxis.setPrefWidth(X_LABELS_HEIGHT);
         xAxis.setMinWidth(X_LABELS_HEIGHT);
@@ -141,14 +145,14 @@ public class GroupLineChart extends VBox {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setForceZeroInRange(false);
         yAxis.setAnimated(false);
-        yAxis.setPrefWidth(60);
-        yAxis.setMinWidth(60);
-        yAxis.setMaxWidth(60);
+        yAxis.setPrefWidth(80);
+        yAxis.setMinWidth(80);
+        yAxis.setMaxWidth(80);
         yAxis.setAutoRanging(true);
         if (mini) {
-//            yAxis.setTickLabelsVisible(false);
-//            yAxis.setMinorTickVisible(false);
-//            yAxis.setTickMarkVisible(false);
+            yAxis.setTickLabelsVisible(false);
+            yAxis.setMinorTickVisible(false);
+            yAxis.setTickMarkVisible(false);
         } else {
         }
         yAxis.setTickLabelFormatter(new StringConverter<Number>() {

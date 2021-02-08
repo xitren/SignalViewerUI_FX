@@ -135,8 +135,8 @@ public class GraphController implements Initializable {
         for (int h : conf) {
             size += h;
         }
-        if (size != str.length && str.length > 0)
-            throw new IndexOutOfBoundsException("Found more/not enough labels than expected!");
+        if (size > str.length)
+            throw new IndexOutOfBoundsException("Found not enough labels than expected!");
         graph_positions.getSelectionModel().select(str.length - 1);
         this.str = str;
         for (int i = 0;i < graph_pos.length;i++) {

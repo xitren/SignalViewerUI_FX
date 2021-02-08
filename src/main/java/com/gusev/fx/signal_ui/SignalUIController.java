@@ -99,7 +99,7 @@ public class SignalUIController implements Initializable {
     }
 
     public void bind(int[] mini, int[] full, String[] labels, DataFXManager datafx) {
-        graphCtrl.setConfiguration(full, labels);
+        graphCtrl.setConfiguration(full, datafx.getDataLabel());
         p_mini.getChildren().clear();
         p_graph.getChildren().clear();
         board.setRight(controlTool);
