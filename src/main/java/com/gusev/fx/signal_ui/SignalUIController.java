@@ -98,11 +98,7 @@ public class SignalUIController implements Initializable {
         return lcwm_small.getSelectedRange();
     }
 
-    public void bind(int[] mini, int[] full, String[] labels, DataFXManager datafx) {
-        graphCtrl.setConfiguration(full, datafx.getDataLabel());
-        p_mini.getChildren().clear();
-        p_graph.getChildren().clear();
-        board.setRight(controlTool);
+    private void reLCWM(int[] mini, int[] full, String[] labels) {
         lcwm = new GroupLineChart(full, labels, true, true, resources);
         lcwm_small = new GroupLineChart(mini, false, false, resources);
         lcwm_small.setOnChangeSelection(()->{
@@ -141,7 +137,9 @@ public class SignalUIController implements Initializable {
                 datafx.setView(rangeMarker);
             }
         });
+        p_graph.getChildren().clear();
         p_graph.getChildren().add(lcwm);
+        p_mini.getChildren().clear();
         p_mini.getChildren().add(lcwm_small);
         cut.setDisable(false);
         tool_pause.setDisable(true);
@@ -150,12 +148,20 @@ public class SignalUIController implements Initializable {
             tool_pause.setDisable(false);
             stop.setDisable(false);
         }
-        this.datafx = datafx;
         lcwm.clear();
         lcwm_small.clear();
         datafx.bindSeriesOverview(lcwm_small);
         datafx.bindSeriesView(lcwm);
         marksCtrl.setData(this.datafx.getMarks());
+    }
+
+    public void bind(int[] mini, int[] full, String[] labels, DataFXManager datafx) {
+        graphCtrl.setConfiguration(full, datafx.getDataLabel());
+        p_mini.getChildren().clear();
+        p_graph.getChildren().clear();
+        board.setRight(controlTool);
+        this.datafx = datafx;
+        reLCWM(mini, full, labels);
     }
 
     public void OnLoad(ActionEvent actionEvent) {
@@ -299,14 +305,7 @@ public class SignalUIController implements Initializable {
             Pane pane = fxmlLoader.load(is);
             graphCtrl = fxmlLoader.<GraphController>getController();
             graphCtrl.setOnUpdate(()->{
-                lcwm = new GroupLineChart(graphCtrl.getConfiguration(), graphCtrl.getConfigurationLabels(),
-                        true, false, resources);
-                p_graph.getChildren().clear();
-                p_graph.getChildren().add(lcwm);
-                lcwm.clear();
-                datafx.bindSeriesView(lcwm);
-                datafx.setSwapper(graphCtrl.getConfigurationChannels());
-                lcwm.setHeight(p_graph.getHeight());
+                reLCWM(graphCtrl.getConfiguration(), graphCtrl.getConfiguration(), graphCtrl.getConfigurationLabels());
             });
             return pane;
         } catch (IOException ex) {

@@ -173,8 +173,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     }
 
     protected void setView(int start, int end) {
-        for (int i=0;i < dataLines.size();i++) {
-            dataLines.get(i).setView(start, end);
+        for (int i=0;i < getSwapper().length;i++) {
+            dataLines.get(getSwapper()[i]).setView(start, end);
         }
         bindSeriesViewUnder(glcView);
     }
