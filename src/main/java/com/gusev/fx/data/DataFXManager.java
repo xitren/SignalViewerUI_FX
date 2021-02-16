@@ -19,15 +19,24 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     protected XYChart.Data<Number, Number>[][] fullViewFXUpdater;
     protected XYChart.Series<Number, Number>[] customViewFX;
     private XYChart.Data<Number, Number>[][] customViewFXUpdater;
+    private ExtendedDataLine.Mode[] modes;
     private double discretisation = 250;
     private double timePeriod = 0.004;
 
     public DataFXManager(int n, ExtendedDataLine[] edl) {
         super(n, edl);
+        modes = new ExtendedDataLine.Mode[n];
+        for (int i = 0;i < n;i++) {
+            modes[i] = ExtendedDataLine.Mode.USUAL;
+        }
     }
 
     public DataFXManager(int n) {
         super(n);
+        modes = new ExtendedDataLine.Mode[n];
+        for (int i = 0;i < n;i++) {
+            modes[i] = ExtendedDataLine.Mode.USUAL;
+        }
     }
 
     public DataFXManager(double[] ... data) {
@@ -118,8 +127,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         customViewFXUpdater = new XYChart.Data[customViewFX.length][DataLine.OVERVIEW_SIZE];
         for (int i = 0; i < customViewFX.length; i++) {
             customViewFX[i].getData().clear();
-            double[] gtl = getTimeLine(i);
-            double[] gdl = getDataLine(i);
+            double[] gtl = getTimeLine(i, modes[i]);
+            double[] gdl = getDataLine(i, modes[i]);
             for (int j=0;j < gtl.length;j++) {
                 XYChart.Data xyd;
                 if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER))
@@ -130,7 +139,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                 customViewFX[i].getData().add(xyd);
             }
             if (i == (customViewFX.length - 1)) {
-                glc.setRangeMax(gtl[0], gtl[getActiveView(i) - 1]);
+                glc.setRangeMax(gtl[0], gtl[getActiveView(i, modes[i]) - 1]);
             }
         }
         resetMarks(glc);
@@ -140,9 +149,9 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         glcView = glc;
         customViewFX = glc.getSeries();
         for (int i = 0; i < customViewFX.length; i++) {
-            double[] gtl = getTimeLine(i);
-            double[] gdl = getDataLine(i);
-            int av = getActiveView(i);
+            double[] gtl = getTimeLine(i, modes[i]);
+            double[] gdl = getDataLine(i, modes[i]);
+            int av = getActiveView(i, modes[i]);
             if (customViewFX[i].getData().size() != av) {
                 for (int j=customViewFX[i].getData().size();j < av;j++) {
                     customViewFX[i].getData().add(customViewFXUpdater[i][j]);
@@ -174,7 +183,12 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
 
     protected void setView(int start, int end) {
         for (int i=0;i < getSwapper().length;i++) {
-            dataLines.get(getSwapper()[i]).setView(start, end);
+            ExtendedDataLine dl = dataLines.get(getSwapper()[i]);
+            dl.clearModes();
+            for (ExtendedDataLine.Mode em : modes) {
+                dl.addMode(em);
+            }
+            dl.setView(start, end);
         }
         bindSeriesViewUnder(glcView);
     }
@@ -258,7 +272,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     }
 
     public void setMode(int i, ExtendedDataLine.Mode def) {
-        dataLines.get(i).setMode(def);
+        modes[i] = def;
     }
 
     public List<Mark> getMarks() {

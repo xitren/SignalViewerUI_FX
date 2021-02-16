@@ -133,7 +133,8 @@ public class SignalUIController implements Initializable {
                 }
                 XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
                 if (rangeMarker == null)
-                    rangeMarker = new XYChart.Data<>(0, datafx.getActiveView(0));
+                    rangeMarker = new XYChart.Data<>(0,
+                            datafx.getActiveView(0, ExtendedDataLine.Mode.USUAL));
                 datafx.setView(rangeMarker);
             }
         });
