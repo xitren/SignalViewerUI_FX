@@ -98,7 +98,7 @@ public class SignalUIController implements Initializable {
         return lcwm_small.getSelectedRange();
     }
 
-    private void reLCWM(int[] mini, int[] full, String[] labels) {
+    private void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
         lcwm = new GroupLineChart(full, labels, true, true, resources);
         lcwm_small = new GroupLineChart(mini, false, false, resources);
         lcwm_small.setOnChangeSelection(()->{
@@ -108,6 +108,7 @@ public class SignalUIController implements Initializable {
                 datafx.setView(rangeMarker);
             }
         });
+        datafx.setSwapper(configurationChannels);
         lcwm.setOnChangeMode(()->{
             if (datafx != null) {
                 GroupLineChart.Chart[] crt = lcwm.getCharts();
@@ -162,7 +163,7 @@ public class SignalUIController implements Initializable {
         p_graph.getChildren().clear();
         board.setRight(controlTool);
         this.datafx = datafx;
-        reLCWM(mini, full, labels);
+        reLCWM(mini, full, datafx.getSwapper(), labels);
     }
 
     public void OnLoad(ActionEvent actionEvent) {
@@ -306,7 +307,8 @@ public class SignalUIController implements Initializable {
             Pane pane = fxmlLoader.load(is);
             graphCtrl = fxmlLoader.<GraphController>getController();
             graphCtrl.setOnUpdate(()->{
-                reLCWM(graphCtrl.getConfiguration(), graphCtrl.getConfiguration(), graphCtrl.getConfigurationLabels());
+                reLCWM(graphCtrl.getConfiguration(), graphCtrl.getConfiguration(),
+                        graphCtrl.getConfigurationChannels(), graphCtrl.getConfigurationLabels());
             });
             return pane;
         } catch (IOException ex) {

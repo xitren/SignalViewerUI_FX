@@ -39,8 +39,8 @@
                         </VBox>
                         <VBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <ChoiceBox fx:id="graph_pos_2" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                               <ChoiceBox fx:id="graph_pos_1" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_pos_2" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                               <ChoiceBox fx:id="graph_pos_3" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                               <ChoiceBox fx:id="graph_pos_4" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                               <ChoiceBox fx:id="graph_pos_5" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
