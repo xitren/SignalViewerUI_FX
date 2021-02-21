@@ -46,6 +46,10 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
 
     public DataFXManager(String filename) throws IOException {
         super(filename);
+        modes = new ExtendedDataLine.Mode[dataLines.size()];
+        for (int i = 0;i < dataLines.size();i++) {
+            modes[i] = ExtendedDataLine.Mode.USUAL;
+        }
         unbind();
     }
 

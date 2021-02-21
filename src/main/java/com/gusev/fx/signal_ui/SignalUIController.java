@@ -103,7 +103,8 @@ public class SignalUIController implements Initializable {
         lcwm_small = new GroupLineChart(mini, false, false, resources);
         lcwm_small.setOnChangeSelection(()->{
             XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
-            onChangeSelection.run();
+            if (onChangeSelection != null)
+                onChangeSelection.run();
             if (datafx != null) {
                 datafx.setView(rangeMarker);
             }

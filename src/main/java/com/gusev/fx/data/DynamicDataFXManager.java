@@ -6,6 +6,7 @@ import com.gusev.data.window.op.WindowDynamicParser;
 import com.gusev.fx.signal_ui.GroupLineChart;
 import javafx.application.Platform;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -56,6 +57,12 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
         super(n);
         timer.schedule(task_data, 2000, 250);
     }
+
+    public DynamicDataFXManager(String filename) throws IOException {
+        super(filename);
+        timer.schedule(task_data, 2000, 250);
+    }
+
 
     public void addParser(WindowDynamicParser wdp, int channel) {
         this.dataLines.get(channel).addParser(wdp);
