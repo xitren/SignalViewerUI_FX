@@ -46,6 +46,10 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
 
     public DataFXManager(String filename) throws IOException {
         super(filename);
+        modes = new ExtendedDataLine.Mode[dataLines.size()];
+        for (int i = 0;i < dataLines.size();i++) {
+            modes[i] = ExtendedDataLine.Mode.USUAL;
+        }
         unbind();
     }
 
@@ -157,7 +161,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                     customViewFX[i].getData().add(customViewFXUpdater[i][j]);
                 }
             }
-            if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER)) {
+            if (modes[i].equals(ExtendedDataLine.Mode.FOURIER)) {
                 for (int j = 0; j < av; j++) {
                     customViewFXUpdater[i][j].setXValue(gtl[j]);
                     customViewFXUpdater[i][j].setYValue(gdl[j]);
@@ -173,7 +177,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             }
             if ((av) <= 0)
                 av = 1;
-            if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER)) {
+            if (modes[i].equals(ExtendedDataLine.Mode.FOURIER)) {
                 glc.setRangeMax(i, gtl[0], gtl[av - 1]);
             } else {
                 glc.setRangeMax(i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
