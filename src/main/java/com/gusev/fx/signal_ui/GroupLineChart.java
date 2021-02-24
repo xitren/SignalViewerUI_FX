@@ -199,7 +199,7 @@ public class GroupLineChart extends VBox {
         for (int h : num) {
             size += h;
         }
-        if (size != labels.length)
+        if (size > labels.length)
             throw new IndexOutOfBoundsException("Found more/not enough labels than expected!");
         charts = new Chart[size];
         for (int j = 0;j < num.length;j++) {
