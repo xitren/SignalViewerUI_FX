@@ -181,8 +181,19 @@ public class GroupLineChart extends VBox {
         chart.setOnSelection(()->{
             synchronizeProcessSelection(chart);
         });
+        chart.setOnCursor(()->{
+            synchronizeCursor(chart);
+        });
         HBox.setHgrow(this, Priority.ALWAYS);
         return chart;
+    }
+
+    private void synchronizeCursor(SelectableLineChart slc) {
+        for (Chart ll : charts) {
+            if (ll.chart.equals(slc))
+                continue;
+            ll.chart.setVerticalCursor(slc.getCursorMarker());
+        }
     }
 
     public GroupLineChart(int[] num, String[] labels, boolean controlled, boolean notated, ResourceBundle rb) {

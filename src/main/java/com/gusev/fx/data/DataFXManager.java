@@ -185,7 +185,15 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         }
     }
 
+    private int[] start_end = new int[2];
+
+    public int[] getLastView() {
+        return start_end;
+    }
+
     protected void setView(int start, int end) {
+        start_end[0] = start;
+        start_end[1] = end;
         for (int i=0;i < getSwapper().length;i++) {
             ExtendedDataLine dl = dataLines.get(getSwapper()[i]);
             dl.clearModes();

@@ -122,14 +122,20 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                 }
             });
         }
-        if (online && (fullViewFX.length > 0)) {
-            int end = getDataContainerSize(0);
-            Platform.runLater(() -> {
-                int start = end - OVERVIEW_SIZE - 1;
-                if (start < 0)
-                    start = 0;
-                setView(start, end);
-            });
+        if (fullViewFX.length > 0) {
+            if (online) {
+                int end = getDataContainerSize(0);
+                Platform.runLater(() -> {
+                    int start = end - OVERVIEW_SIZE - 1;
+                    if (start < 0)
+                        start = 0;
+                    setView(start, end);
+                });
+            } else {
+                Platform.runLater(() -> {
+                    bindSeriesViewUnder(glcView);
+                });
+            }
         }
     }
 }

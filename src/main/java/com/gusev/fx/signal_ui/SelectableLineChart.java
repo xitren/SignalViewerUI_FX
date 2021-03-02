@@ -1,15 +1,20 @@
 package com.gusev.fx.signal_ui;
 
+import javafx.collections.ObservableList;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
 
+import java.util.Optional;
+
 public class SelectableLineChart extends LineChartWithMarkers {
     private boolean dynamic = false;
     private boolean selection = false;
+    private XYChart.Data<Number, Number> cursorMarker = new XYChart.Data<Number, Number>(0, 0);
     private XYChart.Data<Number, Number> rangeMarker;
     private XYChart.Data<Number, Number> rangeMax = new XYChart.Data<>(0, 0);
     private Runnable onScroll;
+    private Runnable onCursor;
     private Runnable onProcessSelect;
     private boolean notated;
 
@@ -19,13 +24,16 @@ public class SelectableLineChart extends LineChartWithMarkers {
         setLegendVisible(false);
         setCreateSymbols(false);
         lookup(".chart-plot-background").setOnMouseMoved((me)->{
-            if (dynamic || selection)
+            if (dynamic)
                 return;
             Number timeValue = this.getXAxis().getValueForDisplay(me.getX());
-            Number value = this.getYAxis().getValueForDisplay(me.getY());
-            XYChart.Data<Number, Number> verticalMarker = new XYChart.Data<Number, Number>(timeValue, value);
-            this.clearVerticalMarkers();
-            this.addVerticalValueMarker(verticalMarker);
+            ObservableList<XYChart.Data<Number, Number>> series = getData().get(0).getData();
+            Number value = 0;
+            cursorMarker.setXValue(timeValue);
+            cursorMarker.setYValue(value);
+            this.setVerticalCursor(cursorMarker);
+            if (onCursor != null)
+                onCursor.run();
         });
         lookup(".chart-plot-background").setOnScroll((se)->{
             if (selection) {
@@ -106,6 +114,10 @@ public class SelectableLineChart extends LineChartWithMarkers {
         });
     }
 
+    public XYChart.Data<Number, Number> getCursorMarker() {
+        return cursorMarker;
+    }
+
     public XYChart.Data<Number, Number> getSelectedRange() {
         return rangeMarker;
     }
@@ -149,6 +161,10 @@ public class SelectableLineChart extends LineChartWithMarkers {
 
     public void setOnChangeSelection(Runnable onScroll) {
         this.onScroll = onScroll;
+    }
+
+    public void setOnCursor(Runnable onCursor) {
+        this.onCursor = onCursor;
     }
 
     public void setOnSelection(Runnable on) {
