@@ -73,6 +73,13 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         if (this.getData().size() > 0) {
             verticalCursor.setYValue(getValueByMarker(this.getData().get(0).getData(), marker.getXValue()));
         }
+        Line line = (Line) verticalCursor.getNode();
+        Text text = (Text) verticalCursor.getExtraValue();
+        layoutPlotChildren();
+        getPlotChildren().remove(line);
+        getPlotChildren().remove(text);
+        getPlotChildren().add(line);
+        getPlotChildren().add(text);
     }
 
     public void addHorizontalValueMarker(Data<Number, Number> marker) {

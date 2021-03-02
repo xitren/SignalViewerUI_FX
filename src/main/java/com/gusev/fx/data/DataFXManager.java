@@ -81,7 +81,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                 fullViewFX[i].getData().add(xyd);
             }
             if (i == (fullViewFX.length - 1)) {
-                glc.setRangeMax(gto[0], gto[gto.length - 1]);
+                glc.setRangeMax(gto[0] * getTimePeriod(), gto[gto.length - 1] * getTimePeriod());
             }
         }
         resetMarks(glc);
