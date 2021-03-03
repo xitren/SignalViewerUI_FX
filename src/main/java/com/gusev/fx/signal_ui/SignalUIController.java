@@ -69,9 +69,10 @@ public class SignalUIController implements Initializable {
     private Parent marksTool = null;
     private Parent graphTool = null;
     private FilterController filterCtrl = null;
-    private GraphController graphCtrl = null;
+    public GraphController graphCtrl = null;
     private MarksController marksCtrl = null;
-    private ResourceBundle resources;
+    public ResourceBundle resources;
+    public String PATH_graph_tool = "/fxml/control_graph.fxml";
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -98,7 +99,7 @@ public class SignalUIController implements Initializable {
         return lcwm_small.getSelectedRange();
     }
 
-    private void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
+    public void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
         lcwm = new GroupLineChart(full, labels, true, true, resources);
         lcwm_small = new GroupLineChart(mini, false, false, resources);
         lcwm_small.setOnChangeSelection(()->{
@@ -300,11 +301,11 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
-    private Parent loadGraphControl() {
+    public Parent loadGraphControl() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setResources(resources);
-            InputStream is = this.getClass().getResource("/fxml/control_graph.fxml").openStream();
+            InputStream is = this.getClass().getResource(PATH_graph_tool).openStream();
             Pane pane = fxmlLoader.load(is);
             graphCtrl = fxmlLoader.<GraphController>getController();
             graphCtrl.setOnUpdate(()->{
