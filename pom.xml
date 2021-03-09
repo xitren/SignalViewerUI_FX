@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gusev.fx</groupId>
 	<artifactId>signal-ui-fx</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.4-SNAPSHOT</version>
 	<name>Data viewer for FX</name>
 	<description></description>
 
@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>com.gusev.data</groupId>
 			<artifactId>browser-data-model</artifactId>
-			<version>1.4.1-SNAPSHOT</version>
+			<version>1.4.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 

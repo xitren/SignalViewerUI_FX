@@ -2,6 +2,7 @@ package com.gusev.fx.data;
 
 import com.gusev.data.*;
 import com.gusev.fx.signal_ui.GroupLineChart;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
@@ -9,8 +10,10 @@ import javafx.scene.paint.Color;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class DataFXManager<T extends DataContainer> extends DataManager<T> {
+public class DataFXManager<T extends DataContainer> extends DataManager<T> implements Observer {
     private final static int VIEW_SIZE = 1024;
 
     protected GroupLineChart glcOverview;
@@ -18,10 +21,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     protected XYChart.Series<Number, Number>[] fullViewFX;
     protected XYChart.Data<Number, Number>[][] fullViewFXUpdater;
     protected XYChart.Series<Number, Number>[] customViewFX;
-    private XYChart.Data<Number, Number>[][] customViewFXUpdater;
-    private ExtendedDataLine.Mode[] modes;
-    private double discretisation = 250;
-    private double timePeriod = 0.004;
+    protected XYChart.Data<Number, Number>[][] customViewFXUpdater;
 
     public DataFXManager(int n, ExtendedDataLine[] edl) {
         super(n, edl);
@@ -29,6 +29,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         for (int i = 0;i < n;i++) {
             modes[i] = ExtendedDataLine.Mode.USUAL;
         }
+        this.addObserver(this);
     }
 
     public DataFXManager(int n) {
@@ -37,11 +38,13 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         for (int i = 0;i < n;i++) {
             modes[i] = ExtendedDataLine.Mode.USUAL;
         }
+        this.addObserver(this);
     }
 
     public DataFXManager(double[] ... data) {
         super(data);
         unbind();
+        this.addObserver(this);
     }
 
     public DataFXManager(String filename) throws IOException {
@@ -51,6 +54,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             modes[i] = ExtendedDataLine.Mode.USUAL;
         }
         unbind();
+        this.addObserver(this);
     }
 
     @Override
@@ -67,6 +71,8 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
     }
 
     public void bindSeriesOverview(GroupLineChart glc) {
+        if (glc == null)
+            return;
         glcOverview = glc;
         fullViewFX = glc.getSeries();
         boolean set_range = false;
@@ -81,22 +87,31 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                 fullViewFX[i].getData().add(xyd);
             }
             if (i == (fullViewFX.length - 1)) {
-                glc.setRangeMax(gto[0], gto[gto.length - 1]);
+                glc.setRangeMax(gto[0] * getTimePeriod(), gto[gto.length - 1] * getTimePeriod());
             }
         }
         resetMarks(glc);
     }
 
-    @Override
-    public void clearMarks() {
-        super.clearMarks();
-        if (glcView != null)
-            resetMarks(glcView);
-        if (glcOverview != null)
-            resetMarks(glcOverview);
+    protected void bindSeriesOverviewUnder(GroupLineChart glc) {
+        if (glc == null)
+            return;
+        glcOverview = glc;
+        fullViewFX = glc.getSeries();
+        for (int i = 0; i < fullViewFX.length; i++) {
+            double[] gtl = getTimeOverview(i);
+            double[] gdl = getOverview(i);
+            for (int j=0;j < gtl.length;j++) {
+                fullViewFXUpdater[i][j].setXValue(gtl[j] * getTimePeriod());
+                fullViewFXUpdater[i][j].setYValue(gdl[j]);
+            }
+            glc.setRangeMax(i, gtl[0], gtl[gtl.length - 1]);
+        }
     }
 
     public void resetMarks(GroupLineChart glc) {
+        if (glc == null)
+            return;
         glc.clearMarks();
         for (Mark m : this.marks) {
             if ( (0 <= m.channel) && (m.channel < this.dataLines.size()) ) {
@@ -111,21 +126,9 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         }
     }
 
-    protected void bindSeriesOverviewUnder(GroupLineChart glc) {
-        glcOverview = glc;
-        fullViewFX = glc.getSeries();
-        for (int i = 0; i < fullViewFX.length; i++) {
-            double[] gtl = getTimeOverview(i);
-            double[] gdl = getOverview(i);
-            for (int j=0;j < gtl.length;j++) {
-                fullViewFXUpdater[i][j].setXValue(gtl[j] * getTimePeriod());
-                fullViewFXUpdater[i][j].setYValue(gdl[j]);
-            }
-            glc.setRangeMax(i, gtl[0], gtl[gtl.length - 1]);
-        }
-    }
-
     public void bindSeriesView(GroupLineChart glc) {
+        if (glc == null)
+            return;
         glcView = glc;
         customViewFX = glc.getSeries();
         customViewFXUpdater = new XYChart.Data[customViewFX.length][DataLine.OVERVIEW_SIZE];
@@ -143,13 +146,18 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                 customViewFX[i].getData().add(xyd);
             }
             if (i == (customViewFX.length - 1)) {
-                glc.setRangeMax(gtl[0], gtl[getActiveView(i, modes[i]) - 1]);
+                int av = getActiveView(i, modes[i]);
+                if (av <= 0)
+                    av = 1;
+                glc.setRangeMax(gtl[0], gtl[av - 1]);
             }
         }
         resetMarks(glc);
     }
 
     protected void bindSeriesViewUnder(GroupLineChart glc) {
+        if (glc == null)
+            return;
         glcView = glc;
         customViewFX = glc.getSeries();
         for (int i = 0; i < customViewFX.length; i++) {
@@ -157,7 +165,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
             double[] gdl = getDataLine(i, modes[i]);
             int av = getActiveView(i, modes[i]);
             if (customViewFX[i].getData().size() != av) {
-                for (int j=customViewFX[i].getData().size();j < av;j++) {
+                for (int j = customViewFX[i].getData().size();j < av;j++) {
                     customViewFX[i].getData().add(customViewFXUpdater[i][j]);
                 }
             }
@@ -183,18 +191,6 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
                 glc.setRangeMax(i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
             }
         }
-    }
-
-    protected void setView(int start, int end) {
-        for (int i=0;i < getSwapper().length;i++) {
-            ExtendedDataLine dl = dataLines.get(getSwapper()[i]);
-            dl.clearModes();
-            for (ExtendedDataLine.Mode em : modes) {
-                dl.addMode(em);
-            }
-            dl.setView(start, end);
-        }
-        bindSeriesViewUnder(glcView);
     }
 
     public boolean isDynamic() {
@@ -242,62 +238,45 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> {
         super.cut((int)(xy.getXValue().intValue() * getDiscretisation()),
                 (int)((xy.getYValue().intValue() - xy.getXValue().intValue()) * getDiscretisation()));
         fixMarks(xy);
-        unsetOverview();
-        updateOverview();
-        bindSeriesOverview(glcOverview);
-        bindSeriesView(glcView);
         setMaxView();
     }
 
     protected void setMaxView() {
         for (int i=0;i < dataLines.size();i++) {
-            dataLines.get(i).setMaxView();
+            int ss = dataLines.get(i).getMaxView();
+            super.setView(0, ss);
+            break;
         }
-        bindSeriesViewUnder(glcView);
     }
 
     public void setView(XYChart.Data<Number, Number> xy) {
         XYChart.Data<Number, Number> xy2 = new XYChart.Data<>(xy.getXValue(), xy.getYValue());
         xy2.setXValue(xy2.getXValue().doubleValue() * getDiscretisation());
         xy2.setYValue(xy2.getYValue().doubleValue() * getDiscretisation());
-        setViewP(xy2);
-    }
-
-    protected void setViewP(XYChart.Data<Number, Number> xy) {
-        for (int i=0;i < dataLines.size();i++) {
-            dataLines.get(i).setView(xy.getXValue().intValue(),
-                    xy.getYValue().intValue());
-        }
-        bindSeriesViewUnder(glcView);
-    }
-
-    public ObservableList<XYChart.Data<Number, Number>> getVisualPoints(int i) {
-        return fullViewFX[i].getData();
-    }
-
-    public void setMode(int i, ExtendedDataLine.Mode def) {
-        modes[i] = def;
+        super.setView(xy2.getXValue().intValue(), xy2.getYValue().intValue());
     }
 
     public List<Mark> getMarks() {
         return this.marks;
     }
 
-    public double getDiscretisation() {
-        return discretisation;
-    }
-
-    public void setDiscretisation(double discretisation) {
-        this.timePeriod = 1 / discretisation;
-        this.discretisation = discretisation;
-    }
-
-    public double getTimePeriod() {
-        return timePeriod;
-    }
-
-    public void setTimePeriod(double timePeriod) {
-        this.timePeriod = timePeriod;
-        this.discretisation = 1 / timePeriod;
+    @Override
+    public void update(Observable o, Object arg) {
+        switch ((DataManager.Action) arg) {
+            case OverviewUpdated:
+                bindSeriesOverviewUnder(glcOverview);
+                break;
+            case ViewUpdated:
+                bindSeriesViewUnder(glcView);
+                break;
+            case MarksUpdated:
+                Platform.runLater(()-> {
+                    resetMarks(glcOverview);
+                    resetMarks(glcView);
+                });
+                break;
+            default:
+                break;
+        }
     }
 }

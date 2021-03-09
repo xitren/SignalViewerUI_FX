@@ -50,17 +50,17 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
 
     public DynamicDataFXManager(int n, ExtendedDataLine[] edl) {
         super(n, edl);
-        timer.schedule(task_data, 2000, 250);
+//        timer.schedule(task_data, 2000, 250);
     }
 
     public DynamicDataFXManager(int n) {
         super(n);
-        timer.schedule(task_data, 2000, 250);
+//        timer.schedule(task_data, 2000, 250);
     }
 
     public DynamicDataFXManager(String filename) throws IOException {
         super(filename);
-        timer.schedule(task_data, 2000, 250);
+//        timer.schedule(task_data, 2000, 250);
     }
 
 
@@ -74,9 +74,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
 
     public void addData(double[][] data) {
         if (!pause)
-            for (int i=0;i < dataLines.size();i++) {
-                dataLines.get(i).add(data[i]);
-            }
+            super.addData(data);
     }
 
     public boolean isOnline() {
@@ -106,6 +104,8 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
 
     @Override
     protected void bindSeriesOverviewUnder(GroupLineChart glc) {
+        if (glc == null)
+            return;
         glcOverview = glc;
         fullViewFX = glc.getSeries();
         for (int i = 0; i < getSwapper().length && i < fullViewFXUpdater.length; i++) {
@@ -122,13 +122,55 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                 }
             });
         }
-        if (online && (fullViewFX.length > 0)) {
-            int end = getDataContainerSize(0);
-            Platform.runLater(() -> {
+        if (fullViewFX.length > 0) {
+            if (online) {
+                int end = getDataContainerSize(0);
                 int start = end - OVERVIEW_SIZE - 1;
                 if (start < 0)
                     start = 0;
                 setView(start, end);
+            }
+        }
+    }
+
+    @Override
+    protected void bindSeriesViewUnder(GroupLineChart glc) {
+        if (glc == null)
+            return;
+        glcView = glc;
+        customViewFX = glc.getSeries();
+        for (int i = 0; i < customViewFX.length; i++) {
+            double[] gtl = getTimeLine(i, modes[i]);
+            double[] gdl = getDataLine(i, modes[i]);
+            final int av = getActiveView(i, modes[i]);
+            final int st_i = i;
+            Platform.runLater(() ->{
+                if (customViewFX[st_i].getData().size() != av) {
+                    for (int j = customViewFX[st_i].getData().size();j < av;j++) {
+                        customViewFX[st_i].getData().add(customViewFXUpdater[st_i][j]);
+                    }
+                }
+                if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
+                    for (int j = 0; j < av; j++) {
+                        customViewFXUpdater[st_i][j].setXValue(gtl[j]);
+                        customViewFXUpdater[st_i][j].setYValue(gdl[j]);
+                    }
+                } else {
+                    for (int j = 0; j < av; j++) {
+                        customViewFXUpdater[st_i][j].setXValue(gtl[j] * getTimePeriod());
+                        customViewFXUpdater[st_i][j].setYValue(gdl[j]);
+                    }
+                }
+                for (int j=av;j < gdl.length;j++) {
+                    customViewFX[st_i].getData().remove(customViewFXUpdater[st_i][j]);
+                }
+//                if ((av) <= 0)
+//                    av = 1;
+                if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
+                    glc.setRangeMax(st_i, gtl[0], gtl[av - 1]);
+                } else {
+                    glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
+                }
             });
         }
     }

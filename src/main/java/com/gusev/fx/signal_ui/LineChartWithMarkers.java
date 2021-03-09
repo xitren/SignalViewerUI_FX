@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -26,6 +27,7 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
     private ObservableList<Data<Number, Number>> verticalMarkers;
     private ObservableList<Data<Number, Number>> verticalRangeMarkers;
     private ObservableList<Data<Number, Number>> verticalRangeLabels;
+    private Data<Number, Number> verticalCursor = new Data<>(0, 0);
 
     public LineChartWithMarkers(Axis<Number> xAxis, Axis<Number> yAxis) {
         super(xAxis, yAxis);
@@ -39,6 +41,45 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         verticalRangeLabels = FXCollections.observableArrayList(data -> new Observable[] {data.XValueProperty()});
         verticalRangeLabels = FXCollections.observableArrayList(data -> new Observable[] {data.YValueProperty()}); // 2nd type of the range is X type as well
         verticalRangeLabels.addListener((InvalidationListener)observable -> layoutPlotChildren());
+        createVerticalCursor();
+    }
+
+    private void createVerticalCursor() {
+        Line line = new Line();
+        line.setFill(Color.GRAY);
+        line.setStroke(Color.GRAY);
+        verticalCursor.setNode(line);
+        getPlotChildren().add(line);
+        Text ll = new Text("<>");
+        ll.setFill(Color.BLACK);
+        verticalCursor.setExtraValue(ll);
+        getPlotChildren().add(ll);
+        setMouseTransparentToEverythingButBackground();
+    }
+
+    private static Number getValueByMarker(ObservableList<XYChart.Data<Number, Number>> series, Number timeValue) {
+        for (int i = 0;i < series.size();i++) {
+            XYChart.Data<Number, Number> num = series.get(i);
+            if (num.getXValue().doubleValue() > timeValue.doubleValue()) {
+                return series.get(i).getYValue();
+            }
+        }
+        return 0;
+    }
+
+    public void setVerticalCursor(Data<Number, Number> marker) {
+        Objects.requireNonNull(marker, "the marker must not be null");
+        verticalCursor.setXValue(marker.getXValue());
+        if (this.getData().size() > 0) {
+            verticalCursor.setYValue(getValueByMarker(this.getData().get(0).getData(), marker.getXValue()));
+        }
+        Line line = (Line) verticalCursor.getNode();
+        Text text = (Text) verticalCursor.getExtraValue();
+        layoutPlotChildren();
+        getPlotChildren().remove(line);
+        getPlotChildren().remove(text);
+        getPlotChildren().add(line);
+        getPlotChildren().add(text);
     }
 
     public void addHorizontalValueMarker(Data<Number, Number> marker) {
@@ -125,6 +166,25 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
     @Override
     protected void layoutPlotChildren() {
         super.layoutPlotChildren();
+        {
+            Line line = (Line) verticalCursor.getNode();
+            line.setStartX(getXAxis().getDisplayPosition(verticalCursor.getXValue()) + 0.5);  // 0.5 for crispness
+            line.setEndX(line.getStartX());
+            line.setStartY(0d);
+            line.setEndY(getBoundsInLocal().getHeight());
+            line.toFront();
+            if (verticalCursor.getExtraValue() != null) {
+                Text text = (Text) verticalCursor.getExtraValue();
+                text.setText(String.format("<%1.2f, %1.2f>",
+                        verticalCursor.getXValue().doubleValue(),
+                        verticalCursor.getYValue().doubleValue()));
+                text.setX(line.getStartX() + 20);
+                text.setY(line.getStartY() + 40);
+                text.setTextAlignment(TextAlignment.LEFT);
+                text.setFont(new Font("Arial", 12));
+                text.toFront();
+            }
+        }
         for (Data<Number, Number> horizontalMarker : horizontalMarkers) {
             Line line = (Line) horizontalMarker.getNode();
             line.setStartX(0);
