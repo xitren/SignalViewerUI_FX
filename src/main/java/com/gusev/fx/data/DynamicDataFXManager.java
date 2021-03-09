@@ -94,11 +94,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
         }
         if (fullViewFX.length > 0) {
             if (online) {
-                int end = getDataContainerSize(0);
-                int start = end - OVERVIEW_SIZE - 1;
-                if (start < 0)
-                    start = 0;
-                setView(start, end);
+                setTailView();
             }
         }
     }

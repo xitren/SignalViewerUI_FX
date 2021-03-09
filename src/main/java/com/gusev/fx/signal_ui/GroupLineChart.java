@@ -127,17 +127,17 @@ public class GroupLineChart extends VBox {
             xAxis.setTickLabelsVisible(true);
             xAxis.setMinorTickVisible(true);
             xAxis.setTickMarkVisible(true);
-//            xAxis.setTickLabelFormatter(new StringConverter<Number>() {
-//                @Override
-//                public String toString(Number object) {
-//                    return String.format("%1.2f", object.doubleValue());
-//                }
-//
-//                @Override
-//                public Number fromString(String string) {
-//                    return 0;
-//                }
-//            });
+            xAxis.setTickLabelFormatter(new StringConverter<Number>() {
+                @Override
+                public String toString(Number object) {
+                    return String.format("%1.1f", object.doubleValue());
+                }
+
+                @Override
+                public Number fromString(String string) {
+                    return 0;
+                }
+            });
         }
         xAxis.setPrefWidth(X_LABELS_HEIGHT);
         xAxis.setMinWidth(X_LABELS_HEIGHT);
