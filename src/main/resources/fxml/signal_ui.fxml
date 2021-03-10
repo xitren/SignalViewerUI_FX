@@ -62,10 +62,6 @@
             </VBox>
             <VBox fx:id="p_top2" alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
-                  <Button fx:id="comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarkArea" prefHeight="38.0" prefWidth="38.0" styleClass="comment">
-                     <tooltip>
-                        <Tooltip text="%tooltip_mark" />
-                     </tooltip></Button>
                   <Button fx:id="clr_comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnClearMarks" prefHeight="38.0" prefWidth="38.0" styleClass="clear_comments">
                      <tooltip>
                         <Tooltip text="%tooltip_clear_marks" />
@@ -74,13 +70,17 @@
                      <tooltip>
                         <Tooltip text="%tooltip_save" />
                      </tooltip></Button>
-                  <Button fx:id="load" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnLoadFile" prefHeight="38.0" prefWidth="38.0" styleClass="load">
-                     <tooltip>
-                        <Tooltip text="%tooltip_load" />
-                     </tooltip></Button>
                   <Button fx:id="cut" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnCutData" prefHeight="38.0" prefWidth="38.0" styleClass="cut">
                      <tooltip>
                         <Tooltip text="%tooltip_cut" />
+                     </tooltip></Button>
+                  <Button fx:id="load" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnLoadFile" prefHeight="38.0" prefWidth="38.0" styleClass="load" visible="false">
+                     <tooltip>
+                        <Tooltip text="%tooltip_load" />
+                     </tooltip></Button>
+                  <Button fx:id="comm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnMarkArea" prefHeight="38.0" prefWidth="38.0" styleClass="comment" visible="false">
+                     <tooltip>
+                        <Tooltip text="%tooltip_mark" />
                      </tooltip></Button>
                </children>
             </VBox>
