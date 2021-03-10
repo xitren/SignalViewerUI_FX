@@ -373,9 +373,11 @@ public class SignalUIController implements Initializable {
         if (((ToggleButton)actionEvent.getSource()).isSelected()) {
             p_top.getChildren().addAll(p_top0);
             split.setDividerPosition(0, 0.);
+            datafx.setOverviewSuppressed(true);
         } else {
             p_top.getChildren().addAll(p_top1, p_top2, p_mini, p_top3);
             split.setDividerPosition(0, 0.25);
+            datafx.setOverviewSuppressed(false);
         }
     }
 

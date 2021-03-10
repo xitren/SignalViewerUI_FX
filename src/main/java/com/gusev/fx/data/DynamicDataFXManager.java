@@ -13,56 +13,22 @@ import java.util.TimerTask;
 import static com.gusev.data.DataLine.OVERVIEW_SIZE;
 
 public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager<T> {
-    private Timer timer = new Timer();
     private boolean online = true;
     private boolean pause = false;
-    private int cnt = 0;
-    private Thread thr = null;
-    private Thread thr2 = null;
-
-    private TimerTask task_data = new TimerTask() {
-        public void run() {
-            if (glcView != null) {
-                synchronized (this) {
-                    if (cnt++ >= 40 && thr == null) {
-                        thr = new Thread(() -> {
-                            updateOverview();
-                            cnt = 0;
-                            synchronized (this) {
-                                thr = null;
-                            }
-                        });
-                        thr.start();
-                    }
-                    if (thr2 == null) {
-                        thr2 = new Thread(() -> {
-                            bindSeriesOverviewUnder(glcOverview);
-                            synchronized (this) {
-                                thr2 = null;
-                            }
-                        });
-                        thr2.start();
-                    }
-                }
-            }
-        }
-    };
+    private boolean updateOnOverview = false;
+    private boolean updateOnView = false;
 
     public DynamicDataFXManager(int n, ExtendedDataLine[] edl) {
         super(n, edl);
-//        timer.schedule(task_data, 2000, 250);
     }
 
     public DynamicDataFXManager(int n) {
         super(n);
-//        timer.schedule(task_data, 2000, 250);
     }
 
     public DynamicDataFXManager(String filename) throws IOException {
         super(filename);
-//        timer.schedule(task_data, 2000, 250);
     }
-
 
     public void addParser(WindowDynamicParser wdp, int channel) {
         this.dataLines.get(channel).addParser(wdp);
@@ -108,30 +74,32 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
             return;
         glcOverview = glc;
         fullViewFX = glc.getSeries();
-        for (int i = 0; i < getSwapper().length && i < fullViewFXUpdater.length; i++) {
-            double[] gtl = getTimeOverview(i);
-            double[] gdl = getOverview(i);
-            final int st_i = i;
-            Platform.runLater(() ->{
-                if (st_i < fullViewFXUpdater.length) {
-                    for (int j = 0;j < gtl.length; j++) {
-                        fullViewFXUpdater[st_i][j].setXValue(gtl[j] * getTimePeriod());
-                        fullViewFXUpdater[st_i][j].setYValue(gdl[j]);
+        if (!updateOnOverview) {
+            updateOnOverview = true;
+            Platform.runLater(() -> {
+                for (int i = 0; i < getSwapper().length && i < fullViewFXUpdater.length; i++) {
+                    double[] gtl = getTimeOverview(i);
+                    double[] gdl = getOverview(i);
+                    final int st_i = i;
+                    if (st_i < fullViewFXUpdater.length) {
+                        for (int j = 0; j < gtl.length; j++) {
+                            fullViewFXUpdater[st_i][j].setXValue(gtl[j] * getTimePeriod());
+                            fullViewFXUpdater[st_i][j].setYValue(gdl[j]);
+                        }
+                        glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[gtl.length - 1] * getTimePeriod());
                     }
-                    glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[gtl.length - 1] * getTimePeriod());
                 }
+                updateOnOverview = false;
             });
         }
         if (fullViewFX.length > 0) {
             if (online) {
-                int end = getDataContainerSize(0);
-                int start = end - OVERVIEW_SIZE - 1;
-                if (start < 0)
-                    start = 0;
-                setView(start, end);
+                setTailView();
             }
         }
     }
+
+    private boolean runnerUnder = false;
 
     @Override
     protected void bindSeriesViewUnder(GroupLineChart glc) {
@@ -139,38 +107,42 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
             return;
         glcView = glc;
         customViewFX = glc.getSeries();
-        for (int i = 0; i < customViewFX.length; i++) {
-            double[] gtl = getTimeLine(i, modes[i]);
-            double[] gdl = getDataLine(i, modes[i]);
-            final int av = getActiveView(i, modes[i]);
-            final int st_i = i;
-            Platform.runLater(() ->{
-                if (customViewFX[st_i].getData().size() != av) {
-                    for (int j = customViewFX[st_i].getData().size();j < av;j++) {
-                        customViewFX[st_i].getData().add(customViewFXUpdater[st_i][j]);
+        if (!updateOnView) {
+            updateOnView = true;
+            Platform.runLater(() -> {
+                for (int i = 0; i < customViewFX.length; i++) {
+                    double[] gtl = getTimeLine(i, modes[i]);
+                    double[] gdl = getDataLine(i, modes[i]);
+                    final int av = getActiveView(i, modes[i]);
+                    final int st_i = i;
+                    if (customViewFX[st_i].getData().size() != av) {
+                        for (int j = customViewFX[st_i].getData().size(); j < av; j++) {
+                            customViewFX[st_i].getData().add(customViewFXUpdater[st_i][j]);
+                        }
+                    }
+                    if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
+                        for (int j = 0; j < av; j++) {
+                            customViewFXUpdater[st_i][j].setXValue(gtl[j]);
+                            customViewFXUpdater[st_i][j].setYValue(gdl[j]);
+                        }
+                    } else {
+                        for (int j = 0; j < av; j++) {
+                            customViewFXUpdater[st_i][j].setXValue(gtl[j] * getTimePeriod());
+                            customViewFXUpdater[st_i][j].setYValue(gdl[j]);
+                        }
+                    }
+                    for (int j = av; j < gdl.length; j++) {
+                        customViewFX[st_i].getData().remove(customViewFXUpdater[st_i][j]);
+                    }
+                    //                if ((av) <= 0)
+                    //                    av = 1;
+                    if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
+                        glc.setRangeMax(st_i, gtl[0], gtl[av - 1]);
+                    } else {
+                        glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
                     }
                 }
-                if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
-                    for (int j = 0; j < av; j++) {
-                        customViewFXUpdater[st_i][j].setXValue(gtl[j]);
-                        customViewFXUpdater[st_i][j].setYValue(gdl[j]);
-                    }
-                } else {
-                    for (int j = 0; j < av; j++) {
-                        customViewFXUpdater[st_i][j].setXValue(gtl[j] * getTimePeriod());
-                        customViewFXUpdater[st_i][j].setYValue(gdl[j]);
-                    }
-                }
-                for (int j=av;j < gdl.length;j++) {
-                    customViewFX[st_i].getData().remove(customViewFXUpdater[st_i][j]);
-                }
-//                if ((av) <= 0)
-//                    av = 1;
-                if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
-                    glc.setRangeMax(st_i, gtl[0], gtl[av - 1]);
-                } else {
-                    glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
-                }
+                updateOnView = false;
             });
         }
     }
