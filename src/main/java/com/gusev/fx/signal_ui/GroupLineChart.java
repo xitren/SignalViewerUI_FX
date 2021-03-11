@@ -64,7 +64,7 @@ public class GroupLineChart extends VBox {
         private int n;
         private int num;
 
-        private Chart(int n, SelectableLineChart chart) {
+        private Chart(int n, int num, SelectableLineChart chart) {
             this.chart = chart;
             this.n = n;
             this.num = num;
@@ -228,7 +228,7 @@ public class GroupLineChart extends VBox {
                 if (n != 0) {
                     str = str.concat(" / " + labels[i]);
                 }
-                charts[i] = new Chart(i, slc);
+                charts[i] = new Chart(i, size, slc);
                 charts[i].box = box;
                 i++;
             }
@@ -272,7 +272,7 @@ public class GroupLineChart extends VBox {
                 slc = getChart(false, !controlled);
             HBox box = getControlButtons(slc);
             for (int n = 0; n < h; n++) {
-                charts[i] = new Chart(i, slc);
+                charts[i] = new Chart(i, size, slc);
                 charts[i].box = box;
                 i++;
             }
