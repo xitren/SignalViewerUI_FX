@@ -23,20 +23,20 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
     protected XYChart.Series<Number, Number>[] customViewFX;
     protected XYChart.Data<Number, Number>[][] customViewFXUpdater;
 
-    public DataFXManager(int n, ExtendedDataLine[] edl) {
+    public DataFXManager(int n, OnlineDataLine[] edl) {
         super(n, edl);
-        modes = new ExtendedDataLine.Mode[n];
+        modes = new OnlineDataLine.Mode[n];
         for (int i = 0;i < n;i++) {
-            modes[i] = ExtendedDataLine.Mode.USUAL;
+            modes[i] = OnlineDataLine.Mode.USUAL;
         }
         this.addObserver(this);
     }
 
     public DataFXManager(int n) {
         super(n);
-        modes = new ExtendedDataLine.Mode[n];
+        modes = new OnlineDataLine.Mode[n];
         for (int i = 0;i < n;i++) {
-            modes[i] = ExtendedDataLine.Mode.USUAL;
+            modes[i] = OnlineDataLine.Mode.USUAL;
         }
         this.addObserver(this);
     }
@@ -49,9 +49,9 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
 
     public DataFXManager(String filename) throws IOException {
         super(filename);
-        modes = new ExtendedDataLine.Mode[dataLines.size()];
+        modes = new OnlineDataLine.Mode[dataLines.size()];
         for (int i = 0;i < dataLines.size();i++) {
-            modes[i] = ExtendedDataLine.Mode.USUAL;
+            modes[i] = OnlineDataLine.Mode.USUAL;
         }
         unbind();
         this.addObserver(this);
@@ -138,7 +138,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
             double[] gdl = getDataLine(i, modes[i]);
             for (int j=0;j < gtl.length;j++) {
                 XYChart.Data xyd;
-                if (getMode(i).equals(ExtendedDataLine.Mode.FOURIER))
+                if (getMode(i).equals(OnlineDataLine.Mode.FOURIER))
                     xyd = new XYChart.Data(gtl[j], gdl[j]);
                 else
                     xyd = new XYChart.Data(gtl[j] * getTimePeriod(), gdl[j]);
@@ -169,7 +169,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
                     customViewFX[i].getData().add(customViewFXUpdater[i][j]);
                 }
             }
-            if (modes[i].equals(ExtendedDataLine.Mode.FOURIER)) {
+            if (modes[i].equals(OnlineDataLine.Mode.FOURIER)) {
                 for (int j = 0; j < av; j++) {
                     customViewFXUpdater[i][j].setXValue(gtl[j]);
                     customViewFXUpdater[i][j].setYValue(gdl[j]);
@@ -185,7 +185,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
             }
             if ((av) <= 0)
                 av = 1;
-            if (modes[i].equals(ExtendedDataLine.Mode.FOURIER)) {
+            if (modes[i].equals(OnlineDataLine.Mode.FOURIER)) {
                 glc.setRangeMax(i, gtl[0], gtl[av - 1]);
             } else {
                 glc.setRangeMax(i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
