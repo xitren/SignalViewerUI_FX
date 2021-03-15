@@ -113,7 +113,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                 for (int i = 0; i < customViewFX.length; i++) {
                     double[] gtl = getTimeLine(i, modes[i]);
                     double[] gdl = getDataLine(i, modes[i]);
-                    final int av = getActiveView(i, modes[i]);
+                    int av = getActiveView(i, modes[i]);
                     final int st_i = i;
                     if (customViewFX[st_i].getData().size() != av) {
                         for (int j = customViewFX[st_i].getData().size(); j < av; j++) {
@@ -134,8 +134,8 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                     for (int j = av; j < gdl.length; j++) {
                         customViewFX[st_i].getData().remove(customViewFXUpdater[st_i][j]);
                     }
-                    //                if ((av) <= 0)
-                    //                    av = 1;
+                    if ((av) <= 0)
+                        av = 1;
                     if (modes[st_i].equals(OnlineDataLine.Mode.FOURIER)) {
                         glc.setRangeMax(st_i, gtl[0], gtl[av - 1]);
                     } else {
