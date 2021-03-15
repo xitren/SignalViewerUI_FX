@@ -426,6 +426,8 @@ public class GroupLineChart extends VBox {
     }
 
     public void setRangeMax(int i, Number min, Number max) {
+        if (i >= charts.length)
+            return;
         NumberAxis ll = (NumberAxis)charts[i].chart.getXAxis();
         ll.setLowerBound(min.doubleValue());
         ll.setUpperBound(max.doubleValue());

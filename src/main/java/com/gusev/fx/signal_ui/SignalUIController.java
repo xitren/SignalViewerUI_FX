@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -69,9 +66,10 @@ public class SignalUIController implements Initializable {
     private Parent marksTool = null;
     private Parent graphTool = null;
     private FilterController filterCtrl = null;
-    private GraphController graphCtrl = null;
+    public GraphController graphCtrl = null;
     private MarksController marksCtrl = null;
-    private ResourceBundle resources;
+    public ResourceBundle resources;
+    public String PATH_graph_tool = "/fxml/control_graph.fxml";
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -98,7 +96,7 @@ public class SignalUIController implements Initializable {
         return lcwm_small.getSelectedRange();
     }
 
-    private void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
+    public void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
         lcwm = new GroupLineChart(full, labels, true, true, resources);
         lcwm_small = new GroupLineChart(mini, false, false, resources);
         lcwm_small.setOnChangeSelection(()->{
@@ -277,6 +275,8 @@ public class SignalUIController implements Initializable {
         }
     }
 
+
+
     public void OnCutData(ActionEvent actionEvent) {
         XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
         if (rangeMarker.getXValue().intValue() < rangeMarker.getYValue().intValue())
@@ -300,11 +300,11 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
-    private Parent loadGraphControl() {
+    public Parent loadGraphControl() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setResources(resources);
-            InputStream is = this.getClass().getResource("/fxml/control_graph.fxml").openStream();
+            InputStream is = this.getClass().getResource(PATH_graph_tool).openStream();
             Pane pane = fxmlLoader.load(is);
             graphCtrl = fxmlLoader.<GraphController>getController();
             graphCtrl.setOnUpdate(()->{
@@ -360,6 +360,11 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
+
+    public void hideView() {
+        tool_hide.fire();
+    }
+
     public void hideOverview() {
         tool_hide.setSelected(true);
         p_top.getChildren().clear();
@@ -370,10 +375,12 @@ public class SignalUIController implements Initializable {
     public void OnHide(ActionEvent actionEvent) {
         p_top.getChildren().clear();
         if (((ToggleButton)actionEvent.getSource()).isSelected()) {
+            p_top.setMaxHeight(0);
             p_top.getChildren().addAll(p_top0);
             split.setDividerPosition(0, 0.);
             datafx.setOverviewSuppressed(true);
         } else {
+            p_top.setMaxHeight(Control.USE_COMPUTED_SIZE);
             p_top.getChildren().addAll(p_top1, p_top2, p_mini, p_top3);
             split.setDividerPosition(0, 0.25);
             datafx.setOverviewSuppressed(false);

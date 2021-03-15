@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane fx:id="split" dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane fx:id="split" dividerPositions="0.25906040268456376" orientation="VERTICAL" prefHeight="747.0" prefWidth="1004.0" stylesheets="/fxml/css/mist_silver_dim.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <items>
       <HBox fx:id="p_top">
          <children>
@@ -18,6 +18,11 @@
                      <tooltip>
                         <Tooltip text="%tooltip_show_mini" />
                      </tooltip></ToggleButton>
+                  <Button fx:id="save1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnSaveFile" prefHeight="38.0" prefWidth="38.0" styleClass="save">
+                     <tooltip>
+                        <Tooltip text="%tooltip_save" />
+                     </tooltip>
+                  </Button>
                   <ToggleButton fx:id="pars1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnPanelParams" prefHeight="38.0" prefWidth="38.0" styleClass="parameters">
                      <tooltip>
                         <Tooltip text="%tooltip_parameters" />
@@ -38,6 +43,10 @@
             </HBox>
             <VBox fx:id="p_top1" alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
                <children>
+                  <ToggleButton fx:id="tool_hide" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide">
+                     <tooltip>
+                        <Tooltip text="%tooltip_hide_mini" />
+                     </tooltip></ToggleButton>
                   <ToggleButton fx:id="tool_sel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnChangeToolMulti" prefHeight="38.0" prefWidth="38.0" styleClass="selector">
                      <tooltip>
                         <Tooltip text="%tooltip_multi_selector" />
@@ -54,10 +63,6 @@
                      <tooltip>
                         <Tooltip text="%tooltip_stop" />
                      </tooltip></Button>
-                  <ToggleButton fx:id="tool_hide" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#OnHide" prefHeight="38.0" prefWidth="38.0" styleClass="hide">
-                     <tooltip>
-                        <Tooltip text="%tooltip_hide_mini" />
-                     </tooltip></ToggleButton>
                </children>
             </VBox>
             <VBox fx:id="p_top2" alignment="TOP_CENTER" maxHeight="1000.0" maxWidth="-Infinity" minHeight="190.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="38.0" stylesheets="/fxml/css/signal_ui_buttons.css">
