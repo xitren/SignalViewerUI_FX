@@ -1,9 +1,9 @@
 package com.gusev.fx.data;
 
 import com.gusev.data.*;
+import com.gusev.data.OnlineDataLine;
 import com.gusev.fx.signal_ui.GroupLineChart;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
 

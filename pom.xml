@@ -111,8 +111,14 @@
 			<artifactId>californium-core</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+        <dependency>
+            <groupId>io.github.xitren.data</groupId>
+            <artifactId>browser-data-model</artifactId>
+            <version>1.4.3-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>
