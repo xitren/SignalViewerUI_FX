@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -275,8 +277,6 @@ public class SignalUIController implements Initializable {
         }
     }
 
-
-
     public void OnCutData(ActionEvent actionEvent) {
         XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
         if (rangeMarker.getXValue().intValue() < rangeMarker.getYValue().intValue())
@@ -358,11 +358,6 @@ public class SignalUIController implements Initializable {
             ex.printStackTrace();
         }
         return null;
-    }
-
-
-    public void hideView() {
-        tool_hide.fire();
     }
 
     public void hideOverview() {

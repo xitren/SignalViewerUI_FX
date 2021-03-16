@@ -17,7 +17,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.gusev.data</groupId>
+			<groupId>io.github.xitren.data</groupId>
 			<artifactId>browser-data-model</artifactId>
 			<version>1.4.3-SNAPSHOT</version>
 			<scope>compile</scope>
