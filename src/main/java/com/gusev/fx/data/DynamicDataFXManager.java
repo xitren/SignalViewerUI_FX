@@ -1,7 +1,7 @@
 package com.gusev.fx.data;
 
 import com.gusev.data.DataContainer;
-import com.gusev.data.ExtendedDataLine;
+import com.gusev.data.OnlineDataLine;
 import com.gusev.data.OnlineDataLine;
 import com.gusev.data.window.op.WindowDynamicParser;
 import com.gusev.fx.signal_ui.GroupLineChart;
@@ -114,7 +114,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                 for (int i = 0; i < customViewFX.length; i++) {
                     double[] gtl = getTimeLine(i, modes[i]);
                     double[] gdl = getDataLine(i, modes[i]);
-                    final int av = getActiveView(i, modes[i]);
+                    int av = getActiveView(i, modes[i]);
                     final int st_i = i;
                     int av_temp = av;
                     if (customViewFX[st_i].getData().size() != av) {
@@ -122,7 +122,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                             customViewFX[st_i].getData().add(customViewFXUpdater[st_i][j]);
                         }
                     }
-                    if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
+                    if (modes[st_i].equals(OnlineDataLine.Mode.FOURIER)) {
                         for (int j = 0; j < av; j++) {
                             customViewFXUpdater[st_i][j].setXValue(gtl[j]);
                             customViewFXUpdater[st_i][j].setYValue(gdl[j]);
