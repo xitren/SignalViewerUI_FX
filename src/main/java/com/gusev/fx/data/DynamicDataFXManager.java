@@ -7,10 +7,6 @@ import com.gusev.fx.signal_ui.GroupLineChart;
 import javafx.application.Platform;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static com.gusev.data.DataLine.OVERVIEW_SIZE;
 
 public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager<T> {
     private boolean online = true;
@@ -38,34 +34,9 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
         this.dataLines.get(channel).removeParser(wdp);
     }
 
-    public void addData(double[][] data) {
-        if (!pause)
-            super.addData(data);
-    }
-
-    public boolean isOnline() {
-        return online;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
-    }
-
     @Override
     public boolean isDynamic() {
         return true;
-    }
-
-    @Override
-    public void pause() {
-        this.pause = true;
-        this.online = false;
-    }
-
-    @Override
-    public void start() {
-        this.pause = false;
-        this.online = true;
     }
 
     @Override
