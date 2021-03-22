@@ -361,10 +361,10 @@ public class SignalUIController implements Initializable {
     }
 
 
-    public void hideView() {
-        tool_hide.fire();
-        hideOverview();
-    }
+//    public void hideView() {
+//        tool_hide.fire();
+//        hideOverview();
+//    }
 
     public void hideOverview() {
         tool_hide.setSelected(true);

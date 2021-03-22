@@ -139,7 +139,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                     if ((av) <= 0) {
                         av_temp = 1;
                     }
-                    if (modes[st_i].equals(ExtendedDataLine.Mode.FOURIER)) {
+                    if (modes[st_i].equals(OnlineDataLine.Mode.FOURIER)) {
                         glc.setRangeMax(st_i, gtl[0], gtl[av_temp - 1]);
                     } else {
                         glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[av_temp - 1] * getTimePeriod());
