@@ -175,7 +175,7 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
             line.toFront();
             if (verticalCursor.getExtraValue() != null) {
                 Text text = (Text) verticalCursor.getExtraValue();
-                text.setText(String.format("<%1.2f, %1.2f>",
+                text.setText(String.format("%1.2f; %1.2f",
                         verticalCursor.getXValue().doubleValue(),
                         verticalCursor.getYValue().doubleValue()));
                 text.setX(line.getStartX() + 20);

@@ -197,12 +197,6 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
         return false;
     }
 
-    public void pause() {
-    }
-
-    public void start() {
-    }
-
     public void addMark(int ch, XYChart.Data<Number, Number> xy, String name,
                            String color, String label_color) {
         xy.setXValue(xy.getXValue().doubleValue() * getDiscretisation());
