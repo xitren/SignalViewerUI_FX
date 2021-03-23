@@ -2,6 +2,7 @@ package com.gusev.fx.data;
 
 import com.gusev.data.DataContainer;
 import com.gusev.data.OnlineDataLine;
+import com.gusev.data.OnlineDataLine;
 import com.gusev.data.window.op.WindowDynamicParser;
 import com.gusev.fx.signal_ui.GroupLineChart;
 import javafx.application.Platform;
@@ -86,6 +87,7 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                     double[] gdl = getDataLine(i, modes[i]);
                     int av = getActiveView(i, modes[i]);
                     final int st_i = i;
+                    int av_temp = av;
                     if (customViewFX[st_i].getData().size() != av) {
                         for (int j = customViewFX[st_i].getData().size(); j < av; j++) {
                             customViewFX[st_i].getData().add(customViewFXUpdater[st_i][j]);
@@ -105,12 +107,13 @@ public class DynamicDataFXManager<T extends DataContainer> extends DataFXManager
                     for (int j = av; j < gdl.length; j++) {
                         customViewFX[st_i].getData().remove(customViewFXUpdater[st_i][j]);
                     }
-                    if ((av) <= 0)
-                        av = 1;
+                    if ((av) <= 0) {
+                        av_temp = 1;
+                    }
                     if (modes[st_i].equals(OnlineDataLine.Mode.FOURIER)) {
-                        glc.setRangeMax(st_i, gtl[0], gtl[av - 1]);
+                        glc.setRangeMax(st_i, gtl[0], gtl[av_temp - 1]);
                     } else {
-                        glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[av - 1] * getTimePeriod());
+                        glc.setRangeMax(st_i, gtl[0] * getTimePeriod(), gtl[av_temp - 1] * getTimePeriod());
                     }
                 }
                 updateOnView = false;

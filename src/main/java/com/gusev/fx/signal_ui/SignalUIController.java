@@ -360,6 +360,11 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
+
+    public void hideView() {
+        tool_hide.fire();
+    }
+
     public void hideOverview() {
         tool_hide.setSelected(true);
         p_top.getChildren().clear();

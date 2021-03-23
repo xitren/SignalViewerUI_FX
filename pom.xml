@@ -16,12 +16,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>io.github.xitren.data</groupId>
-			<artifactId>browser-data-model</artifactId>
-			<version>1.4.3-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
