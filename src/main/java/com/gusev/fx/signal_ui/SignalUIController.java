@@ -365,6 +365,7 @@ public class SignalUIController implements Initializable {
         p_top.getChildren().clear();
         p_top.getChildren().addAll(p_top0);
         split.setDividerPosition(0, 0.);
+        datafx.setOverviewSuppressed(true);
     }
 
     public void OnHide(ActionEvent actionEvent) {

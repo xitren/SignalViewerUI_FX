@@ -235,7 +235,7 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
         setMaxView();
     }
 
-    protected void setMaxView() {
+    public void setMaxView() {
         for (int i=0;i < dataLines.size();i++) {
             int ss = dataLines.get(i).getMaxView();
             super.setView(0, ss);
@@ -258,10 +258,14 @@ public class DataFXManager<T extends DataContainer> extends DataManager<T> imple
     public void update(Observable o, Object arg) {
         switch ((DataManager.Action) arg) {
             case OverviewUpdated:
-                bindSeriesOverviewUnder(glcOverview);
+//                Platform.runLater(()-> {
+                    bindSeriesOverviewUnder(glcOverview);
+//                });
                 break;
             case ViewUpdated:
-                bindSeriesViewUnder(glcView);
+                Platform.runLater(()-> {
+                    bindSeriesViewUnder(glcView);
+                });
                 break;
             case MarksUpdated:
                 Platform.runLater(()-> {
