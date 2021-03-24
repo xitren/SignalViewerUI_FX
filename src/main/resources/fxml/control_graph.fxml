@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.GraphController">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="441.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gusev.fx.signal_ui.GraphController">
    <children>
       <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <content>
@@ -27,14 +27,14 @@
                      <children>
                         <VBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <ChoiceBox fx:id="graph_chart_1" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <ChoiceBox fx:id="graph_chart_2" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <ChoiceBox fx:id="graph_chart_3" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <ChoiceBox fx:id="graph_chart_4" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <ChoiceBox fx:id="graph_chart_5" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <ChoiceBox fx:id="graph_chart_6" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <ChoiceBox fx:id="graph_chart_7" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
-                              <ChoiceBox fx:id="graph_chart_8" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_1" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_2" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_3" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_4" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_5" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_6" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_7" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+                              <ChoiceBox fx:id="graph_chart_8" disable="true" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" spacing="10.0">

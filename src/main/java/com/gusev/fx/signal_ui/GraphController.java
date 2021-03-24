@@ -69,28 +69,28 @@ public class GraphController implements Initializable {
             switch (newValue) {
                 case 8:
                     graph_pos_8.setDisable(false);
-                    graph_chart_8.setDisable(false);
+//                    graph_chart_8.setDisable(false);
                 case 7:
                     graph_pos_7.setDisable(false);
-                    graph_chart_7.setDisable(false);
+//                    graph_chart_7.setDisable(false);
                 case 6:
                     graph_pos_6.setDisable(false);
-                    graph_chart_6.setDisable(false);
+//                    graph_chart_6.setDisable(false);
                 case 5:
                     graph_pos_5.setDisable(false);
-                    graph_chart_5.setDisable(false);
+//                    graph_chart_5.setDisable(false);
                 case 4:
                     graph_pos_4.setDisable(false);
-                    graph_chart_4.setDisable(false);
+//                    graph_chart_4.setDisable(false);
                 case 3:
                     graph_pos_3.setDisable(false);
-                    graph_chart_3.setDisable(false);
+//                    graph_chart_3.setDisable(false);
                 case 2:
                     graph_pos_2.setDisable(false);
-                    graph_chart_2.setDisable(false);
+//                    graph_chart_2.setDisable(false);
                 case 1:
                     graph_pos_1.setDisable(false);
-                    graph_chart_1.setDisable(false);
+//                    graph_chart_1.setDisable(false);
                     break;
                 default:
                     break;
