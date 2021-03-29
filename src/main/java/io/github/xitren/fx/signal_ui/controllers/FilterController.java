@@ -1,4 +1,4 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.controllers;
 
 import com.gusev.data.FIRUtils;
 import javafx.beans.value.ChangeListener;

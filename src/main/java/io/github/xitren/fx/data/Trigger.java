@@ -1,4 +1,4 @@
-package com.gusev.fx.data;
+package io.github.xitren.fx.data;
 
 import com.gusev.data.NMath;
 

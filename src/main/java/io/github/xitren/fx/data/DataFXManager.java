@@ -1,8 +1,8 @@
-package com.gusev.fx.data;
+package io.github.xitren.fx.data;
 
 import com.gusev.data.*;
 import com.gusev.data.OnlineDataLine;
-import com.gusev.fx.signal_ui.GroupLineChart;
+import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;

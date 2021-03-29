@@ -1,9 +1,10 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.controllers;
 
 import com.gusev.data.ExtendedDataLine;
 import com.gusev.data.Mark;
-import com.gusev.fx.data.DataFXManager;
-import com.gusev.fx.data.DynamicDataFXManager;
+import io.github.xitren.fx.data.DataFXManager;
+import io.github.xitren.fx.data.DynamicDataFXManager;
+import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
