@@ -360,6 +360,20 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
+    public void setTagsDisable(boolean vv) {
+        comm_pars.setDisable(vv);
+        comm_pars1.setDisable(vv);
+    }
+
+    public void setSelectionDisable(boolean vv) {
+        graph_pars.setDisable(vv);
+        graph_pars1.setDisable(vv);
+    }
+
+    public void setFilterDisable(boolean vv) {
+        filt_pars.setDisable(vv);
+        filt_pars1.setDisable(vv);
+    }
 
     public void hideView() {
         tool_hide.fire();
