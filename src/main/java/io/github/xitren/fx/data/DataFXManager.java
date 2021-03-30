@@ -1,6 +1,5 @@
 package io.github.xitren.fx.data;
 
-import com.sun.deploy.si.SingleInstanceImpl;
 import io.github.xitren.data.Mark;
 import io.github.xitren.data.container.DataContainer;
 import io.github.xitren.data.container.DynamicDataContainer;
@@ -10,6 +9,7 @@ import io.github.xitren.data.manager.DataManagerAction;
 import io.github.xitren.data.manager.DataManagerMapper;
 import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
 import io.github.xitren.fx.signal_ui.chart.ViewLineChart;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.chart.XYChart;
@@ -26,6 +26,7 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
     protected GroupLineChart glcView;
     protected double[][] values;
     protected double[][] time;
+    protected int[] active;
     protected double[][] valuesOverview;
     protected double[][] timeOverview;
     protected ResourceBundle rb;
@@ -51,9 +52,14 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             throw new IndexOutOfBoundsException();
         for (int i = 0;i < swapper.length;i++) {
             values[i] = dataLines[swapper[i]].getDataView(modes[i]);
-            time[i] = dataLines[swapper[i]].getTimeView(modes[i]);
+            time[i] = dataLines[swapper[i]].getSecondsView(modes[i]);
+            active[i] = dataLines[swapper[i]].getActiveView();
         }
-        glcView.setData(values, time);
+        Platform.runLater(()->{
+            glcView.setData(values, time);
+            glcView.setRange(((double)view[0]) / getDiscretization(),
+                    ((double)view[1]) / getDiscretization());
+        });
     }
 
     @Override
@@ -62,9 +68,12 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             throw new IndexOutOfBoundsException();
         for (int i = 0;i < swapper.length;i++) {
             valuesOverview[i] = dataLines[swapper[i]].getDataOverview();
-            timeOverview[i] = dataLines[swapper[i]].getTimeOverview();
+            timeOverview[i] = dataLines[swapper[i]].getSecondsOverview();
         }
-        glcOverview.setData(valuesOverview, timeOverview);
+        Platform.runLater(()->{
+            glcOverview.setData(valuesOverview, timeOverview);
+            glcOverview.setRange(0, getMaxView() / getDiscretization());
+        });
     }
 
     @Override
@@ -72,6 +81,7 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         super.setSwapper(swapper);
         values = new double[swapper.length][];
         time = new double[swapper.length][];
+        active = new int[swapper.length];
         valuesOverview = new double[swapper.length][];
         timeOverview = new double[swapper.length][];
         if (glcView!= null)

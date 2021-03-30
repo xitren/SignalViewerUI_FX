@@ -1,7 +1,10 @@
 package io.github.xitren.fx.signal_ui.chart;
 
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -16,6 +19,8 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     private final ViewLineChart[] charts;
     private final String[] labels;
     private final boolean notated;
+    private final DoubleProperty start = new SimpleDoubleProperty();
+    private final DoubleProperty end = new SimpleDoubleProperty();
     private XYChart.Data<Number, Number> rangeMarker;
     private SelectableLineChart chartSelected;
     private Tool tool;
@@ -36,12 +41,25 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
         });
     }
 
+    public DoubleProperty startProperty() {
+        return start;
+    }
+
+    public DoubleProperty endProperty() {
+        return end;
+    }
+
     public void setData(double[][] data, double[][] time) {
         if (data.length != charts.length || time.length != charts.length)
             throw new RuntimeException("Array size does not meet the requirements");
         for (int i = 0;i < charts.length;i++) {
             charts[i].setData(data[i], time[i]);
         }
+    }
+
+    public void setRange(double start, double end) {
+        this.start.set(start);
+        this.end.set(end);
     }
 
     public void setData(int i, double[] data, double[] time) {

@@ -74,20 +74,10 @@ public class ViewLineChart extends HBox implements Observable {
             this.data[i].setXValue(time[i]);
             this.data[i].setYValue(data[i]);
         }
-        this.setRange(this.data[0].getXValue(), this.data[X_VIEW - 1].getXValue());
     }
 
     public DataLineMode getMode() {
         return mode;
-    }
-
-    public void setRange(Number min, Number max) {
-        NumberAxis ll = (NumberAxis)slc.getXAxis();
-        ll.setLowerBound(min.doubleValue());
-        ll.setUpperBound(max.doubleValue());
-        ll.setTickUnit((max.doubleValue() - min.doubleValue()) / 20);
-        ll.setMinorTickCount(2);
-        slc.setRangeMax(min, max);
     }
 
     public static void GroupLineChartFactory(@NotNull GroupLineChart glc,
@@ -101,16 +91,60 @@ public class ViewLineChart extends HBox implements Observable {
             prep[i] = vlc;
             glc.getChildren().add(vlc);
             vlc.addListener(glc);
-            prep[i].slc.setOnChangeSelection(()->{
+            vlc.slc.setOnChangeSelection(()->{
                 synchronizeSelection(prep, vlc, glc);
                 if (onScroll != null)
                     onScroll.run();
             });
-            prep[i].slc.setOnSelection(()->{
+            vlc.slc.setOnSelection(()->{
                 synchronizeProcessSelection(prep, vlc, glc);
             });
-            prep[i].slc.setOnCursor(()->{
+            vlc.slc.setOnCursor(()->{
                 synchronizeCursor(prep, vlc);
+            });
+            final NumberAxis ax = (NumberAxis)vlc.slc.getXAxis();
+            ax.lowerBoundProperty().bind(glc.startProperty());
+            ax.upperBoundProperty().bind(glc.endProperty());
+            ax.tickUnitProperty().bind(
+                    ax.upperBoundProperty().subtract(ax.lowerBoundProperty()).divide(4));
+            vlc.addListener((obs)->{
+                switch (vlc.mode) {
+                    case FOURIER:
+                    case FILTERED_FOURIER:
+                        if (ax.lowerBoundProperty().isBound())
+                            ax.lowerBoundProperty().unbind();
+                        if (ax.upperBoundProperty().isBound())
+                            ax.upperBoundProperty().unbind();
+                        if (ax.tickUnitProperty().isBound())
+                            ax.tickUnitProperty().unbind();
+                        ax.lowerBoundProperty().set(0);
+                        ax.upperBoundProperty().set(X_VIEW / 2);
+                        ax.tickUnitProperty().set(1);
+                        ax.setTickLabelsVisible(true);
+                        ax.setLabel(rb.getString("frequency_axis"));
+                        ax.setAutoRanging(true);
+                        ax.setForceZeroInRange(true);
+                        break;
+                    default:
+                        ax.setAutoRanging(false);
+                        ax.setForceZeroInRange(false);
+                        if (!ax.lowerBoundProperty().isBound())
+                            ax.lowerBoundProperty().bind(glc.startProperty());
+                        if (!ax.upperBoundProperty().isBound())
+                            ax.upperBoundProperty().bind(glc.endProperty());
+                        if (!ax.tickUnitProperty().isBound())
+                            ax.tickUnitProperty().bind(
+                                    ax.upperBoundProperty().subtract(ax.lowerBoundProperty()).divide(4));
+
+                        if (vlc.last) {
+                            ax.setLabel(rb.getString("time_axis"));
+                            ax.setTickLabelsVisible(true);
+                        } else {
+                            ax.setLabel(null);
+                            ax.setTickLabelsVisible(false);
+                        }
+                        break;
+                }
             });
         }
     }
@@ -160,6 +194,7 @@ public class ViewLineChart extends HBox implements Observable {
     private NumberAxis getXAxis() {
         NumberAxis xAxis = new NumberAxis();
         xAxis.setAutoRanging(false);
+        xAxis.setAnimated(true);
         xAxis.setLabel(rb.getString("time_axis"));
         if (!last) {
             xAxis.setTickLabelsVisible(false);
@@ -175,6 +210,8 @@ public class ViewLineChart extends HBox implements Observable {
         xAxis.setPrefWidth(X_LABELS_HEIGHT);
         xAxis.setMinWidth(X_LABELS_HEIGHT);
         xAxis.setMaxWidth(X_LABELS_HEIGHT);
+        xAxis.setMinorTickCount(2);
+        xAxis.setForceZeroInRange(false);
         return xAxis;
     }
 

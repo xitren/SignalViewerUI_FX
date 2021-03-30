@@ -1,5 +1,6 @@
 package io.github.xitren.fx.signal_ui.chart;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.XYChart;
