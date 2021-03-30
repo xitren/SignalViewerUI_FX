@@ -143,7 +143,7 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         verticalRangeMarkers.clear();
     }
 
-    public void clearVerticalLabels(){
+    public void clearVerticalRangeLabels(){
         for(Data<Number, Number> d : verticalRangeLabels){
             getPlotChildren().remove(d.getNode());
             getPlotChildren().remove(d.getExtraValue());

@@ -1,6 +1,6 @@
 package io.github.xitren.fx.signal_ui.chart;
 
-import javafx.application.Platform;
+import io.github.xitren.data.line.DataLineMode;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
@@ -72,12 +72,26 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
         return chartSelected;
     }
 
+    public int getSelectedChartIndex() {
+        for (int i = 0;i < charts.length;i++) {
+            SelectableLineChart slc = charts[i].getSlc();
+            if (slc.equals(chartSelected)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public ViewLineChart[] getCharts() {
         return charts;
     }
 
     public Tool getTool() {
         return tool;
+    }
+
+    public void setTool(Tool tool) {
+        this.tool = tool;
     }
 
     public void setRangeMarker(XYChart.Data<Number, Number> selectedRange) {
@@ -139,12 +153,23 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     }
 
     public void setMark(int i, XYChart.Data<Number, Number> range, String text, Color color, Color lable_color) {
-        charts[i].addVerticalRangeLabel(range, color, lable_color, text);
-    }
+        if (i < 0) {
+            for (int n = 0; n < charts.length; n++) {
+                if (charts[n].getMode().equals(DataLineMode.FOURIER)
+                        || charts[n].getMode().equals(DataLineMode.FOURIER))
+                    continue;
+                charts[n].addVerticalRangeLabel(
+                        new XYChart.Data<Number, Number>(range.getXValue(), range.getYValue()),
+                        color, lable_color, text);
+            }
+        } else {
+            charts[i].addVerticalRangeLabel(range, color, lable_color, text);
+        }
+}
 
     public void clearMarks() {
         for (int n = 0; n < charts.length; n++) {
-            charts[n].clearVerticalLabels();
+            charts[n].clearVerticalRangeLabels();
         }
     }
 }

@@ -1,27 +1,34 @@
 package io.github.xitren.fx.data;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.xitren.data.DataModelJson;
 import io.github.xitren.data.Mark;
 import io.github.xitren.data.container.DataContainer;
 import io.github.xitren.data.container.DynamicDataContainer;
+import io.github.xitren.data.container.StaticDataContainer;
+import io.github.xitren.data.line.ExtendedDataLine;
 import io.github.xitren.data.line.OnlineDataLine;
 import io.github.xitren.data.manager.DataManager;
 import io.github.xitren.data.manager.DataManagerAction;
 import io.github.xitren.data.manager.DataManagerMapper;
 import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
+import io.github.xitren.fx.signal_ui.chart.SelectableLineChart;
 import io.github.xitren.fx.signal_ui.chart.ViewLineChart;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.chart.XYChart;
+import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         extends DataManagerMapper<V, T> implements InvalidationListener {
-    private Runnable onChangeSelection;
     protected GroupLineChart glcOverview;
     protected GroupLineChart glcView;
     protected double[][] values;
@@ -37,6 +44,31 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         setSwapper(swapper);
     }
 
+    public static DataFXManager<OnlineDataLine<StaticDataContainer>, StaticDataContainer> DataFXManagerFactory(
+            ResourceBundle rb, String filename) throws IOException {
+        InputStream inputStream = new FileInputStream(filename);
+        Reader inputStreamReader = new InputStreamReader(inputStream);
+        JsonParser ow = new ObjectMapper().reader().createParser(inputStream);
+        DataModelJson data = ow.readValueAs(DataModelJson.class);
+        inputStreamReader.close();
+        OnlineDataLine[] odl = new OnlineDataLine[data.data.length];
+        for (int i = 0;i < odl.length;i++) {
+            odl[i] = new OnlineDataLine(new StaticDataContainer(data.data[i]), data.data_label[i]);
+        }
+        DataFXManager dm = new DataFXManager(rb, odl);
+        for (int i=0;i < data.name.length;i++) {
+            dm.marks.add(new Mark(data.channel[i], data.start[i], data.finish[i], data.name[i],
+                    data.color[i], data.label_color[i]));
+        }
+        dm.swapper = new Integer[odl.length];
+        for (int i=0;i < dm.swapper.length;i++) {
+            dm.swapper[i] = i;
+        }
+        dm.rb = rb;
+        dm.setSwapper(dm.swapper);
+        return dm;
+    }
+
     public static DataFXManager<OnlineDataLine<DynamicDataContainer>, DynamicDataContainer> DataFXManagerFactory(
             ResourceBundle rb, String[] labels) {
         OnlineDataLine[] odl = new OnlineDataLine[labels.length];
@@ -44,6 +76,24 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             odl[i] = new OnlineDataLine(new DynamicDataContainer(), labels[i]);
         }
         return new DataFXManager(rb, odl);
+    }
+
+    @Override
+    protected void updateMarks() {
+        Platform.runLater(()->{
+            glcView.clearMarks();
+            for (Mark mark : marks) {
+                glcView.setMark(mark.channel, new XYChart.Data<Number, Number>(mark.start / getDiscretization(),
+                                mark.finish / getDiscretization()), mark.name,
+                        Color.web(mark.getWebColor()), Color.web(mark.getWebLabelColor()));
+            }
+            glcOverview.clearMarks();
+            for (Mark mark : marks) {
+                glcOverview.setMark(mark.channel, new XYChart.Data<Number, Number>(mark.start / getDiscretization(),
+                                mark.finish / getDiscretization()), mark.name,
+                        Color.web(mark.getWebColor()), Color.web(mark.getWebLabelColor()));
+            }
+        });
     }
 
     @Override

@@ -1,7 +1,9 @@
 package io.github.xitren.fx.signal_ui.controllers;
 
+import io.github.xitren.data.Mark;
 import io.github.xitren.fx.data.DataFXManager;
 import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
+import io.github.xitren.fx.signal_ui.chart.SelectableLineChart;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,8 +55,6 @@ public class SignalUIController implements Initializable {
     @FXML private VBox p_top2;
     @FXML private VBox p_top3;
 
-    private GroupLineChart lcwm;
-    private GroupLineChart lcwm_small;
     private Runnable onChangeSelection;
     private Runnable onStop;
     protected DataFXManager datafx;
@@ -192,32 +192,29 @@ public class SignalUIController implements Initializable {
         //Show open file dialog
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
-//            try {
-//                datafx = new DataFXManager(file.getAbsolutePath());
-//                bind(new int[]{1, 1, 1, 1, 1, 1, 1, 1}, new int[]{1, 1, 1, 1, 1, 1, 1, 1},
-//                        new String[]{"", "", "", "", "", "", "", ""},
-//                        datafx);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                datafx = DataFXManager.DataFXManagerFactory(resources, file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void setMultiSelectMode() {
-//        lcwm_small.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
-//        lcwm.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
+        datafx.getGlcOverview().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
+        datafx.getGlcView().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
         cut.setDisable(false);
     }
 
     public void setUniSelectMode() {
-//        lcwm_small.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
-//        lcwm.setCurrent(GroupLineChart.Tool.UNI_SELECTOR);
+        datafx.getGlcOverview().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
+        datafx.getGlcView().setTool(GroupLineChart.Tool.UNI_SELECTOR);
         cut.setDisable(true);
     }
 
     public void setOnlineMode() {
-//        lcwm_small.setCurrent(GroupLineChart.Tool.DISABLED);
-//        lcwm.setCurrent(GroupLineChart.Tool.DISABLED);
+        datafx.getGlcOverview().setTool(GroupLineChart.Tool.DISABLED);
+        datafx.getGlcView().setTool(GroupLineChart.Tool.DISABLED);
         cut.setDisable(true);
     }
 
@@ -242,9 +239,9 @@ public class SignalUIController implements Initializable {
     }
 
     public void OnCutData(ActionEvent actionEvent) {
-//        XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
-//        if (rangeMarker.getXValue().intValue() < rangeMarker.getYValue().intValue())
-//            datafx.cut(rangeMarker);
+        XYChart.Data<Number, Number> rangeMarker = datafx.getGlcOverview().getSelectedRange();
+        if (rangeMarker.getXValue().intValue() < rangeMarker.getYValue().intValue())
+            datafx.cut(rangeMarker);
     }
 
     private Parent loadFilterControl() {
@@ -290,28 +287,24 @@ public class SignalUIController implements Initializable {
             Pane pane = fxmlLoader.load(is);
             marksCtrl = fxmlLoader.<MarksController>getController();
             marksCtrl.setOnSelection(()->{
-//                Mark mm = marksCtrl.getSelectedMark();
-//                XYChart.Data<Number, Number> rangeMarker = new XYChart.Data<Number, Number>(mm.start, mm.finish);
-//                onChangeSelection.run();
-//                if (datafx != null) {
-//                    datafx.setView(rangeMarker);
-//                }
+                Mark mm = marksCtrl.getSelectedMark();
+                XYChart.Data<Number, Number> rangeMarker = new XYChart.Data<Number, Number>(mm.start, mm.finish);
+                onChangeSelection.run();
+                if (datafx != null) {
+                    datafx.setView(rangeMarker);
+                }
             });
             marksCtrl.setOnUpdate(()->{
-//                XYChart.Data<Number, Number> rangeMarker = lcwm.getSelectedRange();
-//                Object[] channelsSelected = lcwm.getSelectedChannels();
-//                if (channelsSelected == null) {
-//                    Mark mm = marksCtrl.getNewMark();
-//                    datafx.addGlobalMark(rangeMarker, mm.name, mm.color, mm.label_color);
-//                } else {
-//                    for (Object i : channelsSelected) {
-//                        Mark mm = marksCtrl.getNewMark();
-//                        datafx.addMark((Integer) i, rangeMarker, mm.name, mm.color, mm.label_color);
-//                    }
-//                }
-//                marksCtrl.setData(datafx.getMarks());
-//                datafx.resetMarks(lcwm);
-//                datafx.resetMarks(lcwm_small);
+                XYChart.Data<Number, Number> rangeMarker = datafx.getGlcView().getRangeMarker();
+                int ch = datafx.getGlcView().getSelectedChartIndex();
+                if (ch < 0) {
+                    Mark mm = marksCtrl.getNewMark();
+                    datafx.addGlobalMark(rangeMarker, mm.name, mm.color, mm.label_color);
+                } else {
+                    Mark mm = marksCtrl.getNewMark();
+                    datafx.addMark(ch, rangeMarker, mm.name, mm.color, mm.label_color);
+                }
+                marksCtrl.setData(datafx.getMarks());
             });
             marksCtrl.setOnClear(()->{
                 datafx.clearMarks();
@@ -339,16 +332,12 @@ public class SignalUIController implements Initializable {
         filt_pars1.setDisable(vv);
     }
 
-    public void hideView() {
-        tool_hide.fire();
-    }
-
     public void hideOverview() {
         tool_hide.setSelected(true);
         p_top.getChildren().clear();
         p_top.getChildren().addAll(p_top0);
         split.setDividerPosition(0, 0.);
-//        datafx.setOverviewSuppressed(true);
+        datafx.setOverviewSuppressed(true);
     }
 
     public void OnHide(ActionEvent actionEvent) {

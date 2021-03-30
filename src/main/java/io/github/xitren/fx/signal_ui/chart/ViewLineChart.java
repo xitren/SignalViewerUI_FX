@@ -80,6 +80,10 @@ public class ViewLineChart extends HBox implements Observable {
         return mode;
     }
 
+    public SelectableLineChart getSlc() {
+        return slc;
+    }
+
     public static void GroupLineChartFactory(@NotNull GroupLineChart glc,
                                              @NotNull ResourceBundle rb,
                                              boolean notated,
@@ -154,12 +158,13 @@ public class ViewLineChart extends HBox implements Observable {
         switch (glc.getTool()) {
             case UNI_SELECTOR:
                 glc.setSelected(vls.slc);
+                vls.slc.setInSelection(vls.slc.getSelectedRange());
                 break;
             case GROUP_SELECTOR:
                 glc.setSelected(null);
+                synchronizeProcessSelection(prep, vls, glc);
                 break;
         }
-        synchronizeProcessSelection(prep, vls, glc);
     }
 
     private static void synchronizeProcessSelection(ViewLineChart[] prep, ViewLineChart vls, GroupLineChart glc) {
@@ -347,7 +352,7 @@ public class ViewLineChart extends HBox implements Observable {
         slc.addVerticalRangeLabel(range, color, lable_color, text);
     }
 
-    public void clearVerticalLabels() {
-        slc.clearVerticalLabels();
+    public void clearVerticalRangeLabels() {
+        slc.clearVerticalRangeLabels();
     }
 }
