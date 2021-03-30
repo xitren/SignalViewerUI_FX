@@ -15,14 +15,12 @@ public class SelectableLineChart extends LineChartWithMarkers {
     private Runnable onCursor;
     private Runnable onProcessSelect;
     private boolean notated;
-    protected XYChart.Series<Number, Number> series = new Series<>();
 
     public SelectableLineChart(Axis<Number> xAxis, Axis<Number> yAxis, boolean notated) {
         super(xAxis, yAxis);
         this.notated = notated;
         setLegendVisible(false);
         setCreateSymbols(false);
-        getData().add(series);
         lookup(".chart-plot-background").setOnMouseMoved((me)->{
             if (dynamic)
                 return;

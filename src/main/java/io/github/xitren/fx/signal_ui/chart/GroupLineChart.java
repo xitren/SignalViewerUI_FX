@@ -66,6 +66,10 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
         rangeMarker = selectedRange;
     }
 
+    public XYChart.Data<Number, Number> getRangeMarker() {
+        return rangeMarker;
+    }
+
     public void setSelected(SelectableLineChart slc) {
         chartSelected = slc;
     }
@@ -91,6 +95,13 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     @Override
     public void removeListener(InvalidationListener listener) {
         observers.remove(listener);
+    }
+
+    public XYChart.Data<Number, Number> getSelectedRange() {
+        if (chartSelected != null) {
+            return chartSelected.getSelectedRange();
+        }
+        return null;
     }
 
     public enum Tool {

@@ -29,6 +29,7 @@ public class ViewLineChart extends HBox implements Observable {
     private boolean last;
     private final ResourceBundle rb;
     private Set<InvalidationListener> observers = new HashSet<>();
+    protected XYChart.Series<Number, Number> series = new XYChart.Series<>();
     private StringConverter<Number> sc = new StringConverter<Number>() {
         @Override
         public String toString(Number object) {
@@ -45,15 +46,20 @@ public class ViewLineChart extends HBox implements Observable {
         super();
         HBox.setHgrow(this, Priority.ALWAYS);
         for (int i = 0;i < X_VIEW;i++) {
-            data[i] = new XYChart.Data(0, 0);
+            data[i] = new XYChart.Data(i, 0);
         }
         this.rb = rb;
         this.notated = notated;
         this.last = last;
         this.slc = new SelectableLineChart(getXAxis(), getYAxis(str), notated);
+        this.series.getData().addAll(data);
+        this.slc.getData().add(series);
         this.slc.setAnimated(false);
         this.slc.setLegendVisible(false);
-        this.slc.setMinHeight(30);
+        if (!last)
+            this.slc.setMinHeight(30);
+        else
+            this.slc.setMinHeight(30 + X_LABELS_HEIGHT);
         HBox.setHgrow(this.slc, Priority.ALWAYS);
         this.mode = DataLineMode.USUAL;
         if (this.notated)
@@ -68,6 +74,7 @@ public class ViewLineChart extends HBox implements Observable {
             this.data[i].setXValue(time[i]);
             this.data[i].setYValue(data[i]);
         }
+        this.setRange(this.data[0].getXValue(), this.data[X_VIEW - 1].getXValue());
     }
 
     public DataLineMode getMode() {
@@ -90,7 +97,7 @@ public class ViewLineChart extends HBox implements Observable {
         String[] labels = glc.getLabels();
         final ViewLineChart[] prep = glc.getCharts();
         for (int i = 0;i < labels.length;i++) {
-            final ViewLineChart vlc = new ViewLineChart(rb, labels[i], notated, i == labels.length);
+            final ViewLineChart vlc = new ViewLineChart(rb, labels[i], notated, i == (labels.length - 1));
             prep[i] = vlc;
             glc.getChildren().add(vlc);
             vlc.addListener(glc);
@@ -213,6 +220,7 @@ public class ViewLineChart extends HBox implements Observable {
                     mode = DataLineMode.USUAL;
                 }
             }
+            changeMode();
         });
         btn_filt.setOnAction((act)->{
             if (btn_filt.isSelected()) {
@@ -229,6 +237,7 @@ public class ViewLineChart extends HBox implements Observable {
                     mode = DataLineMode.USUAL;
                 }
             }
+            changeMode();
         });
         btn_amp.setOnAction((act)->{
             if (btn_amp.isSelected()) {
@@ -237,6 +246,7 @@ public class ViewLineChart extends HBox implements Observable {
                 mode = DataLineMode.POWER;
             } else
                 mode = DataLineMode.USUAL;
+            changeMode();
         });
         cbox.getChildren().add(btn_freq);
         cbox.getChildren().add(btn_filt);

@@ -96,16 +96,6 @@ public class SignalUIController implements Initializable {
     }
 
     public void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
-//        lcwm = new GroupLineChart(full, labels, true, true, resources);
-//        lcwm_small = new GroupLineChart(mini, false, false, resources);
-//        lcwm_small.setOnChangeSelection(()->{
-////            XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
-////            if (onChangeSelection != null)
-////                onChangeSelection.run();
-////            if (datafx != null) {
-////                datafx.setView(rangeMarker);
-////            }
-//        });
         datafx.setSwapper(configurationChannels);
         p_graph.getChildren().clear();
         p_graph.getChildren().add(datafx.getGlcView());
@@ -121,13 +111,24 @@ public class SignalUIController implements Initializable {
         marksCtrl.setData(this.datafx.getMarks());
     }
 
-    public void bind(int[] mini, int[] full, String[] labels, DataFXManager datafx) {
-        graphCtrl.setConfiguration(full, datafx.getDataLabel());
+    public void bind(DataFXManager datafx) {
+        this.datafx = datafx;
+//        graphCtrl.setConfiguration(datafx.getDataLabel());
         p_mini.getChildren().clear();
         p_graph.getChildren().clear();
         board.setRight(controlTool);
-        this.datafx = datafx;
-        reLCWM(mini, full, datafx.getSwapper(), labels);
+        p_graph.getChildren().clear();
+        p_graph.getChildren().add(datafx.getGlcView());
+        p_mini.getChildren().clear();
+        p_mini.getChildren().add(datafx.getGlcOverview());
+        cut.setDisable(false);
+        tool_pause.setDisable(true);
+        stop.setDisable(true);
+        if (datafx instanceof DataFXManager) {
+            tool_pause.setDisable(false);
+            stop.setDisable(false);
+        }
+        marksCtrl.setData(this.datafx.getMarks());
     }
 
     public void OnLoad(ActionEvent actionEvent) {
