@@ -56,7 +56,8 @@ public class ViewLineChart extends HBox implements Observable {
         this.slc.setMinHeight(30);
         HBox.setHgrow(this.slc, Priority.ALWAYS);
         this.mode = DataLineMode.USUAL;
-        addButtons();
+        if (this.notated)
+            addButtons();
         getChildren().add(this.slc);
     }
 
@@ -179,11 +180,10 @@ public class ViewLineChart extends HBox implements Observable {
         yAxis.setMaxWidth(80);
         yAxis.setAutoRanging(true);
         yAxis.setLabel(str);
-        if (notated) {
+        if (!notated) {
             yAxis.setTickLabelsVisible(false);
             yAxis.setMinorTickVisible(false);
             yAxis.setTickMarkVisible(false);
-        } else {
         }
         return yAxis;
     }

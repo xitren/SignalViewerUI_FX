@@ -25,6 +25,7 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
 
     public GroupLineChart(ResourceBundle rb, @NotNull String[] labels,
                           boolean notated) {
+        this.tool = Tool.GROUP_SELECTOR;
         this.labels = labels;
         this.notated = notated;
         this.rb = rb;
