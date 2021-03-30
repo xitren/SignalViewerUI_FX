@@ -1,6 +1,6 @@
 package io.github.xitren.fx.data;
 
-import com.gusev.data.NMath;
+import io.github.xitren.data.NMath;
 
 public class Trigger {
     protected int defaultDelayInSamples;

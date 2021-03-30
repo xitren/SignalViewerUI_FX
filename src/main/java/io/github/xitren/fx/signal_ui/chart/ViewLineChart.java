@@ -55,9 +55,9 @@ public class ViewLineChart extends HBox implements Observable {
         this.slc.setLegendVisible(false);
         this.slc.setMinHeight(30);
         HBox.setHgrow(this.slc, Priority.ALWAYS);
-        getChildren().add(this.slc);
         this.mode = DataLineMode.USUAL;
         addButtons();
+        getChildren().add(this.slc);
     }
 
     public void setData(double[] data, double[] time) {
@@ -91,6 +91,7 @@ public class ViewLineChart extends HBox implements Observable {
         for (int i = 0;i < labels.length;i++) {
             final ViewLineChart vlc = new ViewLineChart(rb, labels[i], notated, i == labels.length);
             prep[i] = vlc;
+            glc.getChildren().add(vlc);
             vlc.addListener(glc);
             prep[i].slc.setOnChangeSelection(()->{
                 synchronizeSelection(prep, vlc, glc);
