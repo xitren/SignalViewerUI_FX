@@ -1,15 +1,11 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class GraphController implements Initializable {

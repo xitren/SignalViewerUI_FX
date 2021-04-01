@@ -1,8 +1,7 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.controllers;
 
-import com.gusev.data.Mark;
+import io.github.xitren.data.Mark;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

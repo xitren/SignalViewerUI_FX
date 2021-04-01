@@ -111,6 +111,12 @@
             <version>1.4.4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.github.xitren.data</groupId>
+            <artifactId>browser-data-model</artifactId>
+            <version>1.4.4-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

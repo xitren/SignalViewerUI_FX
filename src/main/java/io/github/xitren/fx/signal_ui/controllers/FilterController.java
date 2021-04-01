@@ -1,6 +1,6 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.controllers;
 
-import com.gusev.data.FIRUtils;
+import io.github.xitren.data.FIRUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;

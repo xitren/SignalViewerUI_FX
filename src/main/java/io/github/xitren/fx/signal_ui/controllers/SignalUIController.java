@@ -1,9 +1,9 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.controllers;
 
-import com.gusev.data.ExtendedDataLine;
-import com.gusev.data.Mark;
-import com.gusev.fx.data.DataFXManager;
-import com.gusev.fx.data.DynamicDataFXManager;
+import io.github.xitren.data.Mark;
+import io.github.xitren.fx.data.DataFXManager;
+import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
+import io.github.xitren.fx.signal_ui.chart.SelectableLineChart;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -57,8 +55,6 @@ public class SignalUIController implements Initializable {
     @FXML private VBox p_top2;
     @FXML private VBox p_top3;
 
-    private GroupLineChart lcwm;
-    private GroupLineChart lcwm_small;
     private Runnable onChangeSelection;
     private Runnable onStop;
     protected DataFXManager datafx;
@@ -95,76 +91,44 @@ public class SignalUIController implements Initializable {
     }
 
     public XYChart.Data<Number, Number> getOverviewRange() {
-        return lcwm_small.getSelectedRange();
+//        return lcwm_small.getSelectedRange();
+        return null;
     }
 
     public void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
-        lcwm = new GroupLineChart(full, labels, true, true, resources);
-        lcwm_small = new GroupLineChart(mini, false, false, resources);
-        lcwm_small.setOnChangeSelection(()->{
-            XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
-            if (onChangeSelection != null)
-                onChangeSelection.run();
-            if (datafx != null) {
-                datafx.setView(rangeMarker);
-            }
-        });
         datafx.setSwapper(configurationChannels);
-        lcwm.setOnChangeMode(()->{
-            if (datafx != null) {
-                GroupLineChart.Chart[] crt = lcwm.getCharts();
-                for (int i = 0; i < crt.length; i++) {
-                    switch (crt[i].getMode()) {
-                        case FILTERED_FOURIER:
-                            datafx.setMode(i, ExtendedDataLine.Mode.FILTERED_FOURIER);
-                            break;
-                        case FOURIER:
-                            datafx.setMode(i, ExtendedDataLine.Mode.FOURIER);
-                            break;
-                        case FILTER:
-                            datafx.setMode(i, ExtendedDataLine.Mode.FILTER);
-                            break;
-                        case POWER:
-                            datafx.setMode(i, ExtendedDataLine.Mode.POWER);
-                            break;
-                        case USUAL:
-                        default:
-                            datafx.setMode(i, ExtendedDataLine.Mode.USUAL);
-                            break;
-                    }
-                }
-                XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
-                if (rangeMarker == null)
-                    rangeMarker = new XYChart.Data<>(0,
-                            datafx.getActiveView(0, ExtendedDataLine.Mode.USUAL));
-                datafx.setView(rangeMarker);
-            }
-        });
         p_graph.getChildren().clear();
-        p_graph.getChildren().add(lcwm);
+        p_graph.getChildren().add(datafx.getGlcView());
         p_mini.getChildren().clear();
-        p_mini.getChildren().add(lcwm_small);
+        p_mini.getChildren().add(datafx.getGlcOverview());
         cut.setDisable(false);
         tool_pause.setDisable(true);
         stop.setDisable(true);
-        if (datafx instanceof DynamicDataFXManager) {
+        if (datafx instanceof DataFXManager) {
             tool_pause.setDisable(false);
             stop.setDisable(false);
         }
-        lcwm.clear();
-        lcwm_small.clear();
-        datafx.bindSeriesOverview(lcwm_small);
-        datafx.bindSeriesView(lcwm);
         marksCtrl.setData(this.datafx.getMarks());
     }
 
-    public void bind(int[] mini, int[] full, String[] labels, DataFXManager datafx) {
-        graphCtrl.setConfiguration(full, datafx.getDataLabel());
+    public void bind(DataFXManager datafx) {
+        this.datafx = datafx;
+//        graphCtrl.setConfiguration(datafx.getDataLabel());
         p_mini.getChildren().clear();
         p_graph.getChildren().clear();
         board.setRight(controlTool);
-        this.datafx = datafx;
-        reLCWM(mini, full, datafx.getSwapper(), labels);
+        p_graph.getChildren().clear();
+        p_graph.getChildren().add(datafx.getGlcView());
+        p_mini.getChildren().clear();
+        p_mini.getChildren().add(datafx.getGlcOverview());
+        cut.setDisable(false);
+        tool_pause.setDisable(true);
+        stop.setDisable(true);
+        if (datafx instanceof DataFXManager) {
+            tool_pause.setDisable(false);
+            stop.setDisable(false);
+        }
+        marksCtrl.setData(this.datafx.getMarks());
     }
 
     public void OnLoad(ActionEvent actionEvent) {
@@ -229,10 +193,7 @@ public class SignalUIController implements Initializable {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             try {
-                datafx = new DataFXManager(file.getAbsolutePath());
-                bind(new int[]{1, 1, 1, 1, 1, 1, 1, 1}, new int[]{1, 1, 1, 1, 1, 1, 1, 1},
-                        new String[]{"", "", "", "", "", "", "", ""},
-                        datafx);
+                datafx = DataFXManager.DataFXManagerFactory(resources, file.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -240,20 +201,20 @@ public class SignalUIController implements Initializable {
     }
 
     public void setMultiSelectMode() {
-        lcwm_small.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
-        lcwm.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
+        datafx.getGlcOverview().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
+        datafx.getGlcView().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
         cut.setDisable(false);
     }
 
     public void setUniSelectMode() {
-        lcwm_small.setCurrent(GroupLineChart.Tool.GROUP_SELECTOR);
-        lcwm.setCurrent(GroupLineChart.Tool.UNI_SELECTOR);
+        datafx.getGlcOverview().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
+        datafx.getGlcView().setTool(GroupLineChart.Tool.UNI_SELECTOR);
         cut.setDisable(true);
     }
 
     public void setOnlineMode() {
-        lcwm_small.setCurrent(GroupLineChart.Tool.DISABLED);
-        lcwm.setCurrent(GroupLineChart.Tool.DISABLED);
+        datafx.getGlcOverview().setTool(GroupLineChart.Tool.DISABLED);
+        datafx.getGlcView().setTool(GroupLineChart.Tool.DISABLED);
         cut.setDisable(true);
     }
 
@@ -278,7 +239,7 @@ public class SignalUIController implements Initializable {
     }
 
     public void OnCutData(ActionEvent actionEvent) {
-        XYChart.Data<Number, Number> rangeMarker = lcwm_small.getSelectedRange();
+        XYChart.Data<Number, Number> rangeMarker = datafx.getGlcOverview().getSelectedRange();
         if (rangeMarker.getXValue().intValue() < rangeMarker.getYValue().intValue())
             datafx.cut(rangeMarker);
     }
@@ -334,20 +295,16 @@ public class SignalUIController implements Initializable {
                 }
             });
             marksCtrl.setOnUpdate(()->{
-                XYChart.Data<Number, Number> rangeMarker = lcwm.getSelectedRange();
-                Object[] channelsSelected = lcwm.getSelectedChannels();
-                if (channelsSelected == null) {
+                XYChart.Data<Number, Number> rangeMarker = datafx.getGlcView().getRangeMarker();
+                int ch = datafx.getGlcView().getSelectedChartIndex();
+                if (ch < 0) {
                     Mark mm = marksCtrl.getNewMark();
                     datafx.addGlobalMark(rangeMarker, mm.name, mm.color, mm.label_color);
                 } else {
-                    for (Object i : channelsSelected) {
-                        Mark mm = marksCtrl.getNewMark();
-                        datafx.addMark((Integer) i, rangeMarker, mm.name, mm.color, mm.label_color);
-                    }
+                    Mark mm = marksCtrl.getNewMark();
+                    datafx.addMark(ch, rangeMarker, mm.name, mm.color, mm.label_color);
                 }
                 marksCtrl.setData(datafx.getMarks());
-                datafx.resetMarks(lcwm);
-                datafx.resetMarks(lcwm_small);
             });
             marksCtrl.setOnClear(()->{
                 datafx.clearMarks();
@@ -373,10 +330,6 @@ public class SignalUIController implements Initializable {
     public void setFilterDisable(boolean vv) {
         filt_pars.setDisable(vv);
         filt_pars1.setDisable(vv);
-    }
-
-    public void hideView() {
-        tool_hide.fire();
     }
 
     public void hideOverview() {

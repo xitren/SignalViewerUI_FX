@@ -1,11 +1,10 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.chart;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
-
-import java.util.Optional;
 
 public class SelectableLineChart extends LineChartWithMarkers {
     private boolean dynamic = false;

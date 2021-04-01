@@ -1,19 +1,14 @@
-package com.gusev.fx.signal_ui;
+package io.github.xitren.fx.signal_ui.chart;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -148,7 +143,7 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         verticalRangeMarkers.clear();
     }
 
-    public void clearVerticalLabels(){
+    public void clearVerticalRangeLabels(){
         for(Data<Number, Number> d : verticalRangeLabels){
             getPlotChildren().remove(d.getNode());
             getPlotChildren().remove(d.getExtraValue());
