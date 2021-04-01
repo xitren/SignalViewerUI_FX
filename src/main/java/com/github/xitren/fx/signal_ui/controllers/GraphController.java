@@ -1,4 +1,4 @@
-package io.github.xitren.fx.signal_ui.controllers;
+package com.github.xitren.fx.signal_ui.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

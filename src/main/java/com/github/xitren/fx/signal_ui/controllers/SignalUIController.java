@@ -1,9 +1,8 @@
-package io.github.xitren.fx.signal_ui.controllers;
+package com.github.xitren.fx.signal_ui.controllers;
 
 import io.github.xitren.data.Mark;
-import io.github.xitren.fx.data.DataFXManager;
-import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
-import io.github.xitren.fx.signal_ui.chart.SelectableLineChart;
+import com.github.xitren.fx.data.DataFXManager;
+import com.github.xitren.fx.signal_ui.chart.GroupLineChart;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

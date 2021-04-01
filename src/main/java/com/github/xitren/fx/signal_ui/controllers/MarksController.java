@@ -1,4 +1,4 @@
-package io.github.xitren.fx.signal_ui.controllers;
+package com.github.xitren.fx.signal_ui.controllers;
 
 import io.github.xitren.data.Mark;
 import javafx.collections.FXCollections;

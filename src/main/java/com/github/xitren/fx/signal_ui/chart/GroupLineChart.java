@@ -1,4 +1,4 @@
-package io.github.xitren.fx.signal_ui.chart;
+package com.github.xitren.fx.signal_ui.chart;
 
 import io.github.xitren.data.line.DataLineMode;
 import javafx.beans.InvalidationListener;

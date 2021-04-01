@@ -1,4 +1,4 @@
-package io.github.xitren.fx.data;
+package com.github.xitren.fx.data;
 
 import io.github.xitren.data.NMath;
 

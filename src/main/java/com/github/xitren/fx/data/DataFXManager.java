@@ -1,4 +1,4 @@
-package io.github.xitren.fx.data;
+package com.github.xitren.fx.data;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,14 +7,11 @@ import io.github.xitren.data.Mark;
 import io.github.xitren.data.container.DataContainer;
 import io.github.xitren.data.container.DynamicDataContainer;
 import io.github.xitren.data.container.StaticDataContainer;
-import io.github.xitren.data.line.ExtendedDataLine;
 import io.github.xitren.data.line.OnlineDataLine;
-import io.github.xitren.data.manager.DataManager;
 import io.github.xitren.data.manager.DataManagerAction;
 import io.github.xitren.data.manager.DataManagerMapper;
-import io.github.xitren.fx.signal_ui.chart.GroupLineChart;
-import io.github.xitren.fx.signal_ui.chart.SelectableLineChart;
-import io.github.xitren.fx.signal_ui.chart.ViewLineChart;
+import com.github.xitren.fx.signal_ui.chart.GroupLineChart;
+import com.github.xitren.fx.signal_ui.chart.ViewLineChart;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
