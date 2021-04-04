@@ -2,14 +2,15 @@ package com.github.xitren.fx.data;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.xitren.data.DataModelJson;
-import io.github.xitren.data.Mark;
-import io.github.xitren.data.container.DataContainer;
-import io.github.xitren.data.container.DynamicDataContainer;
-import io.github.xitren.data.container.StaticDataContainer;
-import io.github.xitren.data.line.OnlineDataLine;
-import io.github.xitren.data.manager.DataManagerAction;
-import io.github.xitren.data.manager.DataManagerMapper;
+import com.github.xitren.data.data.DataModelJson;
+import com.github.xitren.data.data.Mark;
+import com.github.xitren.data.data.container.DataContainer;
+import com.github.xitren.data.data.container.DynamicDataContainer;
+import com.github.xitren.data.data.container.StaticDataContainer;
+import com.github.xitren.data.data.line.OnlineDataLine;
+import com.github.xitren.data.data.manager.DataManagerAction;
+import com.github.xitren.data.data.manager.DataManagerMapper;
+import com.github.xitren.data.data.window.WindowDynamicParser;
 import com.github.xitren.fx.signal_ui.chart.GroupLineChart;
 import com.github.xitren.fx.signal_ui.chart.ViewLineChart;
 import javafx.application.Platform;
@@ -217,5 +218,13 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             }
         }
         callViewUpdate();
+    }
+
+    public void addParser(WindowDynamicParser wer, int channel) {
+        dataLines[channel].addParser(wer);
+    }
+
+    public void removeParser(WindowDynamicParser wer, int channel) {
+        dataLines[channel].removeParser(wer);
     }
 }

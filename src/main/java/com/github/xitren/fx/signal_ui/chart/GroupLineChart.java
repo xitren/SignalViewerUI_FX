@@ -1,6 +1,6 @@
 package com.github.xitren.fx.signal_ui.chart;
 
-import io.github.xitren.data.line.DataLineMode;
+import com.github.xitren.data.data.line.DataLineMode;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
