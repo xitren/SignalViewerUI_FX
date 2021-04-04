@@ -158,6 +158,7 @@ public class ViewLineChart extends HBox implements Observable {
         switch (glc.getTool()) {
             case UNI_SELECTOR:
                 glc.setSelected(vls.slc);
+                synchronizeProcessSelection(prep, vls, glc);
                 vls.slc.setInSelection(vls.slc.getSelectedRange());
                 break;
             case GROUP_SELECTOR:

@@ -126,25 +126,19 @@ public class GraphController implements Initializable {
         return ret;
     }
 
-    public void setConfiguration(int[] conf, String[] str) {
-        int size = 0;
-        for (int h : conf) {
-            size += h;
-        }
-        if (size > str.length)
-            throw new IndexOutOfBoundsException("Found not enough labels than expected!");
-        graph_positions.getSelectionModel().select(str.length - 1);
-        this.str = str;
+    public void setConfiguration(String[] str) {
+        graph_positions.setValue(str.length);
         for (int i = 0;i < graph_pos.length;i++) {
             graph_pos[i].getItems().clear();
-            graph_pos[i].getItems().addAll(str);
+            if (i < str.length) {
+                graph_pos[i].getItems().addAll(str);
+            }
         }
         for (int i = 0;i < graph_pos.length;i++) {
-            graph_chart[i].getSelectionModel().select(i);
             if (i < str.length) {
                 graph_pos[i].setValue(str[i]);
             } else {
-                graph_pos[i].setValue(str[0]);
+                graph_pos[i].setValue(null);
             }
         }
     }
@@ -152,5 +146,13 @@ public class GraphController implements Initializable {
     public void OnLoad(ActionEvent actionEvent) {
         if (this.upd != null)
             this.upd.run();
+    }
+
+    public Integer[] getChannels() {
+        Integer[] switcher = new Integer[graph_positions.getValue()];
+        for (int i = 0;i < switcher.length;i++) {
+            switcher[i] = graph_pos[i].getSelectionModel().getSelectedIndex();
+        }
+        return switcher;
     }
 }

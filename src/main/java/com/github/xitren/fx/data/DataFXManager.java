@@ -134,9 +134,9 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         timeOverview = new double[swapper.length][];
         if (glcView!= null)
             glcView.removeListener(this);
-        glcView = new GroupLineChart(rb, getDataLabel(), true);
+        glcView = new GroupLineChart(rb, getSwapperLabels(), true);
         glcView.addListener(this);
-        glcOverview = new GroupLineChart(rb, getDataLabel(), false);
+        glcOverview = new GroupLineChart(rb, getSwapperLabels(), false);
         glcOverview.setOnChangeSelection(()->{
             XYChart.Data<Number, Number> rangeMarker = glcOverview.getRangeMarker();
             setView(rangeMarker);

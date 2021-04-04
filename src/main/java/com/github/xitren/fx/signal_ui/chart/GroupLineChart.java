@@ -50,8 +50,8 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     }
 
     public void setData(double[][] data, double[][] time) {
-        if (data.length != charts.length || time.length != charts.length)
-            throw new RuntimeException("Array size does not meet the requirements");
+//        if (data.length != charts.length || time.length != charts.length)
+//            throw new RuntimeException("Array size does not meet the requirements");
         for (int i = 0;i < charts.length;i++) {
             charts[i].setData(data[i], time[i]);
         }
@@ -156,13 +156,16 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
         if (i < 0) {
             for (int n = 0; n < charts.length; n++) {
                 if (charts[n].getMode().equals(DataLineMode.FOURIER)
-                        || charts[n].getMode().equals(DataLineMode.FOURIER))
+                        || charts[n].getMode().equals(DataLineMode.FILTERED_FOURIER))
                     continue;
                 charts[n].addVerticalRangeLabel(
                         new XYChart.Data<Number, Number>(range.getXValue(), range.getYValue()),
                         color, lable_color, text);
             }
         } else {
+            if (charts[i].getMode().equals(DataLineMode.FOURIER)
+                    || charts[i].getMode().equals(DataLineMode.FILTERED_FOURIER))
+                return;
             charts[i].addVerticalRangeLabel(range, color, lable_color, text);
         }
 }

@@ -94,32 +94,10 @@ public class SignalUIController implements Initializable {
         return null;
     }
 
-    public void reLCWM(int[] mini, int[] full, Integer[] configurationChannels, String[] labels) {
-        datafx.setSwapper(configurationChannels);
-        p_graph.getChildren().clear();
-        p_graph.getChildren().add(datafx.getGlcView());
-        p_mini.getChildren().clear();
-        p_mini.getChildren().add(datafx.getGlcOverview());
-        cut.setDisable(false);
-        tool_pause.setDisable(true);
-        stop.setDisable(true);
-        if (datafx instanceof DataFXManager) {
-            tool_pause.setDisable(false);
-            stop.setDisable(false);
-        }
-        marksCtrl.setData(this.datafx.getMarks());
-    }
-
     public void bind(DataFXManager datafx) {
         this.datafx = datafx;
-//        graphCtrl.setConfiguration(datafx.getDataLabel());
-        p_mini.getChildren().clear();
-        p_graph.getChildren().clear();
+        graphCtrl.setConfiguration(datafx.getDataLabel());
         board.setRight(controlTool);
-        p_graph.getChildren().clear();
-        p_graph.getChildren().add(datafx.getGlcView());
-        p_mini.getChildren().clear();
-        p_mini.getChildren().add(datafx.getGlcOverview());
         cut.setDisable(false);
         tool_pause.setDisable(true);
         stop.setDisable(true);
@@ -127,6 +105,10 @@ public class SignalUIController implements Initializable {
             tool_pause.setDisable(false);
             stop.setDisable(false);
         }
+        p_graph.getChildren().clear();
+        p_graph.getChildren().add(datafx.getGlcView());
+        p_mini.getChildren().clear();
+        p_mini.getChildren().add(datafx.getGlcOverview());
         marksCtrl.setData(this.datafx.getMarks());
     }
 
@@ -238,7 +220,7 @@ public class SignalUIController implements Initializable {
     }
 
     public void OnCutData(ActionEvent actionEvent) {
-        XYChart.Data<Number, Number> rangeMarker = datafx.getGlcOverview().getSelectedRange();
+        XYChart.Data<Number, Number> rangeMarker = datafx.getGlcOverview().getRangeMarker();
         if (rangeMarker.getXValue().intValue() < rangeMarker.getYValue().intValue())
             datafx.cut(rangeMarker);
     }
@@ -268,8 +250,13 @@ public class SignalUIController implements Initializable {
             Pane pane = fxmlLoader.load(is);
             graphCtrl = fxmlLoader.<GraphController>getController();
             graphCtrl.setOnUpdate(()->{
-                reLCWM(graphCtrl.getConfiguration(), graphCtrl.getConfiguration(),
-                        graphCtrl.getConfigurationChannels(), graphCtrl.getConfigurationLabels());
+                if (datafx != null) {
+                    datafx.setSwapper(graphCtrl.getChannels());
+                    p_graph.getChildren().clear();
+                    p_graph.getChildren().add(datafx.getGlcView());
+                    p_mini.getChildren().clear();
+                    p_mini.getChildren().add(datafx.getGlcOverview());
+                }
             });
             return pane;
         } catch (IOException ex) {
