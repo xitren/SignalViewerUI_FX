@@ -1,6 +1,6 @@
 package com.github.xitren.fx.signal_ui.controllers;
 
-import com.github.xitren.data.data.Mark;
+import com.github.xitren.data.Mark;
 import com.github.xitren.fx.data.DataFXManager;
 import com.github.xitren.fx.signal_ui.chart.GroupLineChart;
 import javafx.event.ActionEvent;

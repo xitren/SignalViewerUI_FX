@@ -1,6 +1,6 @@
 package com.github.xitren.fx.signal_ui.chart;
 
-import com.github.xitren.data.data.line.*;
+import com.github.xitren.data.line.*;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.chart.NumberAxis;
