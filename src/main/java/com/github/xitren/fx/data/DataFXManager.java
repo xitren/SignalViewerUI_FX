@@ -143,6 +143,8 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             setChanged();
             notifyObservers(DataManagerAction.SelectionChanged);
         });
+        callOverviewUpdate();
+        callViewUpdate();
     }
 
     public GroupLineChart getGlcOverview() {

@@ -68,6 +68,8 @@ public class ViewLineChart extends HBox implements Observable {
     }
 
     public void setData(double[] data, double[] time) {
+        if (data == null)
+            return;
         if (data.length != X_VIEW || time.length != X_VIEW)
             throw new RuntimeException("Array size does not meet the requirements");
         for (int i = 0;i < X_VIEW;i++) {

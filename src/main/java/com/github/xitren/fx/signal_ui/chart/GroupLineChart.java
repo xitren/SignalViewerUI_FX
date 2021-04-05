@@ -50,8 +50,8 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     }
 
     public void setData(double[][] data, double[][] time) {
-//        if (data.length != charts.length || time.length != charts.length)
-//            throw new RuntimeException("Array size does not meet the requirements");
+        if (charts.length < data.length || charts.length < time.length)
+            throw new RuntimeException("Array size does not meet the requirements");
         for (int i = 0;i < charts.length;i++) {
             charts[i].setData(data[i], time[i]);
         }
