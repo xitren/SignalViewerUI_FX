@@ -23,6 +23,9 @@ public class ViewLineChart extends HBox implements Observable {
     private static final double X_LABELS_HEIGHT = 40;
     private static final int X_VIEW = 2048;
     private final XYChart.Data<Number, Number>[] data = new XYChart.Data[X_VIEW];
+    ToggleButton btn_amp;
+    ToggleButton btn_freq;
+    ToggleButton btn_filt;
     private DataLineMode mode;
     private SelectableLineChart slc;
     private boolean notated;
@@ -231,11 +234,13 @@ public class ViewLineChart extends HBox implements Observable {
         yAxis.setMinWidth(80);
         yAxis.setMaxWidth(80);
         yAxis.setAutoRanging(true);
-        yAxis.setLabel(str);
         if (!notated) {
             yAxis.setTickLabelsVisible(false);
             yAxis.setMinorTickVisible(false);
             yAxis.setTickMarkVisible(false);
+            yAxis.setLabel(null);
+        } else {
+            yAxis.setLabel(str);
         }
         return yAxis;
     }
@@ -247,9 +252,9 @@ public class ViewLineChart extends HBox implements Observable {
         cbox.setPrefWidth(38);
         cbox.setMaxWidth(38);
         cbox.setFillWidth(true);
-        ToggleButton btn_amp = getAmplifierButton();
-        ToggleButton btn_freq = getFrequencyButton();
-        ToggleButton btn_filt = getFilterButton();
+        btn_amp = getAmplifierButton();
+        btn_freq = getFrequencyButton();
+        btn_filt = getFilterButton();
         btn_freq.setOnAction((act)->{
             if (btn_freq.isSelected()) {
                 btn_amp.setSelected(false);
@@ -339,6 +344,35 @@ public class ViewLineChart extends HBox implements Observable {
 
     public void setMode(DataLineMode mode) {
         this.mode = mode;
+        switch (mode) {
+            case POWER:
+                btn_freq.setSelected(false);
+                btn_filt.setSelected(false);
+                btn_amp.setSelected(true);
+                break;
+            case FILTERED_FOURIER:
+                btn_freq.setSelected(true);
+                btn_filt.setSelected(true);
+                btn_amp.setSelected(false);
+                break;
+            case FILTER:
+                btn_filt.setSelected(true);
+                btn_freq.setSelected(false);
+                btn_amp.setSelected(false);
+                break;
+            case FOURIER:
+                btn_freq.setSelected(true);
+                btn_filt.setSelected(false);
+                btn_amp.setSelected(false);
+                break;
+            case USUAL:
+            default:
+                btn_freq.setSelected(false);
+                btn_filt.setSelected(false);
+                btn_amp.setSelected(false);
+                break;
+        }
+        changeMode();
     }
 
     @Override
