@@ -41,6 +41,12 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
         });
     }
 
+    public void setModeToLine(int i, DataLineMode mode) {
+        if (charts.length <= i)
+            throw new ArrayIndexOutOfBoundsException();
+        charts[i].setMode(mode);
+    }
+
     public DoubleProperty startProperty() {
         return start;
     }

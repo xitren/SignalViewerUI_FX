@@ -7,6 +7,7 @@ import com.github.xitren.data.Mark;
 import com.github.xitren.data.container.DataContainer;
 import com.github.xitren.data.container.DynamicDataContainer;
 import com.github.xitren.data.container.StaticDataContainer;
+import com.github.xitren.data.line.DataLineMode;
 import com.github.xitren.data.line.OnlineDataLine;
 import com.github.xitren.data.manager.DataManagerAction;
 import com.github.xitren.data.manager.DataManagerMapper;
@@ -74,6 +75,13 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             odl[i] = new OnlineDataLine(new DynamicDataContainer(), labels[i]);
         }
         return new DataFXManager(rb, odl);
+    }
+
+    public void setModeToLine(int i, DataLineMode mode) {
+        if (modes.length <= i)
+            throw new ArrayIndexOutOfBoundsException();
+        modes[i] = mode;
+        glcView.setModeToLine(i, mode);
     }
 
     @Override
