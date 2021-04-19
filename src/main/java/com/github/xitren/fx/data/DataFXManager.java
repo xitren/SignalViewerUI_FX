@@ -86,6 +86,8 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
 
     @Override
     protected void updateMarks() {
+        if (glcView == null || glcOverview == null)
+            return;
         Platform.runLater(()->{
             glcView.clearMarks();
             for (Mark mark : marks) {
@@ -104,6 +106,8 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
 
     @Override
     protected void updateValues() {
+        if (glcView == null || glcOverview == null)
+            return;
         if (swapper.length != values.length || swapper.length != time.length)
             throw new IndexOutOfBoundsException();
         for (int i = 0;i < swapper.length;i++) {
@@ -120,6 +124,8 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
 
     @Override
     protected void updateOverviewValues() {
+        if (glcView == null || glcOverview == null)
+            return;
         if (swapper.length != valuesOverview.length || swapper.length != timeOverview.length)
             throw new IndexOutOfBoundsException();
         for (int i = 0;i < swapper.length;i++) {
