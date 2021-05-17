@@ -80,7 +80,7 @@ public class SignalUIController implements Initializable {
         graphTool = loadGraphControl();
         new ToggleGroup().getToggles().addAll(pars, filt_pars, comm_pars, graph_pars);
         new ToggleGroup().getToggles().addAll(tool_sel, tool_uni_sel);
-        tool_sel.setSelected(true);
+        cut.setDisable(false);
         p_top.getChildren().remove(p_top0);
         pars1.selectedProperty().bindBidirectional(pars.selectedProperty());
         filt_pars1.selectedProperty().bindBidirectional(filt_pars.selectedProperty());
@@ -184,12 +184,14 @@ public class SignalUIController implements Initializable {
     public void setMultiSelectMode() {
         datafx.getGlcOverview().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
         datafx.getGlcView().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
+        tool_sel.setSelected(true);
         cut.setDisable(false);
     }
 
     public void setUniSelectMode() {
         datafx.getGlcOverview().setTool(GroupLineChart.Tool.GROUP_SELECTOR);
         datafx.getGlcView().setTool(GroupLineChart.Tool.UNI_SELECTOR);
+        tool_uni_sel.setSelected(true);
         cut.setDisable(true);
     }
 
@@ -301,6 +303,10 @@ public class SignalUIController implements Initializable {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public void updateMarks() {
+        marksCtrl.setData(datafx.getMarks());
     }
 
     public void setTagsDisable(boolean vv) {
