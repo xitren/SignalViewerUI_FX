@@ -230,16 +230,19 @@ public class ViewLineChart extends HBox implements Observable {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setForceZeroInRange(false);
         yAxis.setAnimated(false);
-        yAxis.setPrefWidth(80);
-        yAxis.setMinWidth(80);
-        yAxis.setMaxWidth(80);
         yAxis.setAutoRanging(true);
         if (!notated) {
+            yAxis.setPrefWidth(0);
+            yAxis.setMinWidth(0);
+            yAxis.setMaxWidth(0);
             yAxis.setTickLabelsVisible(false);
             yAxis.setMinorTickVisible(false);
             yAxis.setTickMarkVisible(false);
             yAxis.setLabel(null);
         } else {
+            yAxis.setPrefWidth(80);
+            yAxis.setMinWidth(80);
+            yAxis.setMaxWidth(80);
             yAxis.setLabel(str);
         }
         return yAxis;
