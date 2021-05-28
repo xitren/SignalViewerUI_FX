@@ -127,16 +127,16 @@ public class GraphController implements Initializable {
     }
 
     public void setConfiguration(String[] str) {
-        if (str.length > 8) {
+        if (str.length >= 8) {
             graph_positions.setValue(8);
         } else {
             graph_positions.setValue(str.length);
         }
         for (int i = 0;i < graph_pos.length;i++) {
             graph_pos[i].getItems().clear();
-            if (i < str.length) {
+            //if (i < str.length) {
                 graph_pos[i].getItems().addAll(str);
-            }
+            //}
         }
         for (int i = 0;i < graph_pos.length;i++) {
             if (i < str.length) {
