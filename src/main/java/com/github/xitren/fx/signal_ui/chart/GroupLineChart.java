@@ -3,7 +3,9 @@ package com.github.xitren.fx.signal_ui.chart;
 import com.github.xitren.data.line.DataLineMode;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.VBox;
@@ -21,6 +23,7 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     private final boolean notated;
     private final DoubleProperty start = new SimpleDoubleProperty();
     private final DoubleProperty end = new SimpleDoubleProperty();
+    private final BooleanProperty dynamic = new SimpleBooleanProperty(true);
     private XYChart.Data<Number, Number> rangeMarker;
     private SelectableLineChart chartSelected;
     private Tool tool;
@@ -39,6 +42,12 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
             if (onScroll != null)
                 onScroll.run();
         });
+        for (ViewLineChart vlc : this.charts)
+            vlc.dynamicProperty().bind(this.dynamic);
+    }
+
+    public BooleanProperty dynamicProperty() {
+        return dynamic;
     }
 
     public void setModeToLine(int i, DataLineMode mode) {

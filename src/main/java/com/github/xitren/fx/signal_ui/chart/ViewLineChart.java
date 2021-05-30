@@ -1,8 +1,11 @@
 package com.github.xitren.fx.signal_ui.chart;
 
 import com.github.xitren.data.line.*;
+import com.github.xitren.fx.signal_ui.controllers.SignalUIController;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ToggleButton;
@@ -22,10 +25,11 @@ public class ViewLineChart extends HBox implements Observable {
 
     private static final double X_LABELS_HEIGHT = 40;
     private static final int X_VIEW = 2048;
+    private final BooleanProperty dynamic = new SimpleBooleanProperty(false);
     private final XYChart.Data<Number, Number>[] data = new XYChart.Data[X_VIEW];
-    ToggleButton btn_amp;
-    ToggleButton btn_freq;
-    ToggleButton btn_filt;
+    private ToggleButton btn_amp;
+    private ToggleButton btn_freq;
+    private ToggleButton btn_filt;
     private DataLineMode mode;
     private SelectableLineChart slc;
     private boolean notated;
@@ -55,6 +59,7 @@ public class ViewLineChart extends HBox implements Observable {
         this.notated = notated;
         this.last = last;
         this.slc = new SelectableLineChart(getXAxis(), getYAxis(str), notated);
+        this.slc.dynamicProperty().bind(this.dynamic);
         this.series.getData().addAll(data);
         this.slc.getData().add(series);
         this.slc.setAnimated(false);
@@ -164,7 +169,7 @@ public class ViewLineChart extends HBox implements Observable {
             case UNI_SELECTOR:
                 glc.setSelected(vls.slc);
                 synchronizeProcessSelection(prep, vls, glc);
-                vls.slc.setInSelection(vls.slc.getSelectedRange());
+//                vls.slc.setInSelection(vls.slc.getSelectedRange());
                 break;
             case GROUP_SELECTOR:
                 glc.setSelected(null);
@@ -179,16 +184,16 @@ public class ViewLineChart extends HBox implements Observable {
                 continue;
             switch (glc.getTool()) {
                 case UNI_SELECTOR:
-                    ll.slc.clearSelection();
+//                    ll.slc.clearSelection();
                     break;
                 case GROUP_SELECTOR:
-                    ll.slc.setInSelection(vls.slc.getSelectedRange());
+                    ll.slc.setSelectedRange(vls.slc.getSelectedRange());
                     break;
                 case DISABLED:
-                    ll.slc.clearSelection();
+//                    ll.slc.clearSelection();
                     break;
                 default:
-                    ll.slc.clearSelection();
+//                    ll.slc.clearSelection();
                     break;
             }
         }
@@ -394,5 +399,9 @@ public class ViewLineChart extends HBox implements Observable {
 
     public void clearVerticalRangeLabels() {
         slc.clearVerticalRangeLabels();
+    }
+
+    public BooleanProperty dynamicProperty() {
+        return dynamic;
     }
 }

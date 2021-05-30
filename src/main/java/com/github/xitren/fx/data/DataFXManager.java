@@ -41,6 +41,29 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         super(edl);
         this.rb = rb;
         setSwapper(swapper);
+        glcOverview.dynamicProperty().set(true);
+        glcView.dynamicProperty().set(true);
+    }
+
+    @Override
+    public void pause(){
+        super.pause();
+        glcOverview.dynamicProperty().set(false);
+        glcView.dynamicProperty().set(false);
+    }
+
+    @Override
+    public void stop(){
+        super.stop();
+        glcOverview.dynamicProperty().set(false);
+        glcView.dynamicProperty().set(false);
+    }
+
+    @Override
+    public void start(){
+        super.start();
+        glcOverview.dynamicProperty().set(true);
+        glcView.dynamicProperty().set(true);
     }
 
     public static DataFXManager<OnlineDataLine<StaticDataContainer>, StaticDataContainer> DataFXManagerFactory(

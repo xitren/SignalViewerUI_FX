@@ -34,7 +34,7 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
     private void createVerticalSelector() {
         Rectangle rectangle = new Rectangle(0,0,0,0);
         rectangle.setStroke(Color.TRANSPARENT);
-        rectangle.setFill(Color.GRAY);
+        rectangle.setFill(Color.GRAY.deriveColor(1,1,1,0.35));
         verticalSelector.setNode(rectangle);
         getPlotChildren().add(rectangle);
         Text ll = new Text("<>");
@@ -79,6 +79,19 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         getPlotChildren().remove(line);
         getPlotChildren().remove(text);
         getPlotChildren().add(line);
+        getPlotChildren().add(text);
+    }
+
+    protected void setVerticalSelection(Data<Number, Number> marker) {
+        Objects.requireNonNull(marker, "the marker must not be null");
+        verticalSelector.setXValue(marker.getXValue());
+        verticalSelector.setYValue(marker.getYValue());
+        Rectangle rect = (Rectangle) verticalSelector.getNode();
+        Text text = (Text) verticalSelector.getExtraValue();
+        layoutPlotChildren();
+        getPlotChildren().remove(rect);
+        getPlotChildren().remove(text);
+        getPlotChildren().add(rect);
         getPlotChildren().add(text);
     }
 
