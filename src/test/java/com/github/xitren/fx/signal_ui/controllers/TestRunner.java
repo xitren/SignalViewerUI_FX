@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -82,9 +83,32 @@ public class TestRunner extends Application {
             try {
                 fxmlStream = getClass().getClassLoader().getResourceAsStream(url);
                 FXMLLoader loader = new FXMLLoader();
-                loader.setController(new SignalUIController());
+                SignalUIController suic = new SignalUIController();
+                loader.setController(suic);
                 loader.setResources(rb);
                 loader.load(fxmlStream);
+                ((Parent)loader.getRoot()).setOnKeyPressed(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent keyEvent) {
+                        switch (keyEvent.getCode()) {
+                            case DIGIT0:
+                            case DIGIT1:
+                            case DIGIT2:
+                            case DIGIT3:
+                            case DIGIT4:
+                            case DIGIT5:
+                            case DIGIT6:
+                            case DIGIT7:
+                            case DIGIT8:
+                            case DIGIT9:
+                                dataManager.setCurrentMark(keyEvent.getCode().getName(), "#f2f2f2", "#99cc99");
+                                suic.updateMarks();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
                 return new ViewHolder(loader.getRoot(), loader.getController());
             } finally {
                 if (fxmlStream != null) {
