@@ -36,11 +36,11 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         rectangle.setStroke(Color.TRANSPARENT);
         rectangle.setFill(Color.GRAY.deriveColor(1,1,1,0.35));
         verticalSelector.setNode(rectangle);
-        getPlotChildren().add(rectangle);
+//        getPlotChildren().add(rectangle);
         Text ll = new Text("<>");
         ll.setFill(Color.BLACK);
         verticalSelector.setExtraValue(ll);
-        getPlotChildren().add(ll);
+//        getPlotChildren().add(ll);
         setMouseTransparentToEverythingButBackground();
     }
 
@@ -84,6 +84,10 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
 
     protected void setVerticalSelection(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
+        if (marker.getXValue().doubleValue() == 0 && marker.getYValue().doubleValue() == 0) {
+            clearVerticalSelection();
+            return;
+        }
         verticalSelector.setXValue(marker.getXValue());
         verticalSelector.setYValue(marker.getYValue());
         Rectangle rect = (Rectangle) verticalSelector.getNode();
@@ -95,7 +99,15 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         getPlotChildren().add(text);
     }
 
-    public void clearVerticalRangeLabels(){
+    public void clearVerticalSelection() {
+        Rectangle rect = (Rectangle) verticalSelector.getNode();
+        Text text = (Text) verticalSelector.getExtraValue();
+        layoutPlotChildren();
+        getPlotChildren().remove(rect);
+        getPlotChildren().remove(text);
+    }
+
+    public void clearVerticalRangeLabels() {
         for(Data<Number, Number> d : verticalRangeLabels){
             getPlotChildren().remove(d.getNode());
             getPlotChildren().remove(d.getExtraValue());

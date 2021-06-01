@@ -11,6 +11,7 @@ public class SelectableLineChart extends LineChartWithMarkers {
     private final BooleanProperty dynamic = new SimpleBooleanProperty(false);
     private final BooleanProperty scroll = new SimpleBooleanProperty(false);
     private boolean selection = false;
+    private boolean selected = false;
     private XYChart.Data<Number, Number> cursorMarker = new XYChart.Data<>(0, 0);
     private XYChart.Data<Number, Number> selectionMarker = new XYChart.Data<>(0, 0);
     private XYChart.Data<Number, Number> rangeMax = new XYChart.Data<>(0, 0);
@@ -73,12 +74,16 @@ public class SelectableLineChart extends LineChartWithMarkers {
             if (me.isPrimaryButtonDown()) {
                 selectionStart = this.getXAxis().getValueForDisplay(me.getX());
                 selection = true;
+                selected = false;
             }
         });
         lookup(".chart-plot-background").setOnMouseReleased((me)->{
             if (dynamic.get())
                 return;
             selection = false;
+            if (selected == false) {
+                clearSelector();
+            }
         });
         lookup(".chart-plot-background").setOnMouseExited((me)->{
             if (selection) {
@@ -91,6 +96,7 @@ public class SelectableLineChart extends LineChartWithMarkers {
                 return;
             if (selection) {
                 updateSelector(me.getX());
+                selected = true;
             }
         });
     }
@@ -113,7 +119,9 @@ public class SelectableLineChart extends LineChartWithMarkers {
         selectionStart = 0;
         selectionMarker.setXValue(0);
         selectionMarker.setYValue(0);
-        this.setVerticalSelection(selectionMarker);
+        this.clearVerticalSelection();
+        if (onScroll != null)
+            onScroll.run();
     }
 
     public XYChart.Data<Number, Number> getCursorMarker() {
