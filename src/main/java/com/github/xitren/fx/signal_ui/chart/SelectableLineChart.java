@@ -138,6 +138,10 @@ public class SelectableLineChart extends LineChartWithMarkers {
         this.setVerticalSelection(selectionMarker);
     }
 
+    public void clearSelection() {
+        this.clearVerticalSelection();
+    }
+
     public BooleanProperty dynamicProperty() {
         return dynamic;
     }

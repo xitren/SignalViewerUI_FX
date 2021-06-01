@@ -180,20 +180,20 @@ public class ViewLineChart extends HBox implements Observable {
 
     private static void synchronizeProcessSelection(ViewLineChart[] prep, ViewLineChart vls, GroupLineChart glc) {
         for (ViewLineChart ll : prep) {
-            if (ll.slc.equals(vls) && (glc.getTool() != GroupLineChart.Tool.DISABLED))
+            if (ll.equals(vls) && (glc.getTool() != GroupLineChart.Tool.DISABLED))
                 continue;
             switch (glc.getTool()) {
                 case UNI_SELECTOR:
-//                    ll.slc.clearSelection();
+                    ll.slc.clearSelection();
                     break;
                 case GROUP_SELECTOR:
                     ll.slc.setSelectedRange(vls.slc.getSelectedRange());
                     break;
                 case DISABLED:
-//                    ll.slc.clearSelection();
+                    ll.slc.clearSelection();
                     break;
                 default:
-//                    ll.slc.clearSelection();
+                    ll.slc.clearSelection();
                     break;
             }
         }
