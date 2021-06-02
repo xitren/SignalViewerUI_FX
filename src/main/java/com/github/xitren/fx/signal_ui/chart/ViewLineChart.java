@@ -1,7 +1,6 @@
 package com.github.xitren.fx.signal_ui.chart;
 
 import com.github.xitren.data.line.*;
-import com.github.xitren.fx.signal_ui.controllers.SignalUIController;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
@@ -26,7 +25,7 @@ public class ViewLineChart extends HBox implements Observable {
     private static final double X_LABELS_HEIGHT = 40;
     private static final int X_VIEW = 2048;
     private final BooleanProperty dynamic = new SimpleBooleanProperty(false);
-    private final XYChart.Data<Number, Number>[] data = new XYChart.Data[X_VIEW];
+    private final XYChart.Data<Number, Number>[][] data;
     private ToggleButton btn_amp;
     private ToggleButton btn_freq;
     private ToggleButton btn_filt;
@@ -36,7 +35,7 @@ public class ViewLineChart extends HBox implements Observable {
     private boolean last;
     private final ResourceBundle rb;
     private Set<InvalidationListener> observers = new HashSet<>();
-    protected XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    protected XYChart.Series<Number, Number>[] series;
     private StringConverter<Number> sc = new StringConverter<Number>() {
         @Override
         public String toString(Number object) {
@@ -49,19 +48,23 @@ public class ViewLineChart extends HBox implements Observable {
         }
     };
 
-    public ViewLineChart(ResourceBundle rb, String str, boolean notated, boolean last) {
+    public ViewLineChart(ResourceBundle rb, String str, XYChart.Series<Number, Number>[] series, boolean notated, boolean last) {
         super();
         HBox.setHgrow(this, Priority.ALWAYS);
-        for (int i = 0;i < X_VIEW;i++) {
-            data[i] = new XYChart.Data(i, 0);
+        this.data = new XYChart.Data[series.length][X_VIEW];
+        this.series = series;
+        for (int j = 0;j < series.length;j++) {
+            for (int i = 0;i < X_VIEW;i++) {
+                data[j][i] = new XYChart.Data(i, 0);
+            }
+            this.series[j].getData().addAll(data[j]);
         }
         this.rb = rb;
         this.notated = notated;
         this.last = last;
         this.slc = new SelectableLineChart(getXAxis(), getYAxis(str), notated);
         this.slc.dynamicProperty().bind(this.dynamic);
-        this.series.getData().addAll(data);
-        this.slc.getData().add(series);
+        this.slc.getData().addAll(this.series);
         this.slc.setAnimated(false);
         this.slc.setLegendVisible(false);
         if (!last)
@@ -75,14 +78,14 @@ public class ViewLineChart extends HBox implements Observable {
         getChildren().add(this.slc);
     }
 
-    public void setData(double[] data, double[] time) {
+    public void setData(int serve, double[] data, double[] time) {
         if (data == null)
             return;
-        if (data.length != X_VIEW || time.length != X_VIEW)
+        if (data.length != X_VIEW || time.length != X_VIEW || series.length <= serve)
             throw new RuntimeException("Array size does not meet the requirements");
         for (int i = 0;i < X_VIEW;i++) {
-            this.data[i].setXValue(time[i]);
-            this.data[i].setYValue(data[i]);
+            this.data[serve][i].setXValue(time[i]);
+            this.data[serve][i].setYValue(data[i]);
         }
     }
 
@@ -100,8 +103,9 @@ public class ViewLineChart extends HBox implements Observable {
                                              Runnable onScroll) {
         String[] labels = glc.getLabels();
         final ViewLineChart[] prep = glc.getCharts();
+        final XYChart.Series<Number, Number>[][] series = glc.getSeries();
         for (int i = 0;i < labels.length;i++) {
-            final ViewLineChart vlc = new ViewLineChart(rb, labels[i], notated, i == (labels.length - 1));
+            final ViewLineChart vlc = new ViewLineChart(rb, labels[i], series[i], notated, i == (labels.length - 1));
             prep[i] = vlc;
             glc.getChildren().add(vlc);
             vlc.addListener(glc);

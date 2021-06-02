@@ -19,7 +19,8 @@ import java.util.Set;
 public class GroupLineChart extends VBox implements InvalidationListener, Observable {
     private final ResourceBundle rb;
     private final ViewLineChart[] charts;
-    private final String[] labels;
+    private final XYChart.Series<Number, Number>[][] series;
+    private final String[][] labels;
     private final boolean notated;
     private final DoubleProperty start = new SimpleDoubleProperty();
     private final DoubleProperty end = new SimpleDoubleProperty();
@@ -30,20 +31,39 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     private Runnable onModeChange;
     private Runnable onScroll;
     private Set<InvalidationListener> observers = new HashSet<>();
+    private int[][] index;
 
-    public GroupLineChart(ResourceBundle rb, @NotNull String[] labels,
+    public GroupLineChart(ResourceBundle rb, @NotNull String[][] labels,
                           boolean notated) {
         this.tool = Tool.GROUP_SELECTOR;
         this.labels = labels;
         this.notated = notated;
         this.rb = rb;
         this.charts = new ViewLineChart[labels.length];
+        this.series = new XYChart.Series[labels.length][];
+        int size = 0;
+        for (int i = 0;i < labels.length;i++) {
+            this.series[i] = new XYChart.Series[labels[i].length];
+            size += labels[i].length;
+        }
+        fillIndex(size);
         ViewLineChart.GroupLineChartFactory(this, rb, notated, ()->{
             if (onScroll != null)
                 onScroll.run();
         });
         for (ViewLineChart vlc : this.charts)
             vlc.dynamicProperty().bind(this.dynamic);
+    }
+
+    private void fillIndex(int size) {
+        this.index = new int[size][2];
+        int k = 0;
+        for (int i = 0;i < labels.length;i++) {
+            for (int j = 0;j < labels[i].length;j++) {
+                this.index[k][0] = i;
+                this.index[k][1] = j;
+            }
+        }
     }
 
     public BooleanProperty dynamicProperty() {
@@ -65,10 +85,10 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     }
 
     public void setData(double[][] data, double[][] time) {
-        if (charts.length < data.length || charts.length < time.length)
+        if (index.length < data.length || index.length < time.length)
             throw new RuntimeException("Array size does not meet the requirements");
         for (int i = 0;i < charts.length;i++) {
-            charts[i].setData(data[i], time[i]);
+            charts[index[i][0]].setData(index[i][1], data[i], time[i]);
         }
     }
 
@@ -78,9 +98,9 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     }
 
     public void setData(int i, double[] data, double[] time) {
-        if (!((0 <= i) && (i < charts.length)))
+        if (!((0 <= i) && (i < index.length)))
             throw new RuntimeException("Array size does not meet the requirements");
-        charts[i].setData(data, time);
+        charts[index[i][0]].setData(index[i][1], data, time);
     }
 
     public SelectableLineChart getSelectedChart() {
@@ -99,6 +119,10 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
 
     public ViewLineChart[] getCharts() {
         return charts;
+    }
+
+    public XYChart.Series<Number, Number>[][] getSeries() {
+        return series;
     }
 
     public Tool getTool() {
@@ -121,7 +145,7 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
         chartSelected = slc;
     }
 
-    public String[] getLabels() {
+    public String[][] getLabels() {
         return labels;
     }
 

@@ -36,11 +36,9 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         rectangle.setStroke(Color.TRANSPARENT);
         rectangle.setFill(Color.GRAY.deriveColor(1,1,1,0.35));
         verticalSelector.setNode(rectangle);
-//        getPlotChildren().add(rectangle);
         Text ll = new Text("<>");
         ll.setFill(Color.BLACK);
         verticalSelector.setExtraValue(ll);
-//        getPlotChildren().add(ll);
         setMouseTransparentToEverythingButBackground();
     }
 
@@ -48,12 +46,19 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         Line line = new Line();
         line.setFill(Color.GRAY);
         line.setStroke(Color.GRAY);
+        Rectangle back = new Rectangle();
+        back.setFill(Color.WHITE.deriveColor(1,1,1,0.8));
+        back.setStroke(Color.TRANSPARENT);
         verticalCursor.setNode(line);
         getPlotChildren().add(line);
         Text ll = new Text("<>");
         ll.setFill(Color.BLACK);
-        verticalCursor.setExtraValue(ll);
+        Object[] objs = new Object[2];
+        objs[0] = ll;
+        objs[1] = back;
+        verticalCursor.setExtraValue(objs);
         getPlotChildren().add(ll);
+        getPlotChildren().add(back);
         setMouseTransparentToEverythingButBackground();
     }
 
@@ -74,11 +79,15 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
             verticalCursor.setYValue(getValueByMarker(this.getData().get(0).getData(), marker.getXValue()));
         }
         Line line = (Line) verticalCursor.getNode();
-        Text text = (Text) verticalCursor.getExtraValue();
+        Object[] objs = (Object[]) verticalCursor.getExtraValue();
+        Text text = (Text)objs[0];
+        Rectangle rect = (Rectangle)objs[1];
         layoutPlotChildren();
         getPlotChildren().remove(line);
         getPlotChildren().remove(text);
+        getPlotChildren().remove(rect);
         getPlotChildren().add(line);
+        getPlotChildren().add(rect);
         getPlotChildren().add(text);
     }
 
@@ -126,7 +135,9 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
             line.setEndY(getBoundsInLocal().getHeight());
             line.toFront();
             if (verticalCursor.getExtraValue() != null) {
-                Text text = (Text) verticalCursor.getExtraValue();
+                Object[] objs = (Object[]) verticalCursor.getExtraValue();
+                Text text = (Text)objs[0];
+                Rectangle rect = (Rectangle)objs[1];
                 text.setText(String.format("%1.2f; %1.2f",
                         verticalCursor.getXValue().doubleValue(),
                         verticalCursor.getYValue().doubleValue()));
@@ -134,6 +145,10 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
                 text.setY(line.getStartY() + 40);
                 text.setTextAlignment(TextAlignment.LEFT);
                 text.setFont(new Font("Arial", 12));
+                rect.setX(text.getX() - 15);
+                rect.setY(text.getY() - 15);
+                rect.setWidth(text.getLayoutBounds().getWidth() + 30);
+                rect.setHeight(text.getLayoutBounds().getHeight() + 15);
                 text.toFront();
             }
         }

@@ -26,7 +26,7 @@ public class SignalUIControllerTest  {
             }
         });
         thread.start();// Initialize the thread
-        Thread.sleep(100000); // Time to use the app, with out this, the thread
+        Thread.sleep(10000000); // Time to use the app, with out this, the thread
         // will be killed before you can tell.
     }
 }

@@ -86,10 +86,10 @@ public class SelectableLineChart extends LineChartWithMarkers {
             }
         });
         lookup(".chart-plot-background").setOnMouseExited((me)->{
-            if (selection) {
-                clearSelector();
-            }
-            selection = false;
+//            if (selection) {
+//                clearSelector();
+//            }
+//            selection = false;
         });
         lookup(".chart-plot-background").setOnMouseDragged((me)->{
             if (dynamic.get())
