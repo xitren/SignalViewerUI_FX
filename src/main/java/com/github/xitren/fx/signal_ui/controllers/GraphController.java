@@ -119,8 +119,8 @@ public class GraphController implements Initializable {
                 {graph_pos_1_8, graph_pos_2_8, graph_pos_3_8, graph_pos_4_8, graph_pos_5_8, graph_pos_6_8, graph_pos_7_8, graph_pos_8_8}
         };
         for (int i = 0;i < graph_pos.length;i++) {
-            for (int j = 1;j < (graph_pos[i].length - 1);j++) {
-                graph_pos[i][j + 1].disableProperty().bind(graph_pos[i][j].getSelectionModel().selectedIndexProperty().greaterThan(0));
+            for (int j = 0;j < (graph_pos[i].length - 1);j++) {
+                graph_pos[i][j + 1].disableProperty().bind(graph_pos[i][j].getSelectionModel().selectedIndexProperty().greaterThan(0).not());
             }
         }
         graph_chart = new VBox[]{vbox_1, vbox_2, vbox_3, vbox_4, vbox_5, vbox_6, vbox_7, vbox_8};

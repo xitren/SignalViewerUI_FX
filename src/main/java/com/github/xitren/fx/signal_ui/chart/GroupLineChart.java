@@ -65,6 +65,7 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
             for (int j = 0;j < labels[i].length;j++) {
                 this.index[k][0] = i;
                 this.index[k][1] = j;
+                k++;
             }
         }
     }

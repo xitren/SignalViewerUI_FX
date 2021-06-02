@@ -41,8 +41,11 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
     public DataFXManager(ResourceBundle rb, V[] edl) {
         super(edl);
         this.rb = rb;
-        swapperExt = new int[edl.length][1];
-        for (int i = 0;i < swapperExt.length;i++) {
+        if (8 < edl.length)
+            swapperExt = new int[8][1];
+        else
+            swapperExt = new int[edl.length][1];
+        for (int i = 0;i < swapperExt.length && i < 8;i++) {
             swapperExt[i][0] = i;
         }
         setSwapper(swapper);
