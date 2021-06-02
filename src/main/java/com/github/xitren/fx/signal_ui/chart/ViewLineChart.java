@@ -97,15 +97,23 @@ public class ViewLineChart extends HBox implements Observable {
         return slc;
     }
 
+    private static String concatStr(String[] sss){
+        String ss = "";
+        for (int i = 0;i < sss.length;i++) {
+            ss += ss.concat(sss[i]);
+        }
+        return ss;
+    }
+
     public static void GroupLineChartFactory(@NotNull GroupLineChart glc,
                                              @NotNull ResourceBundle rb,
                                              boolean notated,
                                              Runnable onScroll) {
-        String[] labels = glc.getLabels();
+        String[][] labels = glc.getLabels();
         final ViewLineChart[] prep = glc.getCharts();
         final XYChart.Series<Number, Number>[][] series = glc.getSeries();
         for (int i = 0;i < labels.length;i++) {
-            final ViewLineChart vlc = new ViewLineChart(rb, labels[i], series[i], notated, i == (labels.length - 1));
+            final ViewLineChart vlc = new ViewLineChart(rb, concatStr(labels[i]), series[i], notated, i == (labels.length - 1));
             prep[i] = vlc;
             glc.getChildren().add(vlc);
             vlc.addListener(glc);

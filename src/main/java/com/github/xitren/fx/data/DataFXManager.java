@@ -36,10 +36,15 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
     protected double[][] valuesOverview;
     protected double[][] timeOverview;
     protected ResourceBundle rb;
+    protected int[][] swapperExt;
 
     public DataFXManager(ResourceBundle rb, V[] edl) {
         super(edl);
         this.rb = rb;
+        swapperExt = new int[edl.length][1];
+        for (int i = 0;i < swapperExt.length;i++) {
+            swapperExt[i][0] = i;
+        }
         setSwapper(swapper);
         glcOverview.dynamicProperty().set(true);
         glcView.dynamicProperty().set(true);
@@ -171,9 +176,9 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         timeOverview = new double[swapper.length][];
         if (glcView!= null)
             glcView.removeListener(this);
-        glcView = new GroupLineChart(rb, getSwapperLabels(), true);
+        glcView = new GroupLineChart(rb, getSwapperExtLabels(), true);
         glcView.addListener(this);
-        glcOverview = new GroupLineChart(rb, getSwapperLabels(), false);
+        glcOverview = new GroupLineChart(rb, getSwapperExtLabels(), false);
         glcOverview.setOnChangeSelection(()->{
             XYChart.Data<Number, Number> rangeMarker = glcOverview.getRangeMarker();
             setView(rangeMarker);
@@ -265,5 +270,26 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
 
     public void removeParser(WindowDynamicParser wer, int channel) {
         dataLines[channel].removeParser(wer);
+    }
+
+    public int[][] getConfiguration() {
+        return swapperExt;
+    }
+
+    public void setConfiguration(int[][] swapperExt) {
+        this.swapperExt = swapperExt;
+    }
+
+    private String[][] getSwapperExtLabels() {
+        String[] labels = getDataLabel();
+        int[][] rt = getConfiguration();
+        String[][] ret = new String[rt.length][];
+        for (int i = 0;i < ret.length;i++) {
+            ret[i] = new String[rt[i].length];
+            for (int j = 0;j < ret[i].length;j++) {
+                ret[i][j] = labels[rt[i][j]];
+            }
+        }
+        return ret;
     }
 }

@@ -96,7 +96,7 @@ public class SignalUIController implements Initializable {
 
     public void bind(DataFXManager datafx) {
         this.datafx = datafx;
-        graphCtrl.setConfiguration(datafx.getDataLabel());
+        graphCtrl.setConfiguration(datafx.getDataLabel(), datafx.getConfiguration());
         board.setRight(controlTool);
         cut.setDisable(false);
         tool_pause.setDisable(true);
@@ -253,7 +253,7 @@ public class SignalUIController implements Initializable {
             graphCtrl = fxmlLoader.<GraphController>getController();
             graphCtrl.setOnUpdate(()->{
                 if (datafx != null) {
-                    datafx.setSwapper(graphCtrl.getChannels());
+                    datafx.setConfiguration(graphCtrl.getConfiguration());
                     p_graph.getChildren().clear();
                     p_graph.getChildren().add(datafx.getGlcView());
                     p_mini.getChildren().clear();

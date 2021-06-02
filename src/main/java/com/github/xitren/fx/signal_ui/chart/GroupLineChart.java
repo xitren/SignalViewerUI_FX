@@ -44,6 +44,9 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
         int size = 0;
         for (int i = 0;i < labels.length;i++) {
             this.series[i] = new XYChart.Series[labels[i].length];
+            for (int j = 0;j < labels[i].length;j++) {
+                this.series[i][j] = new XYChart.Series();
+            }
             size += labels[i].length;
         }
         fillIndex(size);
