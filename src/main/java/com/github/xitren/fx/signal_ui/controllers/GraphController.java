@@ -121,6 +121,12 @@ public class GraphController implements Initializable {
         for (int i = 0;i < graph_pos.length;i++) {
             for (int j = 0;j < (graph_pos[i].length - 1);j++) {
                 graph_pos[i][j + 1].disableProperty().bind(graph_pos[i][j].getSelectionModel().selectedIndexProperty().greaterThan(0).not());
+                final ChoiceBox<String> f = graph_pos[i][j + 1];
+                graph_pos[i][j].getSelectionModel().selectedIndexProperty().addListener((a, b, v)->{
+                    if (v.intValue() <= 0) {
+                        f.getSelectionModel().select(0);
+                    }
+                });
             }
         }
         graph_chart = new VBox[]{vbox_1, vbox_2, vbox_3, vbox_4, vbox_5, vbox_6, vbox_7, vbox_8};
@@ -149,6 +155,9 @@ public class GraphController implements Initializable {
             }
             selector[i] = j;
             channels[i] = new int[j];
+            for (int k = 0;k < channels[i].length;k++) {
+                channels[i][k] = graph_pos[i][k].getSelectionModel().getSelectedIndex() - 1;
+            }
         }
         return channels;
     }

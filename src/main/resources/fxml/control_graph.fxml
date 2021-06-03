@@ -9,11 +9,11 @@
 
 <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.xitren.fx.signal_ui.controllers.GraphController">
    <children>
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#OnLoad" text="%graph_update" />
       <ScrollPane fitToWidth="true" prefHeight="528.0" prefWidth="306.0" VBox.vgrow="ALWAYS">
         <content>
             <VBox fx:id="vbox_main" alignment="CENTER" prefWidth="210.0" spacing="20.0">
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#OnLoad" text="%graph_update" />
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="%graph_series" textAlignment="CENTER" />
                   <ChoiceBox fx:id="graph_positions" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
                   <VBox fx:id="vbox_1" alignment="CENTER" spacing="10.0">

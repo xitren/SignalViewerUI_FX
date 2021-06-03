@@ -280,7 +280,21 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
     }
 
     public void setConfiguration(int[][] swapperExt) {
+        int size = 0;
         this.swapperExt = swapperExt;
+        for (int i = 0;i < swapperExt.length;i++) {
+            for (int j = 0; j < swapperExt[i].length; j++) {
+                size++;
+            }
+        }
+        Integer[] swapper = new Integer[size];
+        size = 0;
+        for (int i = 0;i < swapperExt.length;i++) {
+            for (int j = 0; j < swapperExt[i].length; j++) {
+                swapper[size++] = swapperExt[i][j];
+            }
+        }
+        setSwapper(swapper);
     }
 
     private String[][] getSwapperExtLabels() {
