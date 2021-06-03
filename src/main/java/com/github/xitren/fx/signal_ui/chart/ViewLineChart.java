@@ -98,8 +98,10 @@ public class ViewLineChart extends HBox implements Observable {
     }
 
     private static String concatStr(String[] sss){
-        String ss = "";
-        for (int i = 0;i < sss.length;i++) {
+        if (sss.length <= 0)
+            return "";
+        String ss = sss[0];
+        for (int i = 1;i < sss.length;i++) {
             ss = ss + "/" + sss[i];
         }
         return ss;
