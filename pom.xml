@@ -5,7 +5,7 @@
 
 	<groupId>com.github.xitren.fx</groupId>
 	<artifactId>signal-ui-fx</artifactId>
-	<version>1.7.4</version>
+	<version>1.7.5</version>
 	<packaging>jar</packaging>
 
 	<name>Data viewer for FX</name>

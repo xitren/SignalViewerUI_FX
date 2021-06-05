@@ -257,13 +257,16 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
     @Override
     public void invalidated(Observable observable) {
         ViewLineChart[] vlc = glcView.getCharts();
-        if (modes.length != vlc.length)
+        if (vlc.length != swapperExt.length)
             throw new IndexOutOfBoundsException();
         if (modes.length != values.length || modes.length != time.length)
             throw new IndexOutOfBoundsException();
         synchronized (modes) {
+            int ss = 0;
             for (int i = 0; i < vlc.length; i++) {
-                modes[i] = vlc[i].getMode();
+                for (int k = 0; k < swapperExt[i].length; k++) {
+                    modes[ss++] = vlc[i].getMode();
+                }
             }
         }
         callViewUpdate();
