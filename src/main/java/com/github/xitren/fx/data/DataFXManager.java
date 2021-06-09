@@ -48,7 +48,7 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         for (int i = 0;i < swapperExt.length && i < 8;i++) {
             swapperExt[i][0] = i;
         }
-        setSwapper(swapper);
+        setConfiguration(swapperExt);
         glcOverview.dynamicProperty().set(true);
         glcView.dynamicProperty().set(true);
     }
@@ -95,7 +95,7 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             dm.swapper[i] = i;
         }
         dm.rb = rb;
-        dm.setSwapper(dm.swapper);
+        dm.configureSwapper(dm.swapper);
         return dm;
     }
 
@@ -169,8 +169,7 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         });
     }
 
-    @Override
-    public void setSwapper(@NotNull Integer[] swapper) {
+    public void configureSwapper(@NotNull Integer[] swapper) {
         super.setSwapper(swapper);
         values = new double[swapper.length][];
         time = new double[swapper.length][];
@@ -192,6 +191,11 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
         glcView.dynamicProperty().set(isOnline());
         callViewUpdate();
         callOverviewUpdate();
+    }
+
+    @Override
+    public void setSwapper(@NotNull Integer[] swapper) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 
     public GroupLineChart getGlcOverview() {
@@ -299,7 +303,7 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
                 swapper[size++] = swapperExt[i][j];
             }
         }
-        setSwapper(swapper);
+        configureSwapper(swapper);
     }
 
     private String[][] getSwapperExtLabels() {
