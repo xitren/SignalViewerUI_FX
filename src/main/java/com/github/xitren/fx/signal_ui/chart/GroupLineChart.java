@@ -30,7 +30,7 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
     private Tool tool;
     private Runnable onModeChange;
     private Runnable onScroll;
-    private Set<InvalidationListener> observers = new HashSet<>();
+    private Set<InvalidationListener> observers = new HashSet();
     private int[][] index;
 
     public GroupLineChart(ResourceBundle rb, @NotNull String[][] labels,

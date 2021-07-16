@@ -2,11 +2,16 @@ package com.github.xitren.fx.signal_ui.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -107,7 +112,9 @@ public class GraphController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
         str = new String[]{""};
+        vbox_main.getChildren().add(loadRECControl());
         graph_positions.getItems().addAll(graphs);
+        graph_chart = new VBox[]{vbox_1, vbox_2, vbox_3, vbox_4, vbox_5, vbox_6, vbox_7, vbox_8};
         graph_pos = new ChoiceBox[][]{
                 {graph_pos_1_1, graph_pos_2_1, graph_pos_3_1, graph_pos_4_1, graph_pos_5_1, graph_pos_6_1, graph_pos_7_1, graph_pos_8_1},
                 {graph_pos_1_2, graph_pos_2_2, graph_pos_3_2, graph_pos_4_2, graph_pos_5_2, graph_pos_6_2, graph_pos_7_2, graph_pos_8_2},
@@ -120,8 +127,18 @@ public class GraphController implements Initializable {
         };
         for (int i = 0;i < graph_pos.length;i++) {
             for (int j = 0;j < (graph_pos[i].length - 1);j++) {
-                graph_pos[i][j + 1].disableProperty().bind(graph_pos[i][j].getSelectionModel().selectedIndexProperty().greaterThan(0).not());
                 final ChoiceBox<String> f = graph_pos[i][j + 1];
+                final ChoiceBox<String> fl = graph_pos[i][j + 1];
+                final int fi = i;
+                graph_pos[i][j + 1].disableProperty().addListener((a, b, v)->{
+                    if (v) {
+                        graph_chart[fi].getChildren().remove(fl);
+                    } else {
+                        if (!graph_chart[fi].getChildren().contains(fl))
+                            graph_chart[fi].getChildren().add(fl);
+                    }
+                });
+                graph_pos[i][j + 1].disableProperty().bind(graph_pos[i][j].getSelectionModel().selectedIndexProperty().greaterThan(0).not());
                 graph_pos[i][j].getSelectionModel().selectedIndexProperty().addListener((a, b, v)->{
                     if (v.intValue() <= 0) {
                         f.getSelectionModel().select(0);
@@ -129,7 +146,6 @@ public class GraphController implements Initializable {
                 });
             }
         }
-        graph_chart = new VBox[]{vbox_1, vbox_2, vbox_3, vbox_4, vbox_5, vbox_6, vbox_7, vbox_8};
         graph_positions.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             vbox_main.getChildren().removeAll(graph_chart);
             for (int i = 0;i < newValue;i++) {
@@ -137,6 +153,29 @@ public class GraphController implements Initializable {
             }
         });
         graph_positions.getSelectionModel().select(7);
+        rebuild();
+    }
+
+    private void rebuild() {
+        for (int i = 0;i < graph_pos.length;i++) {
+            for (int j = 1; j < (graph_pos[i].length); j++) {
+                if (graph_pos[i][j].isDisabled())
+                    graph_chart[i].getChildren().remove(graph_pos[i][j]);
+            }
+        }
+    }
+
+    private Parent loadRECControl() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setResources(resources);
+            InputStream is = this.getClass().getResource("/fxml/control_rec.fxml").openStream();
+            Pane pane = fxmlLoader.load(is);
+            return pane;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public void setOnUpdate(Runnable upd) {
