@@ -112,7 +112,7 @@ public class GraphController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = resources;
         str = new String[]{""};
-        vbox_main.getChildren().add(loadRECControl());
+//        vbox_main.getChildren().add(loadRECControl());
         graph_positions.getItems().addAll(graphs);
         graph_chart = new VBox[]{vbox_1, vbox_2, vbox_3, vbox_4, vbox_5, vbox_6, vbox_7, vbox_8};
         graph_pos = new ChoiceBox[][]{

@@ -22,7 +22,7 @@ public class RECController implements Initializable {
     @FXML private Circle back;
     @FXML private Circle selector;
     private DoubleProperty mValue = new SimpleDoubleProperty(5.0);
-    private DoubleProperty mMin = new SimpleDoubleProperty(0.0);
+    private DoubleProperty mMin = new SimpleDoubleProperty(1.0);
     private DoubleProperty mMax = new SimpleDoubleProperty(29.9);
     private DoubleProperty mTurn = new SimpleDoubleProperty(10.0);
 
