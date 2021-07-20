@@ -91,6 +91,21 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
         getPlotChildren().add(text);
     }
 
+    public void clearVerticalSCursor() {
+        verticalCursor.setXValue(0);
+        if (this.getData().size() > 0) {
+            verticalCursor.setYValue(getValueByMarker(this.getData().get(0).getData(), 0));
+        }
+        Line line = (Line) verticalCursor.getNode();
+        Object[] objs = (Object[]) verticalCursor.getExtraValue();
+        Text text = (Text)objs[0];
+        Rectangle rect = (Rectangle)objs[1];
+        layoutPlotChildren();
+        getPlotChildren().remove(line);
+        getPlotChildren().remove(text);
+        getPlotChildren().remove(rect);
+    }
+
     protected void setVerticalSelection(Data<Number, Number> marker) {
         Objects.requireNonNull(marker, "the marker must not be null");
         if (marker.getXValue().doubleValue() == 0 && marker.getYValue().doubleValue() == 0) {

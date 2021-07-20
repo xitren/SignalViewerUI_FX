@@ -210,6 +210,8 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
                         String color, String label_color) {
         xy.setXValue(xy.getXValue().doubleValue() * getDiscretization());
         xy.setYValue(xy.getYValue().doubleValue() * getDiscretization());
+        if (xy.getXValue().intValue() == xy.getYValue().intValue())
+            return;
         super.addMark(ch, xy.getXValue().intValue(), xy.getYValue().intValue(),
                 name, color, label_color);
     }
@@ -218,6 +220,8 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
                                  String color, String label_color) {
         xy.setXValue(xy.getXValue().doubleValue() * getDiscretization());
         xy.setYValue(xy.getYValue().doubleValue() * getDiscretization());
+        if (xy.getXValue().intValue() == xy.getYValue().intValue())
+            return;
         super.addGlobalMark(xy.getXValue().intValue(), xy.getYValue().intValue(),
                 name, color, label_color);
     }

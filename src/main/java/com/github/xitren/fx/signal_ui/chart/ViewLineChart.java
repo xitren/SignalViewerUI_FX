@@ -183,7 +183,6 @@ public class ViewLineChart extends HBox implements Observable {
             case UNI_SELECTOR:
                 glc.setSelected(vls.slc);
                 synchronizeProcessSelection(prep, vls, glc);
-//                vls.slc.setInSelection(vls.slc.getSelectedRange());
                 break;
             case GROUP_SELECTOR:
                 glc.setSelected(null);
@@ -193,6 +192,10 @@ public class ViewLineChart extends HBox implements Observable {
     }
 
     private static void synchronizeProcessSelection(ViewLineChart[] prep, ViewLineChart vls, GroupLineChart glc) {
+        if (vls.mode.equals(DataLineMode.FOURIER) || vls.mode.equals(DataLineMode.FILTERED_FOURIER)) {
+            vls.slc.clearSelection();
+            return;
+        }
         for (ViewLineChart ll : prep) {
             if (ll.equals(vls) && (glc.getTool() != GroupLineChart.Tool.DISABLED))
                 continue;
@@ -201,7 +204,13 @@ public class ViewLineChart extends HBox implements Observable {
                     ll.slc.clearSelection();
                     break;
                 case GROUP_SELECTOR:
-                    ll.slc.setSelectedRange(vls.slc.getSelectedRange());
+                    if ( ll.mode.equals(DataLineMode.FILTER)
+                            || ll.mode.equals(DataLineMode.USUAL)
+                            || ll.mode.equals(DataLineMode.POWER) ) {
+                        ll.slc.setSelectedRange(vls.slc.getSelectedRange());
+                    } else {
+                        ll.slc.clearSelection();
+                    }
                     break;
                 case DISABLED:
                     ll.slc.clearSelection();
@@ -214,10 +223,22 @@ public class ViewLineChart extends HBox implements Observable {
     }
 
     private static void synchronizeCursor(ViewLineChart[] prep, ViewLineChart vls) {
-        for (ViewLineChart ll : prep) {
-            if (ll.slc.equals(vls))
-                continue;
-            ll.slc.setVerticalCursor(vls.slc.getCursorMarker());
+        if (vls.mode.equals(DataLineMode.FOURIER) || vls.mode.equals(DataLineMode.FILTERED_FOURIER)) {
+            for (ViewLineChart ll : prep) {
+                if (ll.equals(vls))
+                    continue;
+                ll.slc.clearVerticalSCursor();
+            }
+        } else {
+            for (ViewLineChart ll : prep) {
+                if (ll.equals(vls))
+                    continue;
+                if (ll.mode.equals(DataLineMode.FOURIER) || ll.mode.equals(DataLineMode.FILTERED_FOURIER)) {
+                    ll.slc.clearVerticalSCursor();
+                } else {
+                    ll.slc.setVerticalCursor(vls.slc.getCursorMarker());
+                }
+            }
         }
     }
 

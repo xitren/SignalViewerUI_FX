@@ -139,6 +139,8 @@ public class SelectableLineChart extends LineChartWithMarkers {
     }
 
     public void clearSelection() {
+        selectionMarker.setXValue(0);
+        selectionMarker.setYValue(0);
         this.clearVerticalSelection();
     }
 
