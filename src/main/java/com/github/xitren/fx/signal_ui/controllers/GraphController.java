@@ -216,8 +216,8 @@ public class GraphController implements Initializable {
                 graph_pos[i][j].getSelectionModel().select(0);
             }
         }
-        for (int i = 0;i < current.length;i++) {
-            for (int j = 0;j < current[i].length;j++) {
+        for (int i = 0;i < current.length && i < graph_pos.length;i++) {
+            for (int j = 0;j < current[i].length && i < graph_pos[i].length;j++) {
                 graph_pos[i][j].setValue(str[current[i][j]]);
             }
         }

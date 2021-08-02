@@ -278,6 +278,7 @@ public class DataFXManager<V extends OnlineDataLine<T>, T extends DataContainer>
             }
         }
         callViewUpdate();
+//        callMarkUpdate();
     }
 
     public void addParser(WindowDynamicParser wer, int channel) {

@@ -211,7 +211,7 @@ public class GroupLineChart extends VBox implements InvalidationListener, Observ
                 return;
             charts[i].addVerticalRangeLabel(range, color, lable_color, text);
         }
-}
+    }
 
     public void clearMarks() {
         for (int n = 0; n < charts.length; n++) {

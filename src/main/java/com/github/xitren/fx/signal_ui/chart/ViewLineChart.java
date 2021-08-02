@@ -5,6 +5,8 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ToggleButton;
@@ -36,6 +38,7 @@ public class ViewLineChart extends HBox implements Observable {
     private final ResourceBundle rb;
     private Set<InvalidationListener> observers = new HashSet<>();
     protected XYChart.Series<Number, Number>[] series;
+    private ObservableList<XYChart.Data<Number, Number>> verticalRangeLabelsMemory = FXCollections.observableArrayList();
     private StringConverter<Number> sc = new StringConverter<Number>() {
         @Override
         public String toString(Number object) {
@@ -152,6 +155,7 @@ public class ViewLineChart extends HBox implements Observable {
                         ax.setLabel(rb.getString("frequency_axis"));
                         ax.setAutoRanging(true);
                         ax.setForceZeroInRange(true);
+//                        vlc.clearVerticalRangeLabels();
                         break;
                     default:
                         ax.setAutoRanging(false);
@@ -163,7 +167,6 @@ public class ViewLineChart extends HBox implements Observable {
                         if (!ax.tickUnitProperty().isBound())
                             ax.tickUnitProperty().bind(
                                     ax.upperBoundProperty().subtract(ax.lowerBoundProperty()).divide(4));
-
                         if (vlc.last) {
                             ax.setLabel(rb.getString("time_axis"));
                             ax.setTickLabelsVisible(true);
@@ -171,6 +174,7 @@ public class ViewLineChart extends HBox implements Observable {
                             ax.setLabel(null);
                             ax.setTickLabelsVisible(false);
                         }
+//                        glc.invalidated(vlc);
                         break;
                 }
             });
@@ -350,6 +354,12 @@ public class ViewLineChart extends HBox implements Observable {
     }
 
     private void changeMode() {
+        if (this.mode.equals(DataLineMode.FOURIER)
+                || this.mode.equals(DataLineMode.FILTERED_FOURIER)) {
+            hideVerticalRangeLabels();
+        } else {
+            reloadVerticalRangeLabels();
+        }
         observers.forEach((e)->{
             e.invalidated(this);
         });
@@ -434,6 +444,14 @@ public class ViewLineChart extends HBox implements Observable {
 
     public void clearVerticalRangeLabels() {
         slc.clearVerticalRangeLabels();
+    }
+
+    public void hideVerticalRangeLabels() {
+        slc.hideVerticalRangeLabels();
+    }
+
+    public void reloadVerticalRangeLabels() {
+        slc.reloadVerticalRangeLabels();
     }
 
     public BooleanProperty dynamicProperty() {

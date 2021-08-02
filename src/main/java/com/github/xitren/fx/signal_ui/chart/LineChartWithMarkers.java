@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.util.Collection;
 import java.util.Objects;
 
 public class LineChartWithMarkers extends LineChart<Number, Number> {
@@ -241,5 +242,31 @@ public class LineChartWithMarkers extends LineChart<Number, Number> {
             marker.setExtraValue(null);
         }
         verticalRangeLabels.remove(marker);
+    }
+
+    public Collection<Data<Number, Number>> getRangeLabels() {
+        return verticalRangeLabels;
+    }
+
+    public void hideVerticalRangeLabels() {
+        for (Data<Number, Number> verticalRangeMarker : verticalRangeLabels) {
+            Rectangle rectangle = (Rectangle) verticalRangeMarker.getNode();
+            Text text = (Text) verticalRangeMarker.getExtraValue();
+            if (getPlotChildren().contains(rectangle))
+                getPlotChildren().remove(rectangle);
+            if (getPlotChildren().contains(text))
+                getPlotChildren().remove(text);
+        }
+    }
+
+    public void reloadVerticalRangeLabels() {
+        for (Data<Number, Number> verticalRangeMarker : verticalRangeLabels) {
+            Rectangle rectangle = (Rectangle) verticalRangeMarker.getNode();
+            Text text = (Text) verticalRangeMarker.getExtraValue();
+            if (!getPlotChildren().contains(rectangle))
+                getPlotChildren().add(rectangle);
+            if (!getPlotChildren().contains(text))
+                getPlotChildren().add(text);
+        }
     }
 }
